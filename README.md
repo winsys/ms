@@ -5,13 +5,13 @@ Sermon/Bible text search engine.
 
 # Requirements
 
-This is very old project. You will need to find and install:
+This is very old project. You will need to install:
 
 * Delphi 5.0
 
-* MySQL 4.0.20-27 (libmysql in root directory)
+* MySQL 4.0.20-27 (libmysql can be found in full archive)
 
-Components source included
+* Components (source codes included)
 
 
 # Full archive
