@@ -1,0 +1,44 @@
+package ZCommonK;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'Zeos Common Routines'}
+{$IMPLICITBUILD OFF}
+
+requires
+  baseclx,
+  visualclx,
+  designide,
+  dbdesign;
+
+contains
+  ZCommonConst in 'common/ZCommonConst.pas',
+  ZConvert in 'common/ZConvert.pas',
+  ZExtra in 'common/ZExtra.pas',
+  ZList in 'common/ZList.pas',
+  ZMatch in 'common/ZMatch.pas',
+  ZParser in 'common/ZParser.pas',
+  ZScanner in 'common/ZScanner.pas',
+  ZToken in 'common/ZToken.pas';
+
+end.

@@ -1,0 +1,412 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv="Content-Language" content="ru">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<title>Руководство пользователя</title>
+<link rel="stylesheet" type="text/css" href="msgstyles.css">
+<style>
+<!--
+h3
+	{margin-top:0cm;
+	margin-right:57.55pt;
+	margin-bottom:0cm;
+	margin-left:2.0cm;
+	margin-bottom:.0001pt;
+	page-break-after:avoid;
+	text-autospace:none;
+	font-size:11.0pt;
+	font-family:Arial;
+	color:black;
+	font-style:italic}
+ li.MsoNormal
+	{mso-style-parent:"";
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	margin-left:0cm; margin-right:0cm; margin-top:0cm}
+-->
+</style>
+<style fprolloverstyle>A:hover {color: #734607; font-weight: bold}
+</style>
+</head>
+
+<body link="#734607" vlink="#B66D0C" alink="#8E6A10" topmargin="0">
+<p align="center" class="inTheDay"><span lang="en-us">
+<a href="http://www.message.lv/program.htm" target="_blank" style="text-decoration: none">
+<font color="#9707CD">MessageSearch v1.1</font></a></span>
+</p>
+<div align="center">
+  <center>
+            <p class="hFioB"><span lang="en-us">USER's GUIDE</span><a name="Content"></a></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">1. <a href="#About">
+            <span lang="en-us">About MessageSearch v1.1</span></a></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">2. <a href="#Update">
+            <span lang="en-us">Updating the program</span></a></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">3. <span lang="en-us">
+            <a href="#Functions">Search options and functions</a></span></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">4. </span><a href="#WS">
+            <span lang="en-us">Search words and phrases</span></a></p>
+            <p class="tFioM" style="text-indent: 55">4<span style="font-family: Arial">.1.
+            <a href="#WS1"><span lang="en-us">General principles</span></a></span></p>
+            <p class="tFioM" style="text-indent: 55">
+            <span style="font-family: Arial">4.2. <span lang="en-us">
+            <a href="#WS2">Capital and small letters</a></span></span></p>
+            <p class="tFioM" style="text-indent: 55">
+            <span style="font-family: Arial">4.3. <a href="#WS3">
+            <span lang="en-us">Whole word</span></a></span></p>
+            <p class="tFioM" style="text-indent: 55">
+            <span style="font-family: Arial">4.4. <span lang="en-us">
+            <a href="#WS4">Alternative word search function (&quot;or&quot;)</a></span></span></p>
+            <p class="tFioM" style="text-indent: 55">
+            <span style="font-family: Arial">4.5. <a href="#WS5">
+            <span lang="en-us">Excluding words to search</span> (<span lang="en-us">&quot;except&quot;</span>)</a></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">5. <span lang="en-us">&nbsp;
+            <a href="#5">Search a phrase</a></span></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">6. <span lang="en-us">&nbsp; <a href="#6">
+            Paragraphs displayed on the screen</a></span></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">7.<span lang="en-us">&nbsp;&nbsp; <a href="#7">
+            Switching between different windows inside the program</a></span></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">8.<span lang="en-us">&nbsp; </span>&nbsp;<a href="#8"><span lang="en-us">Context 
+            of the sermon</span></a></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">9.<span lang="en-us"> </span>&nbsp;<span lang="en-us">
+            <a href="#9">Print</a></span></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">10. <a href="#10">
+            <span lang="en-us">Moving paragraphs to quote window</span></a></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">11. <a href="#11">
+            <span lang="en-us">Notes</span></a></span></p>
+            <p class="tFioM" style="text-indent: 35">
+            <span style="font-family: Arial">12. <a href="#12">
+            <span lang="en-us">Displaying search hits and paragraph headers</span></a></span></p>
+            <p class="tFioEnd"><a href="http://www.message.lv/" target="_blank">russian - www.message.lv</a></p>
+            <p class="tFioEnd"><span lang="en-us"><a target="_blank" href="http://www.lemessage.info">french - www.lemessage.info</a></span></p>
+            <p class="hFioS">1. <span lang="en-us">About MessageSearch v1.1</span><a name="About"></a></p>
+            <p class="tFioM">
+            <span lang="en-us">&quot;The MessageSearch Program v1.1&quot; in the sermons 
+            of W. M. Branham is an all-embracing and convenient to use source of 
+            all sermons translated into (...) language. With this program you 
+            can search for key words or phrases in the paragraphs of sermons, 
+            print out the text of any of the sermons, which is a great help to 
+            study the Message of Brother Branham. About options and functions of 
+            the program, please read further items of this User's Guide.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">2. <span lang="en-us">Updating the program</span><a name="Update"></a></p>
+            <p class="tFioM">
+            <span lang="EN-US" style="font-family: Arial; color: black">
+            <font size="2">After you have downloaded or received the update 
+            file, save it in the following folder of your computer: 
+            “c:\ms\updates”. After you have opened the program, click “Add 
+            sermon from file” in the “File” menu, or press &lt;F5&gt;, and choose the 
+            update file(s). </font></span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">3. <span lang="en-us">Search options and functions</span><a name="Functions"></a></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">By 
+            default the program will make a search through all sermons in the 
+            database and the text of the Bible.</span></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">There 
+            is a possibility to choose sermons you want to run the search in. 
+            There are two kinds of the “tree” with sermon titles, that appears 
+            on the display by clicking icon</span><span lang="en-us"> </span><span lang="ru"> <img border="0" src="images/TreeFolders.GIF" width="16" height="16">. </span></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">One 
+            kind of a “tree” (icon </span><span lang="ru">
+            <img border="0" src="images/Search_byYears.GIF" width="16" height="16"></span><span lang="EN-US" style="font-family: Arial">) 
+            is a list of sermons by date.</span></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">
+            Another (icon </span><span lang="ru">
+            <img border="0" src="images/Search_byTitles.GIF" width="16" height="16"></span><span lang="EN-US" style="font-family: Arial">) 
+            is a list of titles in the alphabetic order.</span></p>
+            <p class="tFioM"><span lang="en-us">Clicking the Bible &quot;tree&quot; (icon
+            </span><span lang="ru">
+            <img border="0" src="images/Search_inBible.GIF" width="16" height="16"></span><span lang="en-us">)</span><span lang="ru">&nbsp;</span><span lang="en-us">the 
+            list of the Books of the Bible will be displayed.</span></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">By 
+            marking empty boxes of titles, or years, or Bible Books, you limit 
+            the search to these sermons, or years, or the Books of the Bible 
+            only.</span></p>
+            <p class="tFioM"><font color="#734607">
+            <span lang="EN-US" style="font-family: Arial; font-weight: 700">
+            Double-clicking the title in the “tree” will open this sermon’s or 
+            Bible chapter complete text.</span></font></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">You 
+            can hide the “tree” by clicking </span><span lang="ru">
+            <img border="0" src="images/TreeFolders.GIF" width="16" height="16"></span><span lang="EN-US" style="font-family: Arial">&nbsp;again, 
+            but if you have checked some boxes, the program will still be 
+            searching in the marked sermons, or years, or Bible Books. To go to 
+            the full search, just switch to a different kind of a “tree”.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">4. <span lang="en-us">Search words and phrases</span><a name="WS"></a></p>
+            <p class="tFioM">
+            <span lang="EN-US" style="font-family: Arial; color: black">It is 
+            known by experience, that even using search programs it is still 
+            sometimes very hard to find the specific phrase or the word, because 
+            a man does not remember the phrase or the word exactly the way it 
+            was said, so, please, have patience, before you will be able to find 
+            searching words and phrases quick and smooth.</span></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">The 
+            words for a search are entered in the search line (white line above) 
+            after clicking on it. The search is activated by clicking the icon 
+            “search” </span> <span lang="EN-US">
+            <img border="0" src="images/Bigit_search_shd.GIF" width="20" height="20"></span><span lang="EN-US" style="font-family: Arial">.</span></p>
+            <p class="tFioM"><span lang="en-us">You can change the size of the 
+            search line, and it will remain like that after you start your 
+            program again. To do this, point your mouse cursor between the 
+            search line and the button &quot;search&quot;. When the cursor changes it's 
+            shape, click the left button on your mouse and move it until the 
+            desired size.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS" style="text-indent: 21">4.1. <span lang="en-us">
+            General principles</span><a name="WS1"></a></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">Since 
+            the languages other then English has prefixes and endings that do 
+            not sometimes change the key meaning of the word but only serve to 
+            match the grammar rules of the language, you have to consider that 
+            while entering the words for the search.</span></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">The 
+            program seeks for any word within a numbered paragraph or a 
+            combination of letters within the words in this paragraph, whose are 
+            matching your query.</span></p>
+            <p class="tFioMexp"><font face="Courier New"><span lang="en-us">For 
+            example, if you want to find all words that has to do with
+            <font color="#0000FF">sing</font>ing, you have to enter the word
+            <font color="#0000FF">sing</font> in the search line. Thus the 
+            program will find all the words like: <font color="#0000FF">sing</font>,
+            <font color="#0000FF">sing</font>ing, <font color="#0000FF">sing</font>er,
+            <font color="#0000FF">sing</font>s.</span></font></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">When 
+            you enter several words (combinations of letters) for the search, 
+            dividing them by a <font color="#734607"><b>space</b></font>, the 
+            program recognizes them as independent words, whose it will search 
+            in any order within the numbered paragraph.</span></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">To 
+            make the search easier, there are several options, activated by
+            <font color="#734607"><b>special symbols</b></font>, that you can 
+            use while entering the search words:</span></p>
+            <p class="tFioM" style="text-indent: 21"><a href="#WS3">
+            <span lang="en-us"><b>whole word</b></span></a> (<span lang="en-us">symbol</span> «<b><font color="#CD0722">.</font></b>» 
+            [<span lang="en-us">period</span>] );</p>
+            <p class="tFioM" style="text-indent: 21"><a href="#WS4">
+            <span lang="en-us"><b>or</b></span></a> (<span lang="en-us">symbol</span> «<b><font color="#CD0722">=</font></b>»);</p>
+            <p class="tFioM" style="text-indent: 21"><a href="#WS5">
+            <span lang="en-us"><b>except</b></span></a> (<span lang="en-us">symbol</span> «<b><font color="#CD0722">&#8209;</font></b>» 
+            [<span lang="en-us">minus</span>] );</p>
+            <p class="tFioM" style="text-indent: 21"><a href="#5">
+            <span lang="en-us"><b>search for a phrase</b></span></a> (<span lang="en-us">symbol</span> «<b><font color="#CD0722">_</font></b>»);</p>
+            <p class="tFioM" style="text-indent: 21"><span lang="en-us">which</span><span lang="EN-US" style="font-family: Arial"> 
+            should be entered <b><font color="#734607">without spaces</font></b> 
+            after the word.</span></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">The 
+            symbol <font color="#734607"><b><u>brackets</u></b></font> “<font color="#CD0722"><b>(</b></font>“ 
+            “<font color="#CD0722"><b>)</b></font>&quot; designates how many words at 
+            once will the symbols listed above will have effect on.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS" style="text-indent: 21">4.2. <span lang="en-us">
+            Capital and small letters</span><a name="WS2"></a></p>
+            <p class="tFioM"><span lang="en-us">The program searches the words 
+            that begin (are written) with capital or small letters by default, 
+            the search of words in the search line is not case sensitive.</span></p>
+            <p class="tFioM"><span lang="en-us">But sometimes it is important to 
+            find words specifically with capital letter. Thus, by pressing the 
+            button &quot;case sensitive search&quot; (icon </span>
+            <img border="0" src="images/CaseSensitive.GIF" width="16" height="16"><span lang="en-us">), 
+            words in the search line will be sought for <font color="#734607">
+            <b>regarding capital and small letters</b></font>.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS" style="text-indent: 21">4.3. <span lang="en-us">
+            Whole word</span><a name="WS3"></a></p>
+            <p class="tFioM"><span lang="en-us">Function</span>
+            <span lang="en-us"><u><font color="#734607"><b>whole word</b></font></u></span> 
+            (<span lang="en-us">symbol</span> «<font color="#CD0722"><b>.</b></font>»
+            <span lang="en-us">or released button</span>
+            <img border="0" src="images/WholeWord.GIF" width="20" height="20">) 
+            <span lang="en-us">allows you to find specific form of the 
+            word/words in the search line. If the button </span>
+            <img border="0" src="images/WholeWord.GIF" width="20" height="20"><span lang="en-us"> 
+            is released, all words in the search line will be recognized by the 
+            program as the only form of those words to search.</span></p>
+            <p class="tFioM"><span lang="en-us">If the button </span>
+            <img border="0" src="images/WholeWord.GIF" width="20" height="20"><span lang="en-us"> 
+            is pressed, you can still mark out the word that you want to be 
+            found in some specific form, you can do so with symbol &quot;<font color="#CD0722"><b>.</b></font>&quot;.</span></p>
+            <p class="tFioMexp"><span lang="en-us">For instance:
+            <font color="#0000FF">seven thunders .seal</font> will find all 
+            forms of the words <font color="#0000FF">Seven Thunders </font>and 
+            only this given form of the word <font color="#0000FF">seal</font>.</span></p>
+            <p class="tFioM"><span lang="en-us">By default, the button </span>
+            <img border="0" src="images/WholeWord.GIF" width="20" height="20">&nbsp;<span lang="en-us">is 
+            pressed</span>, <span lang="en-us">so the program will search all 
+            forms of the word/words or combinations of letters.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS" style="text-indent: 21">4.4. <span lang="en-us">
+            Alternative word search function (&quot;or&quot;)</span><a name="WS4"></a></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">
+            Function <b><font color="#734607"><u>or</u></font> </b>(symbol “<b><font color="#CD0722">=</font></b>”) 
+            is used for an alternative search of two or more different words 
+            within the numbered paragraph.</span></p>
+            <p class="tFioMexp"><span lang="EN-US">For instance:
+            <font color="#0000FF">Holy (Spirit=Ghost) Baptism</font><i> </i>will 
+            find all phrases where there are words <font color="#0000FF">Holy 
+            Ghost</font> or <font color="#0000FF">Holy Spirit</font>.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS" style="text-indent: 21">4.5. <span lang="en-us">
+            Excluding words to search</span> (<span lang="en-us">&quot;except&quot;</span>)<a name="WS5"></a></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">
+            Function <b><font color="#734607"><u>except</u></font> </b>(symbol “<font color="#CD0722"><b>-</b></font>”) 
+            is used to exclude specific word(s) from the search, that you do not 
+            want to exist in the same paragraph with the words you want to find.</span></p>
+            <p class="tFioMexp"><span lang="EN-US">For instance:
+            <font color="#0000FF">-water Holy (Spirit=Ghost) Baptism</font> will 
+            find all paragraphs, where it speaks about the <font color="#0000FF">
+            Holy Spirit </font>or the <font color="#0000FF">Holy Ghost Baptism</font>, 
+            but not mentioned the word <font color="#0000FF">water</font>.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">5. <span lang="en-us">Search a phrase</span><a name="5"></a></p>
+            <p class="tFioM">
+            <span lang="EN-US" style="font-size: 9pt; font-family: Arial">
+            Function <b><font color="#734607"><u>search for a phrase</u></font>
+            </b>(symbol “<font color="#CD0722"><b>_</b></font>”) is used to find 
+            specific phrase. The program recognizes these words as one unit.</span></p>
+            <p class="tFioMexp"><span lang="EN-US">For instance:
+            <font color="#0000FF">thus_saith_the_Lord</font> will find 
+            paragraphs where the prophet says <font color="#0000FF">THUS SAITH 
+            THE LORD</font>.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">6. <span lang="en-us">Paragraphs displayed on the 
+            screen</span><a name="6"></a></p>
+            <p class="tFioM">
+            <span lang="EN-US" style="font-size: 9pt; font-family: Arial; color: black">
+            In the window “paragraph count” there is a number, which shows how 
+            many paragraphs are being shown in the search window. You can change 
+            this value, if you want to see more paragraphs at once in the same 
+            window. (By default this value equals 20.) At the end of the line is 
+            a number showing the total number of paragraphs found. Between the 
+            arrows the numbers of paragraphs currently displayed are shown.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">7. <span lang="en-us">Switching between different 
+            windows inside the program</span><a name="7"></a></p>
+            <p class="tFioM">
+            <span lang="EN-US" style="font-family: Arial; color: black">With 
+            every search, opening the context of the sermon and creating or 
+            opening the file of quotes a new window is created, which is present 
+            there until you close it or exit the program. Working with the 
+            program they can accumulate quite many, so in order to go to the 
+            previously opened window of your </span><font color="#734607">
+            <span lang="EN-US" style="font-family: Arial"><b>search</b></span></font><span lang="EN-US" style="font-family: Arial; color: black">,
+            </span><font color="#734607">
+            <span lang="EN-US" style="font-family: Arial"><b>text</b></span></font><span lang="EN-US" style="font-family: Arial; color: black">,
+            </span><font color="#734607">
+            <span lang="EN-US" style="font-family: Arial"><b>context</b> </span>
+            </font><span lang="EN-US" style="font-family: Arial; color: black">
+            or </span><font color="#734607">
+            <span lang="EN-US" style="font-family: Arial"><b>quote file</b></span></font><span lang="EN-US" style="font-family: Arial; color: black">, 
+            click menu title “windows” and choose the window you need. Each type 
+            of the window has its own sign:</span></p>
+            <p class="tFioM" style="text-align: justify; text-autospace: none; text-indent: 21">
+            <span style="font-family: Arial; color: black">
+            <img border="0" src="images/Result_text.GIF" width="16" height="16">&nbsp;- 
+            <span lang="en-us">text of the sermon or a chapter of the Bible</span>;</span></p>
+            <p class="tFioM" style="text-align: justify; text-autospace: none; text-indent: 21">
+            <span style="font-family: Arial; color: black">
+            <img border="0" src="images/Result_search.GIF" width="16" height="16"> 
+            - <span lang="en-us">search results</span>;</span></p>
+            <p class="tFioM" style="text-align: justify; text-autospace: none; text-indent: 21">
+            <span style="font-family: Arial; color: black">
+            <img border="0" src="images/Result_quotes.GIF" width="16" height="16"> 
+            - <span lang="en-us">quote file</span>;</span></p>
+            <p class="tFioM" style="text-align: justify; text-autospace: none; text-indent: 21">
+            <span style="font-family: Arial; color: black">
+            <img border="0" src="images/Result_context.GIF" width="16" height="16"> 
+            - <span lang="en-us">paragraph from the search result in the context 
+            of the sermon.</span></span></p>
+            <p class="tFioM">
+            <span lang="EN-US" style="font-family: Arial; color: black">To go to 
+            the window with quotes you have selected, click icon “Show quotes 
+            window”&nbsp; </span>
+            <img border="0" src="images/FindQuotes.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial; color: black">. 
+            The icon will change to </span> <img border="0" src="images/Goback_to_text.GIF" width="16" height="16"><span lang="en-us">. 
+            Now if you click it, you will return to the last window you opened.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">8. <span lang="en-us">Context of the sermon</span><a name="8"></a></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">Every 
+            separate numbered paragraph on the screen can be viewed in the 
+            context of the sermon by clicking <font color="#734607"><b>open the 
+            context</b></font> </span>
+            <img border="0" src="images/OpenContext.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial">; 
+            the text of the sermon will appear at the location of the paragraph 
+            that you opened the context from.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">9. <span lang="en-us">Print</span><a name="9"></a></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">By 
+            clicking on the icon “print” </span>
+            <img border="0" src="images/Print.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial">, 
+            it will print all paragraphs <font color="#734607"><b>currently 
+            displayed in the window</b></font> (Look “Paragraphs displayed on 
+            the screen”.) the way it looks on the screen (highlighted search 
+            hits, paragraph headers, notes. Look “Displaying search hits and 
+            paragraph headers”, and also “Notes”.)</span></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">
+            <font color="#734607"><b>If you want to print selected quotes only</b></font>, 
+            you will have to move those paragraphs to the Quotes window first. 
+            (Look &quot;Moving paragraphs to quote window&quot;)</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">10. <span lang="en-us">Moving paragraphs to quote 
+            window</span><a name="10"></a></p>
+            <p class="tFioM">
+            <span lang="EN-US" style="font-family: Arial; color: black">You can 
+            make your own selection of quotes. To do so, put the cursor on the 
+            paragraph you want to add to that file, and click the icon “move 
+            paragraph to Quotes window” </span>
+            <img border="0" src="images/AddToQuotes.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial; color: black">.&nbsp; 
+            It will be moved to a different window, which is a new quote file, 
+            that you will be able to name by clicking “Save” icon </span> <img border="0" src="images/Save.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial; color: black">. 
+            Later you can add desired quotes to this file, by opening it from 
+            the folder under “Open quotes” icon </span> <img border="0" src="images/Open.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial; color: black">. 
+            In order to delete a paragraph from the quote file, put the cursor 
+            on the quote you want to delete, and click “Delete paragraph from 
+            quote window” icon </span> <img border="0" src="images/Delete.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial; color: black">.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">11. <span lang="en-us">Notes</span><a name="11"></a></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">The 
+            program allows you to make your own notes, which are going to be 
+            found under the paragraph header, at the beginning of the numbered 
+            file. Putting the cursor on the text (not in the paragraph header) 
+            of the paragraph, where you want to add your note, click “Note” icon
+            </span> <img border="0" src="images/AddNote.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial">, 
+            and type in the text. The notes are not displayed by default, but 
+            you can view them, by clicking on the “Display notes” icon </span>
+            <img border="0" src="images/ShowNotes.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial">.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a></p>
+            <p class="hFioS">12. <span lang="en-us">Displaying search hits and 
+            paragraph headers</span><a name="12"></a></p>
+            <p class="tFioM"><span lang="EN-US" style="font-family: Arial">You 
+            can turn off the highlighting of the search hits, by clicking on the 
+            “Display search hits” icon </span>
+            <img border="0" src="images/ShowSearchHits.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial">. 
+            By clicking on the “Display paragraph headers” icon </span>
+            <img border="0" src="images/DisplayHeaders.GIF" width="16" height="16"><span lang="EN-US" style="font-family: Arial">&nbsp;you 
+            can turn off the paragraph headers above every numbered paragraph 
+            (for example, it is convenient if you want to print the whole text 
+            of the sermon), but in this case the function “Moving paragraph to 
+            quotes window” will not work.</span></p>
+            <p class="tFioEnd"><a href="#Content"><span lang="en-us">Contents</span></a>
+  </center>
+</div>
+<p class="timesLinks"><span lang="en-us"><a href="http://www.message.lv" target="_blank">
+russian - www.message.lv</font></a></span></p>
+<p class="timesLinks"><span lang="en-us"><a href="http://www.lemessage.info" target="_blank">
+french - www.lemessage.info</font></a></span></p>
+
+</body>
+
+</html>

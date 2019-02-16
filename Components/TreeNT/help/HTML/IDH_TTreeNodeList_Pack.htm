@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>Pack Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>Pack method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNodeList.htm">TTreeNodeList</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> Pack;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNodeList.Pack; <B>assembler</B>;
+
+<Font Color="#0000DD">// removes all nil entries from the list</Font>
+<Font Color="#0000DD">// EAX contains Self reference</Font>
+
+<Font Color="#0000DD">// This routine is in particular effective for very fragmented lists or large holes, but</Font>
+<Font Color="#0000DD">// looses the battle with TList's Pack if only a few nil entries are there, because</Font>
+<Font Color="#0000DD">// all non-nil entries are moved, even if they land on the same address as they were</Font>
+<Font Color="#0000DD">// before. </Font>
+
+<B>asm</B>
+                   PUSH EDI
+                   PUSH ESI
+                   MOV ECX, EAX.FCount            <Font Color="#0000DD">// current entries in list</Font>
+                   JECXZ @Finish                 <Font Color="#0000DD">// nothing to do?</Font>
+                   MOV ESI, EAX.FList             <Font Color="#0000DD">// source and destination point to</Font>
+                   MOV EDI, ESI                   <Font Color="#0000DD">// the list memory</Font>
+                   SUB EDX, EDX                   <Font Color="#0000DD">// remaining entries counter</Font>
+@Loop:             CMP DWORD PTR [ESI], 0         <Font Color="#0000DD">// entry = nil?</Font>
+                   JZ @Empty                     <Font Color="#0000DD">// yes, it's empty, so skip it</Font>
+                   MOVSD                         <Font Color="#0000DD">// else move the entry to the new location</Font>
+                   INC EDX                       <Font Color="#0000DD">// count the moved entries</Font>
+                   LOOPNZ @Loop                  <Font Color="#0000DD">// do it until all entries are processed</Font>
+                   JMP @SetCount
+
+@Empty:            ADD ESI, 4                     <Font Color="#0000DD">// point to the next entry</Font>
+                   LOOPNZ @Loop                  <Font Color="#0000DD">// do it until all entries are processed</Font>
+@SetCount:         CMP EAX.FCount, EDX            <Font Color="#0000DD">// needs the count to be adjusted</Font>
+                   JE @Finish
+                   CALL SetCount                 <Font Color="#0000DD">// set the new list count</Font>
+                                                 <Font Color="#0000DD">// EAX still contains the Self reference</Font>
+                                                 <Font Color="#0000DD">// and EDX the new count (as needed for the call)</Font>
+@Finish:           POP ESI
+                   POP EDI
+<B>End</B>;</pre></td></tr></Table>

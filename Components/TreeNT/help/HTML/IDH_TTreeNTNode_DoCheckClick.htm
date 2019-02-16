@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>DoCheckClick Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>DoCheckClick method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> DoCheckClick;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNode.DoCheckClick;
+
+<B>begin</B>
+  <B>if</B> FEnabled <B>then</B>
+    <B>case</B> FParent.FCheckType <B>of</B>
+      ctCheckBox:
+        <B>if</B> FCheckState = csUnchecked <B>then</B> SetCheckState(csChecked)
+                                     <B>else</B> SetCheckState(csUnchecked);
+      ctCheckBoxGrayed :
+        <B>case</B> FCheckState <B>of</B>
+          csUnchecked: SetCheckState(csCheckedGrayed);
+          csCheckedGrayed: SetCheckState(csChecked);
+          csChecked: SetCheckState(csUnchecked);
+        <B>end</B>;
+      ctRadioButton:
+        SetCheckState(csChecked);
+    <B>end</B>
+  <B>else</B>
+    <B>case</B> FParent.FCheckType <B>of</B>
+      ctCheckBox:
+        <B>if</B> FCheckState = csUnchecked <B>then</B> TreeView.SetCheckImage(Self, ckCheckEmpty)
+                                     <B>else</B> TreeView.SetCheckImage(Self, ckCheckChecked);
+      ctCheckBoxGrayed :
+        <B>case</B> FCheckState <B>of</B>
+          csUnchecked:
+            TreeView.SetCheckImage(Self, ckCheckEmpty);
+          csChecked:
+            TreeView.SetCheckImage(Self, ckCheckChecked);
+        <B>end</B>;
+      ctRadioButton:
+        <B>if</B> FCheckState = csUnchecked <B>then</B> TreeView.SetCheckImage(Self, ckRadioEmpty)
+                                     <B>else</B> TreeView.SetCheckImage(Self, ckRadioChecked);
+    <B>end</B>
+<B>End</B>;</pre></td></tr></Table>

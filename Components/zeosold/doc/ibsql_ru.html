@@ -1,0 +1,726 @@
+<html>
+<head>
+<title>Компоненты Zeos Database Objects Interbase SQL</title>
+<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=Win1251">
+</head>
+
+<body link="#00637b" alink="#00637B" vlink="#000000">
+
+<center>
+<table width="100%" border="0" cellpading="0" cellspacing="0">
+<tr>
+<td bgcolor="#00637B" align=center valign=center>
+<font color="White" size="6"><b>ZEOS Database Objects<br>
+</b></font>
+<font color="White" size="6"><b>Interbase SQL Components</b></font>
+</tr>
+</table>
+<a name="Contents"></a>
+<h2>Содержание</h2>
+</center>
+<a name="Contents"></a>
+<ul>
+<li><a href="#Database">TZIbSQLDatabase</a> - компонент подключения к базе данных Interbase SQL
+<li><a href="#Monitor">TZIbSQLMonitor</a> - компонент отслеживания исходящих запросов Interbase SQL
+<li><a href="#Query">TZIbSQLQuery</a> - компонент для выполнения запросов к Interbase SQL серверу
+<li><a href="#Table">TZIbSQLTable</a> - компонент, представляющий SQL запрос виде TTable
+<li><a href="#Transact">TZIbSQLTransact</a> - компонент транзакт сервера
+</ul>
+<hr>
+<a name="Database"></a>
+<center>
+<h2><b>TZIbSQLDatabase</b></h2>
+<a href="#Database_property"><font size=2> Свойства |</font></a>
+<a href="#Database_methods"><font size=2> Методы |</font></a>
+<a href="#Database_events"><font size=2> События </font></a>
+</center>
+<p>
+Компонента для представления подключения к базе данных. Для использования данной компоненты
+необходимо присутствие динамчески загружаемой библиотеки <b>gds32.dll</b>
+<p>
+Иерархия: TObject->TPersistent->TComponent->TZDatabase->TZIbSQLDatabase
+<p>
+<a name="Database_property"></a>
+<table width="100%" border="1" cellpading="0" cellspacing="0">
+<tr bgcolor="#00637B" align=center valign=center>
+<td colspan=2 align=center valign=center><font color="White">
+Свойства TZIbSQLDatabase
+</font>
+</tr>
+<tr>
+<td width=30%><b>Handle:TDirConnect</b>
+<td>Дескриптор прямого подключения к Interbase SQL базе данных
+</tr>
+<tr>
+<td><b>Host:ShortString</b>
+<td>Имя хоста, на котором расположена база данных
+</tr>
+<tr>
+<td><b>Database:ShortString</b>
+<td>Имя базы данных
+</tr>
+<tr>
+<td><b>Login:ShortString</b>
+<td>Имя пользователя, подключающегося к базе данных
+</tr>
+<tr>
+<td><b>Password:ShortString</b>
+<td>Пароль для подключения к базе данных
+</tr>
+<tr>
+<td><b>LoginPromt:Boolean</b>
+<td>При установке в значение <b>true</b>, выводится окно ввода имени и пароля пользователя
+</tr>
+<tr>
+<td><b>Port:ShortString</b>
+<td>Номер порта для подключения к Interbase SQL серверу базы данных
+</tr>
+<tr>
+<td><b>SqlDialect:Word</b>
+<td>Определяет версию диалекта SQL. Значение 1 - соответствует версиям SQL 4.0, 5.0, 5.5. Значение 3 - новый SQL синтаксис версии 6.0.
+</tr>
+<tr>
+<td><b>Connected:Boolean</b>
+<td>Свойство подключенияк базе данных. При установке в значение <b>true</b>,
+ происходит подключение к базе данных. То же самое делает метод <b>Connect</b>.
+</tr>
+<tr>
+<td><b>Params:TStrings</b>
+<td>Установка дополнительных параметров для подключения к базе данных. Смотрите документацию к Interbase
+</tr>
+</table>
+<center>
+<font size=2>
+<a href="#Database">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+<p>
+<a name="Database_methods"></a>
+<table width="100%" border="1" cellpading="0" cellspacing="0">
+<tr bgcolor="#00637B" align=center valign=center>
+<td colspan=2 align=center valign=center><font color="White">
+Методы TZIbSQLDatabase
+</font>
+</tr>
+<tr>
+<td width=30%><b>procedure Connect()</b>
+<td>Подключение к базе данных
+</tr>
+<tr>
+<td><b>procedure Disconnect()</b>
+<td>Отключение от базы данных
+</tr>
+</table>
+<center>
+<font size=2>
+<a href="#Database">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+<p>
+<a name="Database_events"></a>
+<table width="100%" border="1" cellpading="0" cellspacing="0">
+<tr bgcolor="#00637B" align=center valign=center>
+<td colspan=2 align=center valign=center><font color="White">
+События TZIbSQLDatabase
+</font>
+</tr>
+<tr>
+<td width=30%><b>procedure AfterConnect(Sender:TObject)</b>
+<td>Событие происходящее после подключения к базе данных
+</tr>
+<tr>
+<td><b>procedure AfterDisconnect(Sender:TObject)</b>
+<td>Событие происходящее после отключения от базы данных
+</tr>
+<tr>
+<td><b>procedure BeforeConnect(Sender:TObject)</b>
+<td>Событие происходящее до подключения к базе данных
+</tr>
+<tr>
+<td><b>procedure BeforeDisconnect(Sender:TObject)</b>
+<td>Событие происходящее до отключения от базы данных
+</tr>
+</table>
+<center>
+<font size=2>
+<a href="#Database">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+
+<hr>
+<a name="Monitor"></a>
+<center>
+<h2><b>TZIbSQLMonitor</b></h2>
+<a href="#Monitor_events"><font size=2> События </font></a>
+</center>
+<p>
+Компонент для отслеживания исходящих SQL-запросов. Вызывает единственное событие OnMonitorEvent, в котором возвращается 
+текст исходящего запроса и результат его обработки.
+<p>
+Иерархия: TObject->TPersistent->TComponent->TZMonitor->TZIbSQLMonitor
+<p>
+<a name="Monitor_events"></a>
+<table width="100%" border="1" cellpading="0" cellspacing="0">
+<tr bgcolor="#00637B" align=center valign=center>
+<td colspan=2 align=center valign=center><font color="White">
+События TZIbSQLMonitor
+</font>
+</tr>
+<tr>
+<td width=30%><b>procedure MonitorEvent(Sql, Result: String)</b>
+<td>Событие происходящее после выполнения запроса. Передаваемые значения:
+<ul>
+<li><b>Sql</b> - текст исходящего запроса к базе данных Interbase SQL
+<li><b>Result</b> - строка результата, возвращаемая Interbase SQL-сервером, после выполнения запроса.
+С указаением ошибок выполнения запроса.
+</ul>
+</tr>
+</table>
+<center>
+<font size=2>
+<a href="#Monitor">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+
+
+<hr><a name="Query"></a>
+<center>
+<h2><b>TZIbSQLQuery</b></h2>
+<a href="#Query_property"><font size=2> Свойства |</font></a>
+<a href="#Query_methods"><font size=2> Методы |</font></a>
+<a href="#Query_events"><font size=2> События </font></a>
+</center>
+<p>
+Компонент для выполнения SQL запросов к Interbase SQL серверу. Используется для
+пересылки выражений SQL запросов Interbase SQL серверу. Результаты обаботки запросов можно
+использовать с помощью стандартного TDataSource в виде табличного представления, 
+при этом данные можно модифицировать, добавлять и удалять строки.
+<p>
+Иерархия: TObject->TPersistenet->TComponent->TDataSet->TZDataSet->
+TZCustomInterbase SQLDataSet->TZIbSQLQuery
+<p>
+<a name="Query_property"></a>
+<table width="100%" border="1" cellpading="0" cellspacing="0">
+<tr bgcolor="#00637B" align=center valign=center>
+<td colspan=2 align=center valign=center><font color="White">
+Свойства TZIbSQLQuery
+</font>
+</tr>
+<tr>
+<td width=30%><b>Active:Boolean</b>
+<td>Определяет, является ли запрос открытым. При установке в значение <b>true</b>, запрос передается серверу и открывается DataSet.
+Используется только для запросов типа 'SELECT'.
+</tr>
+<tr>
+<td><b>AutoCalcFields:Boolean</b>
+<td>Определяет способ обработки вычисляемых полей
+</tr>
+<tr>
+<td><b>CachedUpdates:Boolean</b>
+<td>Определяет, кэшируются ли изменения
+</tr>
+<tr>
+<td><b>DataBase:TZIbSQLDatabase</b>
+<td>Определяет базу данных, к которой буду происходить SQL запросы
+</tr>
+<tr>
+<td><b>DataSource:TDataSource</b>
+<td>Определяет DataSource, для обработки результатов запросов
+</tr>
+<tr>
+<td><b>ExtraOptions:TInterbase SQLOptions</b>
+<td>Набор специальных параметров выполнения запросов:
+<ul>
+<li><b>moStoreResult</b> - выбирается способ получения результирующей выборки.
+Если значение установлено в <b>true</b>(по умолчанию), то выборка полностью передается клиенту
+и подключение освобождается для других запросов. Если же нет, то соединение
+с базой данных блокируется до завершения обработки запроса, однако требует гораздо
+меньше памяти.
+<li><b>moUseGen</b> - определят, будут ли использоваться генераторы или нет.
+</ul>
+</tr>
+<tr>
+<td><b>Filter:ShortString</b>
+<td>Определяет выражение для фильтрации записи
+</tr>
+<tr>
+<td><b>Filtered:Boolean</b>
+<td>Определяет, является ли активной фильтрация, определенная  свойствами Filter или OnFilterRecord
+</tr>
+<tr>
+<td><b>FilterOptions:TFilterOptions</b>
+<td>Управляет поведением фильтров
+<ul>
+<li><b>foCaseInsensitive</b> - признак чувствительности к регистру значений при сравнении
+<li><b>foNoPartialCompare</b> - признак разрешения неполного сравнения строк
+</ul>
+</tr>
+<tr>
+<td><b>LinkFields</b>
+<td>С помощью мастера построения связанных полей, устанавливаются связи между TZIbSQLQuery
+</tr>
+<tr>
+<td><b>LinkOptions:TZLinkOptions</b>
+<td>Устанавливаются параметры связывания полей
+<ul>
+<li><b>loLinkRequery</b> - признак требования наличия связи
+<li><b>loCascadeUpdate</b> - признак необходимости каскадного обновления данных в связанных полях запросов
+<li><b>loCascadeDelete</b> - признак необходимости каскадного удаления данных
+<li><b>loAlwaysResync</b> - признак постоянного синхронизирования данных
+</ul>
+</tr>
+<tr>
+<td><b>MasterSource:TDataSource</b>
+<td>Устанавливает DataSource, поля которого будут являться
+ведущими в связывании полей
+</tr>
+<tr>
+<td><b>Options:TZDatabaseOptions</b>
+<td>
+Дополнительные параметры
+<ul>
+<li><b>doParamAsIs</b> - признак обработки параметров в явном виде 
+<li><b>doHourGlass</b> - признак вывода песочных часов при обработке запроса
+<li><b>doQueryAllRecords</b> - признак обработки всех записей
+<li><b>doCheckNulls</b> - признак проверки пустых значений
+<li><b>doCalcDefault</b> - призак вычислений по умолчанию
+</ul>
+</tr>
+<tr>
+<td><b>ParamCount:Word</b>
+<td>Отражает число параметров для запроса SQL
+</tr>
+<tr>
+<td><b>Params:TParams</b>
+<td>Определяет параметры для использования с SQL-запросом
+</tr>
+<tr>
+<td><b>ParamCheck:Boolean</b>
+<td>Определяет использование параметров
+</tr>
+<tr>
+<td><b>RequestLive:Boolean</b>
+<td>Указывает, является ли результат выполнения запроса редактируемым или нет.
+</tr>
+
+<tr>
+<td><b>RecordCount:LongInt</b>
+<td>Возвращает число строк в DataSet
+</tr>
+<tr>
+<td><b>ShowRecordTypes</b>
+<td>Параметры просмотра записей
+<ul>
+<li><b>rtModified</b> - признак вывода модифицированных записей
+<li><b>rtInserted</b> - признак вывода добавленных записей
+<li><b>rtDeleted</b> - признак вывода удаленных записей
+<li><b>rtUnmodified</b> - признак вывода немодифицированных записей
+</ul>
+</tr>
+<tr>
+<td><b>Sql:TStringList</b>
+<td>Определяет выражения SQL для выполнения на сервере
+</tr>
+<tr>
+<td><b>Transaction:TZIbSQLTransact</b>
+<td>Определяет Транзакт-сервер
+</tr>
+<tr>
+<td><b>UpdateObject:TZUpdateSQL</b>
+<td>Определяет компонент UpdateSQL для использования с кэшированием изменений
+</tr>
+</table>
+<center>
+<font size=2>
+<a href="#Query">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+<p>
+<a name="Query_methods"></a>
+<table width="100%" border="1" cellpading="0" cellspacing="0">
+<tr bgcolor="#00637B" align=center valign=center>
+<td colspan=2 align=center valign=center><font color="White">
+Методы TZIbSQLQuery
+</font>
+</tr>
+<tr>
+<td width=40%><b>procedure ExecSql;</b>
+<td>Выполнение запросов на изменение данных в базе данных, например: INSERT, DELETE и UPDATE
+</tr>
+<tr>
+<td><b>function  RowsAffected: LongInt;</b>
+<td>Возвращает значение, соответствующее количеству записей, обработанных с помощью процедуры ExecSQL
+</tr>
+<tr>
+<td><b>procedure SortInverse;</b>
+<td>Инвертирование сортировки записей
+</tr>
+<tr>
+<td><b>procedure SortClear;</b>
+<td>Удаление сортировки записей
+</tr>
+<tr>
+<td><b>procedure SortByField(FieldName: string);</b>
+<td>Сортировка записей по полю FieldName
+</tr>
+<tr>
+<td><b>procedure SortDescByField(FieldName: string);</b>
+<td>Сортировка по убыванию по полю FieldName
+</tr>
+<tr>
+<td><b>function Locate(const KeyFields: string; const KeyValues: Variant;
+Options: TLocateOptions): Boolean;</b>
+<td>Поиск записи, удовлетворяющей условия совпадения содержимого поля KeyFields
+со значением KeyValues. При проверка совпадения учитываются следующие опции Options:<br>
+<ul>
+<li><b>loCaseInsensitive</b> - учитывать регистры символов
+<li><b>loPartialKey</b> - признак необходимости неполного сравнения значений
+</ul>
+Возвращает значение <b>true</b>, если такая запись была найдена
+</tr>
+<tr>
+<td><b>function  Lookup(const KeyFields: string; const KeyValues: Variant;
+      const ResultFields: string): Variant;</b>
+<td>Аналогично Locate, но возвращает значение поля ResultFields найденной записи
+</tr>
+<tr>
+<td><b>function  IsSequenced: Boolean;</b>
+<td>Признак использования номера записи для установки порядка следования записей
+</tr>
+<tr>
+<td><b>procedure ApplyUpdates;</b>
+<td>Вызов сохранения всех кэшированных изменений в базу данных.
+Имеет место только в случае установке свойства CachedUpdates значения True.
+</tr>
+<tr>
+<td><b>procedure CommitUpdates;</b>
+<td>Процедура сохранения всех изменений, находящихся в буфере кэша и его очистка.
+</tr>
+<tr>
+<td><b>procedure CancelUpdates;</b>
+<td>Отмена всех изменений, находящихся в буфере кэша и возвращение DataSet в прежнее состояние
+</tr>
+<tr>
+<td><b>procedure RevertRecord;</b>
+<td>Отменяет все изменения для текущей записи.
+</tr>
+<tr>
+<td><b>function  ParamByName(const Value: string): TParam;</b>
+<td>Получить доступ к параметру с именем Value.
+</tr>
+<tr>
+<td><b>function  CreateBlobStream(Field: TField; Mode: TBlobStreamMode): TStream;</b>
+<td>Создает поток для BLOB-поля Field, в соответствии с параметрами описаными в Mode
+<ul>
+<li><b>bmRead</b> - использование потока для чтения из BLOB поля
+<li><b>bmWrite</b> - использование потока для записи в BLOB поле
+<li><b>bwReadWrite</b> - использование потока для модификации содержимого BLOB поля	
+</ul>
+</tr>
+<tr>
+<td><b>procedure SaveToStream(Stream: TStream);</b>
+<td>Сохранение содержимого Dataset в уже созданный поток Stream
+</tr>
+<tr>
+<td><b>procedure LoadFromStream(Stream: TStream);</b>
+<td>Перенос данных из потока Stream в Dataset
+</tr>
+<tr>
+<td><b>procedure SaveToFile(FileName: string);</b>
+<td>Сохранение содержимого Dataset в файл FileName
+</tr>
+<tr>
+<td><b>procedure LoadFromFile(FileName: string);</b>
+<td>Перенос данных из файла FileName в Dataset
+</tr>
+</table>
+<center>
+<font size=2>
+<a href="#Query">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+<p>
+<a name="Query_events"></a>
+<table width="100%" border="1" cellpading="0" cellspacing="0">
+<tr bgcolor="#00637B" align=center valign=center>
+<td colspan=2 align=center valign=center><font color="White">
+События TZIbSQLQuery
+</font>
+</tr>
+<tr>
+<td width=45%><b>procedure AfterCancel(DataSet: TDataSet);</b>
+<td>События вызываемое после отмены изменений внесенных в базу данных
+</tr>
+<tr>
+<td><b>procedure AfterClose(DataSet: TDataSet);</b>
+<td>События вызываемое после закрытия запроса
+</tr>
+<tr>
+<td><b>procedure AfterDelete(DataSet: TDataSet);</b>
+<td>События вызываемое после удаления записи
+</tr>
+<tr>
+<td><b>procedure AfterEdit(DataSet: TDataSet);</b>
+<td>События вызываемое после редактирования записи
+</tr>
+<tr>
+<td><b>procedure AfterInsert(DataSet: TDataSet);</b>
+<td>События вызываемое после добавления записи
+</tr>
+<tr>
+<td><b>procedure AfterOpen(DataSet: TDataSet);</b>
+<td>События вызываемое после открытия запроса
+</tr>
+<tr>
+<td><b>procedure AfterPost(DataSet: TDataSet);</b>
+<td>События вызываемое после внесения изменений в базу данных
+</tr>
+<tr>
+<td><b>procedure AfterScroll(DataSet: TDataSet);</b>
+<td>События вызываемое после после перехода на другую запись
+</tr>
+<tr>
+<td><b>procedure BeforeCancel(DataSet: TDataSet);</b>
+<td>События вызываемое до отмены изменений внесенных в базу данных
+</tr>
+<tr>
+<td><b>procedure BeforeClose(DataSet: TDataSet);</b>
+<td>События вызываемое до закрытия запроса
+</tr>
+<tr>
+<td><b>procedure BeforeDelete(DataSet: TDataSet);</b>
+<td>События вызываемое до удаления записи
+</tr>
+<tr>
+<td><b>procedure BeforeEdit(DataSet: TDataSet);</b>
+<td>События вызываемое до редактирования записи
+</tr>
+<tr>
+<td><b>procedure BeforeInsert(DataSet: TDataSet);</b>
+<td>События вызываемое до добавления записи
+</tr>
+<tr>
+<td><b>procedure BeforeOpen(DataSet: TDataSet);</b>
+<td>События вызываемое до открытия запроса
+</tr>
+<tr>
+<td><b>procedure BeforePost(DataSet: TDataSet);</b>
+<td>События вызываемое до внесения изменений в базу данных
+</tr>
+<tr>
+<td><b>procedure BeforeScroll(DataSet: TDataSet);</b>
+<td>События вызываемое до перехода на другую запись
+</tr>
+<tr>
+<td><b>procedure ApplyUpdateError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction);</b>
+<td>Происходит при ошибке примениея всех изменений находящихся в кэше
+</tr>
+<tr>
+<td><b>procedure CalcFields(DataSet: TDataSet);</b>
+<td>Происходит , когда вычиcляемые поля нуждаются в обновлении
+</tr>
+<tr>
+<td><b>procedure DeleteError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction);</b>
+<td>Происходит при ошибке удаления записи
+</tr>
+<tr>
+<td><b>procedure EditError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction);</b>
+<td>Происходит при ошибке редактирования записи
+</tr>
+<tr>
+<td><b>procedure FilterRecord(DataSet: TDataSet;var Accept: Boolean);</b>
+<td>Событие вызываемое для проверки, удовлетворяет текущая запись условия фильтрации или нет
+</tr>
+<tr>
+<td><b>procedure NewRecord(DataSet: TDataSet);</b>
+<td>Происходит при создании новой записи
+</tr>
+<tr>
+<td><b>procedure PostError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction);</b>
+<td>Происходит при ошибке сохранения изменений в текущей записи
+</tr>
+<tr>
+<td><b>procedure UpdateRecord(DataSet: TDataSet; UpdateKind: TUpdateKind; var UpdateAction: TUpdateAction);</b>
+<td>Происходит для каждой строки, сохраненной обращением к ApplyUpdates
+</tr>
+</table>
+<center>
+<font size=2>
+<a href="#Query">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+<p>
+
+<hr>
+<a name="Table"></a>
+<center>
+<h2><b>TZIbSQLTable</b></h2>
+</center>
+<p>
+Компонент для обработки результатов выборки данных Interbase SQL сервера в виде таблицы.
+<p>
+Иерархия: TObject->TPersistenet->TComponent->TDataSet->TZDataSet->
+TZCustomInterbase SQLDataSet->TZIbSQLTable
+<p>
+Не имеет никаких принципиальных отличий от TZIbSQLQuery, за исключением
+некоторых особенностей:<br>
+<ul>
+<li>Отсутствуют свойства Params, ParamCheck, ParamCount
+<li>Отсутствует свойство DataSource
+<li>Вместо свойства SQL введено свойство TableName, в котором указывается имя таблицы 
+базы данных. Фактически при открытии таблицы, происходит передача запроса серверу вида:<br>
+"SELECT * FROM TableName"
+
+<li>Вместо свойства RequestLive введено аналогичное свойство ReadOnly, отвечающее 
+за разрешение на редактирование содержимого таблицы
+</ul>
+<p>
+<center>
+<font size=2>
+<a href="#Table">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+<hr>
+<a name="Transact"></a>
+<center>
+<h2><b>TZIbSQLTransact</b></h2>
+<a href="#Transact_property"><font size=2> Свойства |</font></a>
+<a href="#Transact_methods"><font size=2> Методы |</font></a>
+<a href="#Transact_events"><font size=2> События </font></a>
+</center>
+<p>
+Компонент для работы с транзакциями сервера Interbase SQL.
+<p>
+Иерархия: TObject->TPersistent->TComponent->TZTransact->TZIbSQLTransact
+<a name="Transact_property"></a>
+<table width="100%" border="1" cellpading="0" cellspacing="0">
+<tr bgcolor="#00637B" align=center valign=center>
+<td colspan=2 align=center valign=center><font color="White">
+Свойства TZIbSQLTransact
+</font>
+</tr>
+<tr>
+<td width=30%><b>AutoCommit:Boolean</b>
+<td>При установке в значение <b>true</b> после выполнения
+ запроса автоматически осуществляется запись изменений.
+ При установке свойства в <b>false</b> необходимо
+ вызвать <b>Commit</b> или <b>Rollback</b> самостоятельно.
+</tr>
+<tr>
+<td><b>Connected:Boolean</b>
+<td>Индикатор подключения к базе данных
+</tr>
+<tr>
+<td><b>Database:TZIbSQLDatabase</b>
+<td>Указатель на базу данных для которой осуществляется сервис транзакций
+</tr>
+<tr>
+<td><b>Options:TZTransactOptions</b>
+<td>Набор опций:
+<ul>
+<li><b>toHourGlass</b> - признак вывода песочных часов при работе транзакций
+</ul>
+</tr>
+<tr>
+<td><b>Params:TStrings</b>
+<td>Установка дополнительных параметров для подключения к базе данных. Смотрите документацию к Interbase
+</tr>
+</table>
+<center>
+<font size=2>
+<a href="#Transact">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+<p>
+<a name="Transact_methods"></a>
+<table width="100%" border="1" cellpading="0" cellspacing="0">
+<tr bgcolor="#00637B" align=center valign=center>
+<td colspan=2 align=center valign=center><font color="White">
+Методы TZIbSQLTransact
+</font>
+</tr>
+<tr>
+<td width=30%><b>procedure Connect</b>
+<td>Осуществление подключения к серверу
+</tr>
+<tr>
+<td><b>procedure Disconnect</b>
+<td>Осуществление отключения от сервера
+</tr>
+<tr>
+<td><b>procedure Commit</b>
+<td>Выполнение всех изменений находящихся в буфере транзакций и его очистка
+</tr>
+<tr>
+<td><b>procedure RollBack</b>
+<td>Откат транзакции
+</tr>
+<tr>
+<td><b>procedure DoApplyUpdates</b>
+<td>Вызов сохранения всех изменений, находящихся в буфере транзакций
+</tr>
+</table>
+<center>
+<font size=2>
+<a href="#Transact">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+<p>
+<a name="Transact_events"></a>
+<table width="100%" border="1" cellpading="0" cellspacing="0">
+<tr bgcolor="#00637B" align=center valign=center>
+<td colspan=2 align=center valign=center><font color="White">
+События TZIbSQLTransact
+</font>
+</tr>
+<tr>
+<td width=30%><b>procedure OnApplyUpdates(Sender:TObject)</b>
+<td>Событие происходящее во время применения всех изменений находящихся в буфере транзакций
+</tr>
+<tr>
+<td><b>procedure OnCommit(Sender:TObject)</b>
+<td>Событие применения изменений из буфера транзакций и его очистки
+</tr>
+<tr>
+<td><b>procedure OnDataChange(Sender:TObject)</b>
+<td>Событие изменения данных
+</tr>
+<tr>
+<td><b>procedure OnRollBack(Sender:TObject)</b>
+<td>Событие отката транзакции
+</tr>
+
+</table>
+<center>
+<font size=2>
+<a href="#Transact">Вернуться назад | </a>
+<a href="#Contents">Содержание </a>
+</font>
+</center>
+
+
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+<p>&nbsp;
+
+</center>
+</body>
+</html>

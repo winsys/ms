@@ -1,0 +1,915 @@
+<!doctype linuxdoc system>
+
+<article>
+
+<title>Zeos Database Objects Library
+<author>Victor S. Savchukov, <htmlurl url="mailto:uksatse@skif.net" name="uksatse@skif.net">
+<date>v1.1, 29 June 2000
+<abstract>
+This document describes Zeos Database Objects Library
+created by Sergey Seroukhov <htmlurl url="mailto:voland@kita.dgtu.donetsk.ua" name="voland@kita.dgtu.donetsk.ua">
+which provides pure access to MySQL, PostgreSQL and
+Interbase SQL servers through Delphi's visual components of <url url="http://www.inprise.com" name="Inprise Corporation">.
+</abstract>
+
+<toc>
+
+<sect>Visual components for pure access to MySQL
+
+<sect1>TZMySQLDatabase
+<p>
+<ref id="MySQLDatprop" name="Properties"> | <ref id="MySQLDatmet" name="Methods"> | <ref id="MySQLDatevents" name="Events">
+<p>
+Component for connections to the MySQL database server.
+Provides discrete control over a connection to a single database.
+The dynamic linked library <tt/libmysql.dll/ is necessary.
+<p>
+Hierarchy: TObject->TPersistent->TComponent->TZDatabase->TZMySQLDatabase
+<p>
+
+<sect2>TZMySQLDatabase properties<label id="MySQLDatprop">
+<p>
+<descrip>
+<tag/Handle: TDirConnect/ Specifies the MySQL database handle
+<tag/Host: ShortString/ MySQL database server host name
+<tag/Database: ShortString/ Specifies the name of the database to associate with this database component
+<tag/Login: ShortString/ User name for login to the database
+<tag/Password: ShortString/ User password for login to the database
+<tag/LoginPromt: Boolean/ Specifies whether a login dialog appears immediately before opening a new connection
+<tag/Port: ShortString/ Specifies the port number for the associated MySQL database server
+<tag/Connected: Boolean/ Indicates whether or not a database connection is active. 
+Set Connected to True to establish a database connection without opening a dataset.
+Set Connected to False to close a database connection.
+<tag/Encoding: TEncodingType/ Specifies what type of encoding will use
+ to encode fields values. The following table lists all possible values of this property:
+<itemize>
+  <item> etNone
+  <item> et866
+  <item> etCp1251
+  <item> etISO88592
+  <item> etKOI8r
+</itemize>
+If you didn't find encoding type which is used in your country, you can add it in
+<tt/ZConvert.pas/ or ask for help to the author <htmlurl url="mailto:voland@kita.dgtu.donetsk.ua" name="voland@kita.dgtu.donetsk.ua">.
+</descrip>
+
+<sect2> TZMySQLDatabase methods<label id="MySQLDatmet">
+
+<p>
+<descrip>
+<tag/procedure Connect()/ Establishes a database connection without opening a dataset
+<tag/procedure Disconnect()/ Closes a database connection
+</descrip>
+
+<sect2> TZMySQLDatabase events<label id="MySQLDatevents">
+
+<p>
+<descrip>
+<tag/procedure OnAfterConnect(Sender: TObject)/ Occurs after a connection is established
+<tag/procedure OnAfterDisconnect(Sender: TObject)/ Occurs after the connection closes
+<tag/procedure OnBeforeConnect(Sender: TObject)/ Occurs immediately before establishing a connection
+<tag/procedure OnBeforeDisconnect(Sender: TObject)/ Occurs immediately before the connection closes
+</descrip>
+
+<sect1> TZMySQLTransact
+<p>
+<ref id="MySQLTraprop" name="Properties"> | <ref id="MySQLTramet" name="Methods"> | <ref id="MySQLTraevents" name="Events">
+<p>
+Provides transaction control over the MySQL database connection
+<p>
+Hierarchy: TObject->TPersistent->TComponent->TZTransact->TZMySQLTransact
+
+<sect2> TZMySQLTransact properties<label id="MySQLTraprop">
+
+<p>
+<descrip>
+<tag/AutoCommit: Boolean/ If of the value of this property is switched to 
+  <tt/true/ then updates will be apllied automatically. Otherwise is necessary 
+  to call <tt/Commit/ and <tt/Rollback/ manually.
+<tag/Connected: Boolean/ Indicates whether or not a database transaction is established
+<tag/Database: TZMySQLDatabase/ Specifies a database component for transaction control
+<tag/Options: TZTransactOptions/ The set of options:
+<itemize>
+  <item><tt/toHourGlass/ - Determines to display a sand clock while transactions is processing
+</itemize>
+</descrip>
+
+<sect2> TZMySQLTransact methods<label id="MySQLTramet">
+
+<p>
+<descrip>
+<tag/procedure Connect/ Establishes a transaction for the specified database
+<tag/procedure Disconnect/ Closes a transaction for the specified database
+<tag/procedure Commit/ Permanently stores updates, insertions, and deletions and clears buffer of transactions
+<tag/procedure RollBack/ Cancels all updates, insertions, and deletions for the transaction
+<tag/procedure DoApplyUpdates/ Posts pending cached updates
+</descrip>
+
+<sect2> TZMySQLTransact events<label id="MySQLTraevents">
+
+<p>
+<descrip>
+<tag/procedure OnApplyUpdates(Sender: TObject)/ Occurs when an application 
+  applies all changes from the transaction buffer
+<tag/procedure OnCommit(Sender: TObject)/ Occurs when an application calls 
+  <tt/Commit/ method 
+<tag/procedure OnDataChange(Sender: TObject)/ Occurs when contents of the 
+  database is changed
+<tag/procedure OnRollBack(Sender: TObject)/ Occurs when an apllication calls 
+  Rollback method
+</descrip>
+
+
+
+<sect1> TZMySQLMonitor
+<p>
+Component for the tracing of an outgoing queries. It have the one event, 
+which occurs when any SQL queries is processed by MySQL server. It returns
+the outgoing query and its result.
+<p>
+Hierarchy: TObject->TPersistent->TComponent->TZMonitor->TZMySQLMonitor
+
+<sect2> TZMySQLMonitor events
+
+<p>
+<descrip>
+<tag/procedure OnMonitorEvent(Sql, Result: String)/ Event occurs when MySQL 
+  server have processed the query. The returning values:
+<itemize>
+  <item><tt/Sql/ - text of the outgoing query 
+  <item><tt/Result/ - the result, which includes errors and time of processing.
+</itemize>
+</descrip>
+
+
+<sect1> TZMySQLQuery
+<p>
+<ref id="MySQLQueprop" name="Properties"> | <ref id="MySQLQuemet" name="Methods"> | <ref id="MySQLQueevents" name="Events">
+<p>
+Component for perfoming SQL queries to MySQL server.
+It's used for sending SQL statements to MySQL server.
+The results of processing is available to use with the standart TDataSource.
+The records can be added, deleted or changed.
+<p>
+Hierarchy: TObject->TPersistenet->TComponent->TDataSet->TZDataSet->
+TZCustomMySQLDataSet->TZMySQLQuery
+
+<sect2>TZMySQLQuery properties<label id="MySQLQueprop">
+
+<p>
+<descrip>
+<tag/Active: Boolean/ Indicates the query is opened. When the value is 
+switched to <tt/True/, query will be opened. For query like 'SELECT' and 'SHOW' only.
+When you
+<tag/AutoCalcFields: Boolean/ Determines when the OnCalcFields event is triggered.
+<tag/CachedUpdates: Boolean/ Specifies whether cached updates are enabled
+<tag/DataBase: TZMySQLDatabase/ Specifies the MySQL database component
+<tag/DataSource: TDataSource/ Identifies DataSource for access
+<tag/ExtraOptions: TMySQLOptions/ The set of the special options:
+<itemize>
+  <item><tt/moStoreResult/ - Specifies the method for using the query.
+    If value is switched to <tt/True/(default), then the result of the query
+    completely transmitts to a client and the connection to database is free 
+    for other queries.    Otherwise, the connection to the database is blocked 
+    till end of processing of the query.    In this case less memory is needed.
+  <item><tt/moUseGen/ - determines using of generators
+</itemize>
+<tag/Filter: ShortString/ Specifies the text of the current filter for a dataset.
+<tag/Filtered: Boolean/ Specifies whether filtering is active for a dataset.
+<tag/FilterOptions: TFilterOptions/ Specifies filters is:
+<itemize>
+  <item><tt/foCaseInsensitive/ - Whether filtering is case insensitive
+  <item><tt/foNoPartialCompare/ - Whether or not partial comparisons are permitted when filtering records
+</itemize>
+<tag/LinkFields: String/ Sets Master-Detail links: 'master field'='detail field'. This relationships can be setted by the Wizard of links.
+<tag/LinkOptions: TZLinkOptions/ The set of options for links
+<itemize>
+  <item><tt/loLinkRequery/ - Specifies OnClient or OnServer filtering of records for linking
+  <item><tt/loCascadeUpdate/ - Determines cascade renovation of data
+  <item><tt/loCascadeDelete/ - Determines cascade removing
+  <item><tt/loAlwaysResync/ - Specifies resynchronization of linked records even in Edit mode
+</itemize>
+<tag/MasterSource: TDataSource/ Specifies the name of the data source for a dataset to use as a master in establishing a master-detail relationship
+<tag/Options: TZDatasetOptions/ Extended options:
+<itemize>
+  <item><tt/doParamAsIs/ - Determines processing parameters without quoted marks conclusion primary representation
+  <item><tt/doHourGlass/ - Determines whether or not to display a sand clock while query is processing
+  <item><tt/doQueryAllRecords/ - Specifies partial getting of the result
+  <item><tt/doCheckNulls/ - Determines check nulls values
+  <item><tt/doCalcDefault/ - Determines calculation of field's values by the TParser component
+</itemize>
+<tag/ParamCount: Word/ Indicates the current number of parameters for the query
+<tag/Params: Params/ Contains the parameters for a query's SQL statement
+<tag/ParamCheck: Boolean/ Specifies whether or not the Params property is setted
+<tag/RequestLive: Boolean/ Specifies whether an application expects to receive a live result set from the MySQL database when the query executes
+<tag/RecordCount: LongInt/ Indicates the total number of records associated with the dataset
+<tag/ShowRecordTypes/ Specifies the type of records visible in a dataset when cached updates are enabled
+<itemize>
+  <item><tt/rtModified/ - Modified records are visible
+  <item><tt/rtInserted/ - Inserted records are visible
+  <item><tt/rtDeleted/  - Deleted records are visible
+  <item><tt/rtUnmodified/ - Unmodified records are visible
+</itemize>
+<tag/Sql: TStrings/ Contains the text of the SQL statement to execute for the query
+<tag/Transaction: TZMySQLTransact/ Identifies the transaction under which the query executes
+<tag/UpdateObject: TZUpdateSQL/ Specifies the update object component used to update a read-only result set when cached updates are enabled.
+</descrip>
+
+<sect2> TZMySQLQuery methods<label id="MySQLQuemet">
+
+<p>
+<descrip>
+<tag/procedure ExecSql/ Executes the SQL statement for the query. Use ExecSQL to execute queries that do not return a cursor to data (such as INSERT, UPDATE, DELETE, and CREATE TABLE).
+<tag/function  RowsAffected: LongInt/ Returns the number of rows operated upon by the latest ExecSql execution.
+<tag/procedure SortInverse/ Inverts rules for sorting of the records
+<tag/procedure SortClear/ Removes rules for sorting of the records
+<tag/procedure SortByField(FieldName: string)/ Sorts all record by field ascending
+<tag/procedure SortDescByField(FieldName: string)/ Sorts all record by field descanding
+<tag/function Locate(const KeyFields: string; const KeyValues: Variant;
+  Options: TLocateOptions): Boolean/ Searches the dataset for a specified record and makes that record the current record. Options is a set that optionally specifies additional search latitude when searching on string fields.
+<itemize>
+  <item><tt/loCaseInsensitive/ - Key fields and key values are matched without regard to case
+  <item><tt/loPartialKey/ - Key values can include only part of the matching key field value
+</itemize>
+  Returns <tt/True/ if it finds a matching record.
+<tag/function  Lookup(const KeyFields: string; const KeyValues: Variant;
+   const ResultFields: string): Variant/ Retrieves field values from a record that matches specified search values, like <tt/Locate/.
+<tag/function  IsSequenced: Boolean/ Determine whether database records can be located by sequence numbers
+<tag/procedure ApplyUpdates/ Writes a dataset's pending cached updates to the database
+<tag/procedure CommitUpdates/ Clears the cached updates buffer.
+<tag/procedure CancelUpdates/ Clears all pending cached updates from the cache and restores the dataset its prior state.
+<tag/procedure RevertRecord/ Restores the current record in the dataset to an unmodified state when cached updates are enabled.
+<tag/function  ParamByName(const Value: string): TParam/ Accesses parameter information based on a specified parameter name.
+<tag/function  CreateBlobStream(Field: TField; Mode: TBlobStreamMode): TStream/ Provides the interface for a method that creates a blob stream for a Binary large object (BLOB) field in the dataset.
+<itemize>
+  <item><tt/bmRead/ - The stream is used to read from a BLOB field.
+  <item><tt/bmWrite/ - The stream is used to write to a BLOB field.
+  <item><tt/bwReadWrite/ - The stream is used to modify a BLOB field's value.
+</itemize>
+<tag/procedure SaveToStream(Stream: TStream)/ Saves the contents of a Dataset to a stream.
+<tag/procedure LoadFromStream(Stream: TStream)/ Loads a stream into the Dataset.
+<tag/procedure SaveToFile(FileName: string)/ Saves a dataset's data to an external file.
+<tag/procedure LoadFromFile(FileName: string)/ Loads a dataset's data from a file.
+</descrip>
+
+<sect2> TZMySQLQuery events<label id="MySQLQueevents">
+
+<p>
+<descrip>
+<tag/procedure OnAfterCancel(DataSet: TDataSet)/ Occurs after an application completes a request to cancel modifications to the current record.
+<tag/procedure OnAfterClose(DataSet: TDataSet)/ Occurs after an application closes a dataset.
+<tag/procedure OnAfterDelete(DataSet: TDataSet)/ Occurs after an application deletes a record.
+<tag/procedure OnAfterEdit(DataSet: TDataSet)/ Occurs after an application deletes a record.
+<tag/procedure OnAfterInsert(DataSet: TDataSet)/ Occurs after an application inserts a new record.
+<tag/procedure OnAfterOpen(DataSet: TDataSet)/ Occurs after an application completes opening a dataset and before any data access occurs.
+<tag/procedure OnAfterPost(DataSet: TDataSet)/ Occurs after an application writes the current record to the database or cache and before the dataset is returned to browse state.
+<tag/procedure OnAfterScroll(DataSet: TDataSet)/ Occurs after an application scrolls from one record to another.
+<tag/procedure OnBeforeCancel(DataSet: TDataSet)/ Occurs before an application executes a request to cancel changes to the current record.
+<tag/procedure OnBeforeClose(DataSet: TDataSet)/ Occurs before an application executes a request to close the dataset.
+<tag/procedure OnBeforeDelete(DataSet: TDataSet)/ Occurs before an application attempts to delete the current record.
+<tag/procedure OnBeforeEdit(DataSet: TDataSet)/ Occurs before an application enters edit mode for the current record.
+<tag/procedure OnBeforeInsert(DataSet: TDataSet)/ Occurs before an application enters insert mode.
+<tag/procedure OnBeforeOpen(DataSet: TDataSet)/ Occurs before an application executes a request to open a dataset.
+<tag/procedure OnBeforePost(DataSet: TDataSet)/ Occurs before an application posts changes for the current record to the database or cache.
+<tag/procedure OnBeforeScroll(DataSet: TDataSet)/ Occurs before an application scrolls from one record to another.
+<tag/procedure OnApplyUpdateError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs if an exception is generated when cached updates are applied to a database.
+<tag/procedure OnCalcFields(DataSet: TDataSet)/ Occurs when an application recalculates Oncalculated fields.
+<tag/procedure OnDeleteError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs when an application attempts to delete a record and an exception is raised.
+<tag/procedure OnEditError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs when an application attempts to modify or insert a record and an exception is raised.
+<tag/procedure OnFilterRecord(DataSet: TDataSet;var Accept: Boolean)/ Occurs each time a different record in the dataset becomes the current record and filtering is enabled.
+<tag/procedure OnNewRecord(DataSet: TDataSet)/ Occurs when an application inserts or appends a new dataset record.
+<tag/procedure OnPostError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs when an application attempts to modify or insert a record and an exception is raised.
+<tag/procedure OnUpdateRecord(DataSet: TDataSet; UpdateKind: TUpdateKind; var UpdateAction: TUpdateAction)/ Occurs if an exception is generated when cached updates are applied to a database.
+</descrip>
+
+<sect1>TZMySQLTable
+
+<p>
+Component for processing the results of the query to MySQL server in 
+the manner of table.
+<p>
+Hierarchy: TObject->TPersistenet->TComponent->TDataSet->TZDataSet->
+TZCustomMySQLDataSet->TZMySQLTable
+<p>
+Hasn't any principle differences from TZMySQLQuery, but the following exclusions:
+<itemize>
+  <item> Properties <tt/Params/, <tt/ParamCheck/, <tt/ParamCount/ are removed
+  <item> Property <tt/DataSource/ is removed
+  <item> Instead of the property SQL is added property TableName, which indicates the name of table for the query. Practically at the opening of table, occurs the transmission of request to the following SQL statement: <tt/"SELECT * FROM TableName"/
+  <item> Instead of the properties <tt/RequestLive/ is added the similar property <tt/ReadOnly/, which changes the permit for editing contents of the table.
+</itemize>
+
+
+<sect> Visual components for pure access to PostgreSql
+
+<sect1> TZPgSQLDatabase
+
+<p>
+<ref id="PgSQLDatprop" name="Properties"> | <ref id="PgSQLDatmet" name="Methods"> | <ref id="PgSQLDatevents" name="Events">
+<p>
+Component for connections to the PostgreSQL database server.
+Provides discrete control over a connection to a single database.
+The dynamic linked library <tt/libpg.dll/ is necessary.
+<p>
+Hierarchy: TObject->TPersistent->TComponent->TZDatabase->TZPgSQLDatabase
+
+<sect2> TZPgSQLDatabase properties<label id="PgSQLDatprop">
+
+<p>
+<descrip>
+<tag/Handle: TDirConnect/ Specifies the PostgreSQL database handle
+<tag/Host: ShortString/ PostgreSQL database server host name
+<tag/Database: ShortString/ Specifies the name of the database to associate with this database component
+<tag/Login: ShortString/ User name for login to the database
+<tag/Password: ShortString/ User password for login to the database
+<tag/LoginPromt: Boolean/ Specifies whether a login dialog appears immediately before opening a new connection
+<tag/Port: ShortString/ Specifies the port number for the associated MySQL database server
+<tag/Connected: Boolean/ Indicates whether or not a database connection is active. 
+Set Connected to True to establish a database connection without opening a dataset.
+Set Connected to False to close a database connection.
+<tag/Encoding: TEncodingType/ Specifies what type of encoding will use
+ to encode fields values. The following table lists all possible values of this property:
+<itemize>
+  <item> etNone
+  <item> et866
+  <item> etCp1251
+  <item> etISO88592
+  <item> etKOI8r
+</itemize>
+If you didn't find encoding type which is used in your country, you can add it in
+<tt/ZConvert.pas/ or ask for help to the author <htmlurl url="mailto:voland@kita.dgtu.donetsk.ua" name="voland@kita.dgtu.donetsk.ua">.
+</descrip>
+
+<sect2> TZPgSQLDatabase methods<label id="PgSQLDatmet">
+<p>
+<descrip>
+<tag/procedure Connect()/ Establishes a database connection without opening a dataset
+<tag/procedure Disconnect()/ Closes a database connection
+</descrip>
+
+<sect2> TZPgSQLDatabase events<label id="PgSQLDatevents">
+
+<p>
+<descrip>
+<tag/procedure OnAfterConnect(Sender: TObject)/ Occurs after a connection is established
+<tag/procedure OnAfterDisconnect(Sender: TObject)/ Occurs after the connection closes
+<tag/procedure OnBeforeConnect(Sender: TObject)/ Occurs immediately before establishing a connection
+<tag/procedure OnBeforeDisconnect(Sender: TObject)/ Occurs immediately before the connection closes
+</descrip>
+
+<sect1> TZPgSQLTransact
+<p>
+<ref id="PgSQLTraprop" name="Properties"> | <ref id="PgSQLTramet" name="Methods"> | <ref id="PgSQLTraevents" name="Events">
+<p>
+Provides transaction control over the PostgreSQL database connection
+<p>
+Hierarchy: TObject->TPersistent->TComponent->TZTransact->TZPgSQLTransact
+
+<sect2> TZPgSQLTransact properties<label id="PgSQLTraprop">
+
+<p>
+<descrip>
+<tag/AutoCommit: Boolean/ If of the value of this property is switched to 
+  <tt/true/ then updates will be apllied automatically. Otherwise is necessary 
+  to call <tt/Commit/ and <tt/Rollback/ manually.
+<tag/AutoRecovery: Boolean/ Indicates re-open of the transaction if error occur.
+<tag/Connected: Boolean/ Indicates whether or not a database transaction is established
+<tag/Database: TZPgSQLDatabase/ Specifies a database component for transaction control
+<tag/Options: TZTransactOptions/ The set of options:
+<itemize>
+  <item><tt/toHourGlass/ - Determines to display a sand clock while transactions is processing
+</itemize>
+</descrip>
+
+<sect2> TZPgSQLTransact methods<label id="PgSQLTramet">
+
+<p>
+<descrip>
+<tag/procedure Connect/ Establishes a transaction for the specified database
+<tag/procedure Disconnect/ Closes a transaction for the specified database
+<tag/procedure Commit/ Permanently stores updates, insertions, and deletions and clears buffer of transactions
+<tag/procedure RollBack/ Cancels all updates, insertions, and deletions for the transaction
+<tag/procedure DoApplyUpdates/ Posts pending cached updates
+</descrip>
+
+<sect2> TZPgSQLTransact events<label id="PgSQLTraevents">
+
+<p>
+<descrip>
+<tag/procedure OnApplyUpdates(Sender: TObject)/ Occurs when an application 
+  applies all changes from the transaction buffer
+<tag/procedure OnCommit(Sender: TObject)/ Occurs when an application calls 
+  <tt/Commit/ method 
+<tag/procedure OnDataChange(Sender: TObject)/ Occurs when contents of the 
+  database is changed
+<tag/procedure OnRollBack(Sender: TObject)/ Occurs when an apllication calls 
+  Rollback method
+</descrip>
+
+
+
+<sect1> TZPgSQLMonitor
+<p>
+Component for the tracing of an outgoing queries. It have the one event, 
+which occurs when any SQL queries is processed by PostgreSQL server. It returns
+the outgoing query and its result.
+<p>
+Hierarchy: TObject->TPersistent->TComponent->TZMonitor->TZPgSQLMonitor
+
+<sect2> TZPgSQLMonitor events
+
+<p>
+<descrip>
+<tag/procedure OnMonitorEvent(Sql, Result: String)/ Event occurs when PostgreSQL 
+  server have processed the query.
+ The returning values:
+<itemize>
+  <item><tt/Sql/ - text of the outgoing query 
+  <item><tt/Result/ - the result, which includes errors and time of processing.
+</itemize>
+</descrip>
+
+
+<sect1> TZPgSQLQuery
+<p>
+<ref id="PgSQLQueprop" name="Properties"> | <ref id="PgSQLQuemet" name="Methods"> | <ref id="PgSQLQueevents" name="Events">
+<p>
+Component for perfoming SQL queries to PostgreSQL server.
+It's used for sending SQL statements to PostgreSQL server.
+The results of processing is available to use with the standart TDataSource.
+The records can be added, deleted or changed.
+<p>
+Hierarchy: TObject->TPersistenet->TComponent->TDataSet->TZDataSet->
+TZCustomMySQLDataSet->TZPgSQLQuery
+
+<sect2>TZPgSQLQuery properties<label id="PgSQLQueprop">
+
+<p>
+<descrip>
+<tag/Active: Boolean/ Indicates the query is opened. When the value is 
+switched to <tt/True/, query will be opened. For query like 'SELECT' and 'SHOW' only.
+When you
+<tag/AutoCalcFields: Boolean/ Determines when the OnCalcFields event is triggered.
+<tag/CachedUpdates: Boolean/ Specifies whether cached updates are enabled
+<tag/DataBase: TZPgSQLDatabase/ Specifies the PostgreSQL database component
+<tag/DataSource: TDataSource/ Identifies DataSource for access
+<tag/ExtraOptions: TMySQLOptions/ The set of the special options:
+<itemize>
+  <item><tt/poTextAsMemo/ - Specifies field of type TEXT will be 
+    represented as
+ MEMO field, otherwise as string with length 255 symbols.
+  <item><tt/poOisAsBlob/ - Specifies field of type OID will be considered 
+    as containing pointers on LargeObjects and represented as Blob field,
+    otherwise as Integer
+</itemize>
+<tag/Filter: ShortString/ Specifies the text of the current filter for a dataset.
+<tag/Filtered: Boolean/ Specifies whether filtering is active for a dataset.
+<tag/FilterOptions: TFilterOptions/ Specifies filters is:
+<itemize>
+  <item><tt/foCaseInsensitive/ - Whether filtering is case insensitive
+  <item><tt/foNoPartialCompare/ - Whether or not partial comparisons are permitted when filtering records
+</itemize>
+<tag/LinkFields: String/ Sets Master-Detail links: 'master field'='detail field'. This relationships can be setted by the Wizard of links.
+<tag/LinkOptions: TZLinkOptions/ The set of options for links
+<itemize>
+  <item><tt/loLinkRequery/ - Specifies OnClient or OnServer filtering of records for linking
+  <item><tt/loCascadeUpdate/ - Determines cascade renovation of data
+  <item><tt/loCascadeDelete/ - Determines cascade removing
+  <item><tt/loAlwaysResync/ - Specifies resynchronization of linked records even in Edit mode
+</itemize>
+<tag/MasterSource: TDataSource/ Specifies the name of the data source for a dataset to use as a master in establishing a master-detail relationship
+<tag/Options: TZDatasetOptions/ Extended options:
+<itemize>
+  <item><tt/doParamAsIs/ - Determines processing parameters without quoted marks conclusion primary representation
+  <item><tt/doHourGlass/ - Determines whether or not to display a sand clock while query is processing
+  <item><tt/doQueryAllRecords/ - Specifies partial getting of the result
+  <item><tt/doCheckNulls/ - Determines check nulls values
+  <item><tt/doCalcDefault/ - Determines calculation of field's values by the TParser component
+</itemize>
+<tag/ParamCount: Word/ Indicates the current number of parameters for the query
+<tag/Params: Params/ Contains the parameters for a query's SQL statement
+<tag/ParamCheck: Boolean/ Specifies whether or not the Params property is setted
+<tag/RequestLive: Boolean/ Specifies whether an application expects to receive a live result set from the PostgreSQL database when the query executes
+<tag/RecordCount: LongInt/ Indicates the total number of records associated with the dataset
+<tag/ShowRecordTypes/ Specifies the type of records visible in a dataset when cached updates are enabled
+<itemize>
+  <item><tt/rtModified/ - Modified records are visible
+  <item><tt/rtInserted/ - Inserted records are visible
+  <item><tt/rtDeleted/  - Deleted records are visible
+  <item><tt/rtUnmodified/ - Unmodified records are visible
+</itemize>
+<tag/Sql: TStrings/ Contains the text of the SQL statement to execute for the query
+<tag/Transaction: TZPgSQLTransact/ Identifies the transaction under which the query executes
+<tag/UpdateObject: TZUpdateSQL/ Specifies the update object component used to update a read-only result set when cached updates are enabled.
+</descrip>
+
+<sect2> TZPgSQLQuery methods<label id="PgSQLQuemet">
+
+<p>
+<descrip>
+<tag/procedure ExecSql/ Executes the SQL statement for the query. Use ExecSQL to execute queries that do not return a cursor to data (such as INSERT, UPDATE, DELETE, and CREATE TABLE).
+<tag/function  RowsAffected: LongInt/ Returns the number of rows operated upon by the latest ExecSql execution.
+<tag/procedure SortInverse/ Inverts rules for sorting of the records
+<tag/procedure SortClear/ Removes rules for sorting of the records
+<tag/procedure SortByField(FieldName: string)/ Sorts all record by field ascending
+<tag/procedure SortDescByField(FieldName: string)/ Sorts all record by field descanding
+<tag/function Locate(const KeyFields: string; const KeyValues: Variant;
+  Options: TLocateOptions): Boolean/ Searches the dataset for a specified record and makes that record the current record. Options is a set that optionally specifies additional search latitude when searching on string fields.
+<itemize>
+  <item><tt/loCaseInsensitive/ - Key fields and key values are matched without regard to case
+  <item><tt/loPartialKey/ - Key values can include only part of the matching key field value
+</itemize>
+  Returns <tt/True/ if it finds a matching record.
+<tag/function  Lookup(const KeyFields: string; const KeyValues: Variant;
+   const ResultFields: string): Variant/ Retrieves field values from a record that matches specified search values, like <tt/Locate/.
+<tag/function  IsSequenced: Boolean/ Determine whether database records can be located by sequence numbers
+<tag/procedure ApplyUpdates/ Writes a dataset's pending cached updates to the database
+<tag/procedure CommitUpdates/ Clears the cached updates buffer.
+<tag/procedure CancelUpdates/ Clears all pending cached updates from the cache and restores the dataset its prior state.
+<tag/procedure RevertRecord/ Restores the current record in the dataset to an unmodified state when cached updates are enabled.
+<tag/function  ParamByName(const Value: string): TParam/ Accesses parameter information based on a specified parameter name.
+<tag/function  CreateBlobStream(Field: TField; Mode: TBlobStreamMode): TStream/ Provides the interface for a method that creates a blob stream for a Binary large object (BLOB) field in the dataset.
+<itemize>
+  <item><tt/bmRead/ - The stream is used to read from a BLOB field.
+  <item><tt/bmWrite/ - The stream is used to write to a BLOB field.
+  <item><tt/bwReadWrite/ - The stream is used to modify a BLOB field's value.
+</itemize>
+<tag/procedure SaveToStream(Stream: TStream)/ Saves the contents of a Dataset to a stream.
+<tag/procedure LoadFromStream(Stream: TStream)/ Loads a stream into the Dataset.
+<tag/procedure SaveToFile(FileName: string)/ Saves a dataset's data to an external file.
+<tag/procedure LoadFromFile(FileName: string)/ Loads a dataset's data from a file.
+</descrip>
+
+<sect2> TZPgSQLQuery events<label id="PgSQLQueevents">
+
+<p>
+<descrip>
+<tag/procedure OnAfterCancel(DataSet: TDataSet)/ Occurs after an application completes a request to cancel modifications to the current record.
+<tag/procedure OnAfterClose(DataSet: TDataSet)/ Occurs after an application closes a dataset.
+<tag/procedure OnAfterDelete(DataSet: TDataSet)/ Occurs after an application deletes a record.
+<tag/procedure OnAfterEdit(DataSet: TDataSet)/ Occurs after an application deletes a record.
+<tag/procedure OnAfterInsert(DataSet: TDataSet)/ Occurs after an application inserts a new record.
+<tag/procedure OnAfterOpen(DataSet: TDataSet)/ Occurs after an application completes opening a dataset and before any data access occurs.
+<tag/procedure OnAfterPost(DataSet: TDataSet)/ Occurs after an application writes the current record to the database or cache and before the dataset is returned to browse state.
+<tag/procedure OnAfterScroll(DataSet: TDataSet)/ Occurs after an application scrolls from one record to another.
+<tag/procedure OnBeforeCancel(DataSet: TDataSet)/ Occurs before an application executes a request to cancel changes to the current record.
+<tag/procedure OnBeforeClose(DataSet: TDataSet)/ Occurs before an application executes a request to close the dataset.
+<tag/procedure OnBeforeDelete(DataSet: TDataSet)/ Occurs before an application attempts to delete the current record.
+<tag/procedure OnBeforeEdit(DataSet: TDataSet)/ Occurs before an application enters edit mode for the current record.
+<tag/procedure OnBeforeInsert(DataSet: TDataSet)/ Occurs before an application enters insert mode.
+<tag/procedure OnBeforeOpen(DataSet: TDataSet)/ Occurs before an application executes a request to open a dataset.
+<tag/procedure OnBeforePost(DataSet: TDataSet)/ Occurs before an application posts changes for the current record to the database or cache.
+<tag/procedure OnBeforeScroll(DataSet: TDataSet)/ Occurs before an application scrolls from one record to another.
+<tag/procedure OnApplyUpdateError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs if an exception is generated when cached updates are applied to a database.
+<tag/procedure OnCalcFields(DataSet: TDataSet)/ Occurs when an application recalculates Oncalculated fields.
+<tag/procedure OnDeleteError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs when an application attempts to delete a record and an exception is raised.
+<tag/procedure OnEditError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs when an application attempts to modify or insert a record and an exception is raised.
+<tag/procedure OnFilterRecord(DataSet: TDataSet;var Accept: Boolean)/ Occurs each time a different record in the dataset becomes the current record and filtering is enabled.
+<tag/procedure OnNewRecord(DataSet: TDataSet)/ Occurs when an application inserts or appends a new dataset record.
+<tag/procedure OnPostError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs when an application attempts to modify or insert a record and an exception is raised.
+<tag/procedure OnUpdateRecord(DataSet: TDataSet; UpdateKind: TUpdateKind; var UpdateAction: TUpdateAction)/ Occurs if an exception is generated when cached updates are applied to a database.
+</descrip>
+
+<sect1>TZPgSQLTable
+
+<p>
+Component for processing the results of the query to PostgreSQL server in 
+the manner of table.
+<p>
+Hierarchy: TObject->TPersistenet->TComponent->TDataSet->TZDataSet->
+TZCustomMySQLDataSet->TZPgSQLTable
+<p>
+Hasn't any principle differences from TZPgSQLQuery, but the following exclusions:
+<itemize>
+  <item> Properties <tt/Params/, <tt/ParamCheck/, <tt/ParamCount/ are removed
+  <item> Property <tt/DataSource/ is removed
+  <item> Instead of the property SQL is added property TableName, which indicates the name of table for the query. Practically at the opening of table, occurs the transmission of request to the following SQL statement: <tt/"SELECT * FROM TableName"/
+  <item> Instead of the properties <tt/RequestLive/ is added the similar property <tt/ReadOnly/, which changes the permit for editing contents of the table.
+</itemize>
+
+
+
+<sect> Visual components for pure access to Interbase
+
+<sect1>TZIbSQLDatabase
+<p>
+<ref id="IbSQLDatprop" name="Properties"> | <ref id="IbSQLDatmet" name="Methods"> | <ref id="IbSQLDatevents" name="Events">
+<p>
+Component for connections to the Interbase SQL database server.
+Provides discrete control over a connection to a single database.
+The dynamic linked library <tt/gds32.dll/ is necessary.
+<p>
+Hierarchy: TObject->TPersistent->TComponent->TZDatabase->TZIbSQLDatabase
+<p>
+
+<sect2>TZIbSQLDatabase properties<label id="IbSQLDatprop">
+<p>
+<descrip>
+<tag/Handle: TDirConnect/ Specifies the Interbase SQL database handle
+<tag/Host: ShortString/ Interbase SQL database server host name
+<tag/Database: ShortString/ Specifies the name of the database to associate with this database component
+<tag/Login: ShortString/ User name for login to the database
+<tag/Password: ShortString/ User password for login to the database
+<tag/LoginPromt: Boolean/ Specifies whether a login dialog appears immediately before opening a new connection
+<tag/Connected: Boolean/ Indicates whether or not a database connection is active. 
+Set Connected to True to establish a database connection without opening a dataset.
+Set Connected to False to close a database connection.
+<tag/SqlDialect: Word/ Determines the version of the SQL dialect.
+ Value 1 
+  corresponds to the versions SQL 4.0, 5.0, 5.5. Value 3 - new SQL syntax 
+  a version 6.0. 
+<tag/Params: TStrings/ Use Params to specify the database parameters to pass to the InterBase server.
+Database parameters are passed to the server as text in order to establish the connection.  For example:
+<itemize>
+<item>sql_role_name=finance
+<item>lc_ctype=WIN1252
+</itemize>
+For other information, refer to the InterBase API Guide.
+
+</descrip>
+
+<sect2> TZIbSQLDatabase methods<label id="IbSQLDatmet">
+
+<p>
+<descrip>
+<tag/procedure Connect()/ Establishes a database connection without opening a dataset
+<tag/procedure Disconnect()/ Closes a database connection
+</descrip>
+
+<sect2> TZIbSQLDatabase events<label id="IbSQLDatevents">
+
+<p>
+<descrip>
+<tag/procedure OnAfterConnect(Sender: TObject)/ Occurs after a connection is established
+<tag/procedure OnAfterDisconnect(Sender: TObject)/ Occurs after the connection closes
+<tag/procedure OnBeforeConnect(Sender: TObject)/ Occurs immediately before establishing a connection
+<tag/procedure OnBeforeDisconnect(Sender: TObject)/ Occurs immediately before the connection closes
+</descrip>
+
+<sect1> TZIbSQLTransact
+<p>
+<ref id="IbSQLTraprop" name="Properties"> | <ref id="IbSQLTramet" name="Methods"> | <ref id="IbSQLTraevents" name="Events">
+<p>
+Provides transaction control over the Interbase SQL database connection
+<p>
+Hierarchy: TObject->TPersistent->TComponent->TZTransact->TZIbSQLTransact
+
+<sect2> TZIbSQLTransact properties<label id="IbSQLTraprop">
+
+<p>
+<descrip>
+<tag/AutoCommit: Boolean/ If of the value of this property is switched to 
+  <tt/true/ then updates will be apllied automatically. Otherwise is necessary 
+  to call <tt/Commit/ and <tt/Rollback/ manually.
+<tag/Connected: Boolean/ Indicates whether or not a database transaction is established
+<tag/Params: TStrings/ Transaction parameter buffer associated with the transaction component. 
+Refer to the Interbase API Guide for the names of the parameters to provide
+<tag/Database: TZIbSQLDatabase/ Specifies a database component for transaction control
+<tag/Options: TZTransactOptions/ The set of options:
+<itemize>
+  <item><tt/toHourGlass/ - Determines to display a sand clock while transactions is processing
+</itemize>
+</descrip>
+
+<sect2> TZIbSQLTransact methods<label id="IbSQLTramet">
+
+<p>
+<descrip>
+<tag/procedure Connect/ Establishes a transaction for the specified database
+<tag/procedure Disconnect/ Closes a transaction for the specified database
+<tag/procedure Commit/ Permanently stores updates, insertions, and deletions and clears buffer of transactions
+<tag/procedure RollBack/ Cancels all updates, insertions, and deletions for the transaction
+<tag/procedure DoApplyUpdates/ Posts pending cached updates
+</descrip>
+
+<sect2> TZIbSQLTransact events<label id="IbSQLTraevents">
+
+<p>
+<descrip>
+<tag/procedure OnApplyUpdates(Sender: TObject)/ Occurs when an application 
+  applies all changes from the transaction buffer
+<tag/procedure OnCommit(Sender: TObject)/ Occurs when an application calls 
+  <tt/Commit/ method 
+<tag/procedure OnDataChange(Sender: TObject)/ Occurs when contents of the 
+  database is changed
+<tag/procedure OnRollBack(Sender: TObject)/ Occurs when an apllication calls 
+  Rollback method
+</descrip>
+
+
+
+<sect1> TZIbSQLMonitor
+<p>
+Component for the tracing of an outgoing queries. It have the one event, 
+which occurs when any SQL queries is processed by Interbase SQL server. It returns
+the outgoing query and its result.
+<p>
+Hierarchy: TObject->TPersistent->TComponent->TZMonitor->TZIbSQLMonitor
+
+<sect2> TZIbSQLMonitor events
+
+<p>
+<descrip>
+<tag/procedure OnMonitorEvent(Sql, Result: String)/ Event occurs when Interbase SQL 
+  server have processed the query.
+ The returning values:
+<itemize>
+  <item><tt/Sql/ - text of the outgoing query 
+  <item><tt/Result/ - the result, which includes errors and time of processing.
+</itemize>
+</descrip>
+
+
+<sect1> TZIbSQLQuery
+<p>
+<ref id="IbSQLQueprop" name="Properties"> | <ref id="IbSQLQuemet" name="Methods"> | <ref id="IbSQLQueevents" name="Events">
+<p>
+Component for perfoming SQL queries to Interbase SQL server.
+It's used for sending SQL statements to Interbase SQL server.
+The results of processing is available to use with the standart TDataSource.
+The records can be added, deleted or changed.
+<p>
+Hierarchy: TObject->TPersistenet->TComponent->TDataSet->TZDataSet->
+TZCustomMySQLDataSet->TZIbSQLQuery
+
+<sect2>TZIbSQLQuery properties<label id="IbSQLQueprop">
+
+<p>
+<descrip>
+<tag/Active: Boolean/ Indicates the query is opened. When the value is 
+switched to <tt/True/, query will be opened. For query like 'SELECT' and 'SHOW' only.
+When you
+<tag/AutoCalcFields: Boolean/ Determines when the OnCalcFields event is triggered.
+<tag/CachedUpdates: Boolean/ Specifies whether cached updates are enabled
+<tag/DataBase: TZIbSQLDatabase/ Specifies the Interbase SQL database component
+<tag/DataSource: TDataSource/ Identifies DataSource for access
+<tag/Filter: ShortString/ Specifies the text of the current filter for a dataset.
+<tag/Filtered: Boolean/ Specifies whether filtering is active for a dataset.
+<tag/FilterOptions: TFilterOptions/ Specifies filters is:
+<itemize>
+  <item><tt/foCaseInsensitive/ - Whether filtering is case insensitive
+  <item><tt/foNoPartialCompare/ - Whether or not partial comparisons are permitted when filtering records
+</itemize>
+<tag/LinkFields: String/ Sets Master-Detail links: 'master field'='detail field'. This relationships can be setted by the Wizard of links.
+<tag/LinkOptions: TZLinkOptions/ The set of options for links
+<itemize>
+  <item><tt/loLinkRequery/ - Specifies OnClient or OnServer filtering of records for linking
+  <item><tt/loCascadeUpdate/ - Determines cascade renovation of data
+  <item><tt/loCascadeDelete/ - Determines cascade removing
+  <item><tt/loAlwaysResync/ - Specifies resynchronization of linked records even in Edit mode
+</itemize>
+<tag/MasterSource: TDataSource/ Specifies the name of the data source for a dataset to use as a master in establishing a master-detail relationship
+<tag/Options: TZDatasetOptions/ Extended options:
+<itemize>
+  <item><tt/doParamAsIs/ - Determines processing parameters without quoted marks conclusion primary representation
+  <item><tt/doHourGlass/ - Determines whether or not to display a sand clock while query is processing
+  <item><tt/doQueryAllRecords/ - Specifies partial getting of the result
+  <item><tt/doCheckNulls/ - Determines check nulls values
+  <item><tt/doCalcDefault/ - Determines calculation of field's values by the TParser component
+</itemize>
+<tag/ParamCount: Word/ Indicates the current number of parameters for the query
+<tag/Params: Params/ Contains the parameters for a query's SQL statement
+<tag/ParamCheck: Boolean/ Specifies whether or not the Params property is setted
+<tag/RequestLive: Boolean/ Specifies whether an application expects to receive a live result set from the Interbase SQL database when the query executes
+<tag/RecordCount: LongInt/ Indicates the total number of records associated with the dataset
+<tag/ShowRecordTypes/ Specifies the type of records visible in a dataset when cached updates are enabled
+<itemize>
+  <item><tt/rtModified/ - Modified records are visible
+  <item><tt/rtInserted/ - Inserted records are visible
+  <item><tt/rtDeleted/  - Deleted records are visible
+  <item><tt/rtUnmodified/ - Unmodified records are visible
+</itemize>
+<tag/Sql: TStrings/ Contains the text of the SQL statement to execute for the query
+<tag/Transaction: TZIbSQLTransact/ Identifies the transaction under which the query executes
+<tag/UpdateObject: TZUpdateSQL/ Specifies the update object component used to update a read-only result set when cached updates are enabled.
+</descrip>
+
+<sect2> TZIbSQLQuery methods<label id="IbSQLQuemet">
+
+<p>
+<descrip>
+<tag/procedure ExecSql/ Executes the SQL statement for the query. Use ExecSQL to execute queries that do not return a cursor to data (such as INSERT, UPDATE, DELETE, and CREATE TABLE).
+<tag/function  RowsAffected: LongInt/ Returns the number of rows operated upon by the latest ExecSql execution.
+<tag/procedure SortInverse/ Inverts rules for sorting of the records
+<tag/procedure SortClear/ Removes rules for sorting of the records
+<tag/procedure SortByField(FieldName: string)/ Sorts all record by field ascending
+<tag/procedure SortDescByField(FieldName: string)/ Sorts all record by field descanding
+<tag/function Locate(const KeyFields: string; const KeyValues: Variant;
+  Options: TLocateOptions): Boolean/ Searches the dataset for a specified record and makes that record the current record. Options is a set that optionally specifies additional search latitude when searching on string fields.
+<itemize>
+  <item><tt/loCaseInsensitive/ - Key fields and key values are matched without regard to case
+  <item><tt/loPartialKey/ - Key values can include only part of the matching key field value
+</itemize>
+  Returns <tt/True/ if it finds a matching record.
+<tag/function  Lookup(const KeyFields: string; const KeyValues: Variant;
+   const ResultFields: string): Variant/ Retrieves field values from a record that matches specified search values, like <tt/Locate/.
+<tag/function  IsSequenced: Boolean/ Determine whether database records can be located by sequence numbers
+<tag/procedure ApplyUpdates/ Writes a dataset's pending cached updates to the database
+<tag/procedure CommitUpdates/ Clears the cached updates buffer.
+<tag/procedure CancelUpdates/ Clears all pending cached updates from the cache and restores the dataset its prior state.
+<tag/procedure RevertRecord/ Restores the current record in the dataset to an unmodified state when cached updates are enabled.
+<tag/function  ParamByName(const Value: string): TParam/ Accesses parameter information based on a specified parameter name.
+<tag/function  CreateBlobStream(Field: TField; Mode: TBlobStreamMode): TStream/ Provides the interface for a method that creates a blob stream for a Binary large object (BLOB) field in the dataset.
+<itemize>
+  <item><tt/bmRead/ - The stream is used to read from a BLOB field.
+  <item><tt/bmWrite/ - The stream is used to write to a BLOB field.
+  <item><tt/bwReadWrite/ - The stream is used to modify a BLOB field's value.
+</itemize>
+<tag/procedure SaveToStream(Stream: TStream)/ Saves the contents of a Dataset to a stream.
+<tag/procedure LoadFromStream(Stream: TStream)/ Loads a stream into the Dataset.
+<tag/procedure SaveToFile(FileName: string)/ Saves a dataset's data to an external file.
+<tag/procedure LoadFromFile(FileName: string)/ Loads a dataset's data from a file.
+</descrip>
+
+<sect2> TZIbSQLQuery events<label id="IbSQLQueevents">
+
+<p>
+<descrip>
+<tag/procedure OnAfterCancel(DataSet: TDataSet)/ Occurs after an application completes a request to cancel modifications to the current record.
+<tag/procedure OnAfterClose(DataSet: TDataSet)/ Occurs after an application closes a dataset.
+<tag/procedure OnAfterDelete(DataSet: TDataSet)/ Occurs after an application deletes a record.
+<tag/procedure OnAfterEdit(DataSet: TDataSet)/ Occurs after an application deletes a record.
+<tag/procedure OnAfterInsert(DataSet: TDataSet)/ Occurs after an application inserts a new record.
+<tag/procedure OnAfterOpen(DataSet: TDataSet)/ Occurs after an application completes opening a dataset and before any data access occurs.
+<tag/procedure OnAfterPost(DataSet: TDataSet)/ Occurs after an application writes the current record to the database or cache and before the dataset is returned to browse state.
+<tag/procedure OnAfterScroll(DataSet: TDataSet)/ Occurs after an application scrolls from one record to another.
+<tag/procedure OnBeforeCancel(DataSet: TDataSet)/ Occurs before an application executes a request to cancel changes to the current record.
+<tag/procedure OnBeforeClose(DataSet: TDataSet)/ Occurs before an application executes a request to close the dataset.
+<tag/procedure OnBeforeDelete(DataSet: TDataSet)/ Occurs before an application attempts to delete the current record.
+<tag/procedure OnBeforeEdit(DataSet: TDataSet)/ Occurs before an application enters edit mode for the current record.
+<tag/procedure OnBeforeInsert(DataSet: TDataSet)/ Occurs before an application enters insert mode.
+<tag/procedure OnBeforeOpen(DataSet: TDataSet)/ Occurs before an application executes a request to open a dataset.
+<tag/procedure OnBeforePost(DataSet: TDataSet)/ Occurs before an application posts changes for the current record to the database or cache.
+<tag/procedure OnBeforeScroll(DataSet: TDataSet)/ Occurs before an application scrolls from one record to another.
+<tag/procedure OnApplyUpdateError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs if an exception is generated when cached updates are applied to a database.
+<tag/procedure OnCalcFields(DataSet: TDataSet)/ Occurs when an application recalculates Oncalculated fields.
+<tag/procedure OnDeleteError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs when an application attempts to delete a record and an exception is raised.
+<tag/procedure OnEditError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs when an application attempts to modify or insert a record and an exception is raised.
+<tag/procedure OnFilterRecord(DataSet: TDataSet;var Accept: Boolean)/ Occurs each time a different record in the dataset becomes the current record and filtering is enabled.
+<tag/procedure OnNewRecord(DataSet: TDataSet)/ Occurs when an application inserts or appends a new dataset record.
+<tag/procedure OnPostError(DataSet: TDataSet; E: EDatabaseError; var Action: TDataAction)/ Occurs when an application attempts to modify or insert a record and an exception is raised.
+<tag/procedure OnUpdateRecord(DataSet: TDataSet; UpdateKind: TUpdateKind; var UpdateAction: TUpdateAction)/ Occurs if an exception is generated when cached updates are applied to a database.
+</descrip>
+
+<sect1>TZIbSQLTable
+
+<p>
+Component for processing the results of the query to Interbase SQL server in 
+the manner of table.
+<p>
+Hierarchy: TObject->TPersistenet->TComponent->TDataSet->TZDataSet->
+TZCustomMySQLDataSet->TZIbSQLTable
+<p>
+Hasn't any principle differences from TZIbSQLQuery, but the following exclusions:
+<itemize>
+  <item> Properties <tt/Params/, <tt/ParamCheck/, <tt/ParamCount/ are removed
+  <item> Property <tt/DataSource/ is removed
+  <item> Instead of the property SQL is added property TableName, which indicates the name of table for the query. Practically at the opening of table, occurs the transmission of request to the following SQL statement: <tt/"SELECT * FROM TableName"/
+  <item> Instead of the properties <tt/RequestLive/ is added the similar property <tt/ReadOnly/, which changes the permit for editing contents of the table.
+</itemize>
+
+<sect>Visual component used to calculate formulas TZParser.
+<p>
+<sect1>TZParser
+<p>
+It support Integer, Float, String datatypes, variables, standart operations and functions: 
+
+<itemize>
+<item>+ - / div mod like
+<item>ABS
+<item>COS
+<item>EXP
+<item>IIF
+<item>LN
+<item>MAX
+<item>MIN
+<item>NOW
+<item>SIN
+<item>SQRT
+<item>SUM
+<item>TAN
+<item>XOR
+</itemize>
+<p>
+<sect2>TZParser properties
+<p>
+<descrip>
+<tag/Equation: String/ Specifies equation for the calculating
+<tag/Variables[Index: string]: Variant/ Specifies variables
+<tag/VarCount: Integer/ Indicates the number of variables
+<tag/VarNames[Index: Integer]: string/ Indicates names of the variables by its Index
+<tag/Functions[Index: string]: TParseFunc/ Specifies user-defined functions
+<tag/FuncCount: Integer/ Indicates the number of functions
+<tag/FuncNames[Index: Integer]: string/ Indicates names of user-defined functions by its Index
+</descrip>
+
+<sect2>TZParser methods
+<p>
+<descrip>
+<tag/function  Evalute: Variant/ Evalutes the formulas specified in the property Equation
+<tag/procedure Push(Value: Variant)/ Saves the Value into the Stack
+<tag/function  Pop: Variant/ Restores  value from the Stack
+</descrip>
+
+
+</article>

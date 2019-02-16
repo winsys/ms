@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>WMRButtonDown Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>WMRButtonDown method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> WMRButtonDown(<B>var</B> <B>Message</B>: TWMRButtonDown);</Font>
+<br>
+<Img Src="images/message.gif"> WM_RBUTTONDOWN<Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.WMRButtonDown(<B>var</B> <B>Message</B>: TWMRButtonDown);
+
+<B>var</B> MousePos : TPoint;
+
+<B>begin</B>
+  <Font Color="#0000DD">// check if we are in selection mode</Font>
+  <B>if</B> FSelectRec.Pending <B>then</B>
+    <B>with</B> FSelectRec <B>do</B>
+    <B>begin</B>
+      <Font Color="#0000DD">// yes we are, so finish it ...</Font>
+      Pending := False;
+      FHitList.Free;
+      <Font Color="#0000DD">// ... and remove the last focus rectangle if there was one</Font>
+      <B>if</B> <B>not</B> IsRectEmpty(Rect) <B>then</B> DrawFocusRect(Rect);
+    <B>end</B>;
+
+  FRClickNode := <B>nil</B>;
+  <B>try</B>
+    <B>if</B> <B>not</B> (toRightClickSelect <B>in</B> FOptions) <B>then</B>
+    <B>begin</B>
+      <B>inherited</B>;
+      <B>if</B> FRClickNode &lt;&gt; <B>nil</B> <B>then</B>
+      <B>begin</B>
+        GetCursorPos(MousePos);
+        <B>with</B> PointToSmallPoint(ScreenToClientEx(MousePos)) <B>do</B> Perform(WM_RBUTTONUP, 0, MakeLong(X, Y));
+      <B>end</B>;
+    <B>end</B>
+    <B>else</B> DefaultHandler(<B>Message</B>);
+  <B>finally</B>
+    FRClickNode := <B>nil</B>;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

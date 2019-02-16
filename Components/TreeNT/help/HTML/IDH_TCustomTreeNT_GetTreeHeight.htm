@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>GetTreeHeight Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>GetTreeHeight method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Function</B> GetTreeHeight: Integer;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>function</B> TCustomTreeNT.GetTreeHeight;
+
+<Font Color="#0000DD">// determines absolute height of the tree canvas</Font>
+
+<B>var</B> ScrollInfo : TScrollInfo;
+    NodeHeight : Integer;
+    Rect       : TRect;
+    
+<B>begin</B>
+  <Font Color="#0000DD">// determine height of a node</Font>
+  <Font Color="#0000DD">// can't rely on property ItemHeight, since it might not be available</Font>
+  <Font Color="#0000DD">// with pre-4.70-versions of ComCtrl32.dll</Font>
+  NodeHeight := ItemHeight;
+  <B>if</B> NodeHeight = 0 <B>then</B>
+  <B>begin</B>
+    Rect := Items.GetFirstNode.DisplayRect(False);
+    NodeHeight := Rect.Bottom - Rect.Top;
+  <B>end</B>
+  <B>else</B>
+    <B>if</B> Items.GetFirstNode.IntegralHeight &gt; 0 <B>then</B> NodeHeight := NodeHeight <B>div</B> Items.GetFirstNode.IntegralHeight;
+
+  <Font Color="#0000DD">// init the scroll info structure</Font>
+  <B>with</B> ScrollInfo <B>do</B>
+  <B>begin</B>
+    FillChar(ScrollInfo, SizeOf(ScrollInfo), 0);
+    cbSize := SizeOf(TScrollInfo);
+    fMask := SIF_ALL;
+  <B>end</B>;
+
+  GetScrollInfo(Handle, SB_VERT, ScrollInfo);
+  <Font Color="#0000DD">// vertical dimension is given in number of items</Font>
+  <B>if</B> ScrollInfo.nPage = 0 <B>then</B> Result := ClientHeight
+                          <B>else</B> Result := (ScrollInfo.nMax + 1) * NodeHeight;
+<B>End</B>;</pre></td></tr></Table>

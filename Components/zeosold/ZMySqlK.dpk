@@ -1,0 +1,45 @@
+package ZMySqlK;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'Zeos MySQL Components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  baseclx,
+  visualclx,
+  designide,
+  dataclx,
+  ZCommonK,
+  ZDbwareK;
+
+contains
+  ZDirMySql in 'dbase/ZDirMySql.pas',
+  ZLibMySql in 'dbase/ZLibMySql.pas',
+  ZMySqlCon in 'dbase/ZMySqlCon.pas',
+  ZMySqlProp in 'dbase/ZMySqlProp.pas',
+  ZMySqlQuery in 'dbase/ZMySqlQuery.pas',
+  ZMySqlReg in 'dbase/ZMySqlReg.pas',
+  ZMySqlTr in 'dbase/ZMySqlTr.pas';
+
+end.

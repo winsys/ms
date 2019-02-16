@@ -1,0 +1,66 @@
+1	1 	Бытие	Genesis
+2	2 	Исход	Exodus
+3	3 	Левит	Leviticus
+4	4 	Числа	Numbers
+5	5 	Второзаконие	Deuteronomy
+6	6 	Иисус Навин	Joshua
+7	7 	Книга Судей	Judges
+8	8 	Руфь	Ruth
+9	9 	1 Царств	1 Samuel
+10	10	2 Царств	2 Samuel
+11	11	3 Царств	1 Kings
+12	12	4 Царств	2 Kings
+13	13	1 Паралипоменон	1 Chronicles
+14	14	2 Паралипоменон	2 Chronicles
+15	15	Ездра	Ezra
+16	16	Неемия	Nehemiah
+17	17	Есфирь	Esther
+18	18	Иов	Job
+19	19	Псалтирь	Psalms
+20	20	Притчи	Proverbs
+21	21	Екклесиаст	Ecclesiastes
+22	22	Песни Песней	Songs Of Solomon
+23	23	Исаия	Isaiah
+24	24	Иеремия	Jeremiah
+25	25	Плач Иеремии	Lamentations
+26	26	Иезекииль	Ezekiel
+27	27	Даниил	Daniel
+28	28	Осия	Hosea
+29	29	Иоиль	Joel
+30	30	Амос	Amos
+31	31	Авдий	Obadiah
+32	32	Иона	Jonah
+33	33	Михей	Micah
+34	34	Наум	Nahum
+35	35	Аввакум	Habakkuk
+36	36	Софония	Zephaniah
+37	37	Аггей	Haggai
+38	38	Захария	Zechariah
+39	39	Малахия	Malachi
+40	40	от Матфея	Matthew
+41	41	от Марка	Mark
+42	42	от Луки	Luke
+43	43	от Иоанна	John
+44	44	Деяния	Acts
+45	59	Иакова	James
+46	60	1 Петра	1 Peter
+47	61	2 Петра	2 Peter
+48	62	1 Иоанна	1 John
+49	63	2 Иоанна	2 John
+50	64	3 Иоанна	3 John
+51	65	Иуды	Jude
+52	45	Римлянам	Romans
+53	46	1 Коринфянам	1 Corinthians
+54	47	2 Коринфянам	2 Corinthians
+55	48	Галатам	Galatians
+56	49	Ефесянам	Ephesians
+57	50	Филиппийцам	Philippians
+58	51	Колоссянам	Colossians
+59	52	1 Фессалоникийцам	1 Thessalonians
+60	53	2 Фессалоникийцам	2 Thessalonians
+61	54	1 Тимофею	1 Timothy
+62	55	2 Тимофею	2 Timothy
+63	56	Титу	Titus
+64	57	Филимону	Philemon
+65	58	Евреям	Hebrews
+66	66	Откровение	Revelation

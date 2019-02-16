@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>Create Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>Create method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Constructor</B> Create(AOwner: TComponent);</Font>
+<br>
+<Img Src="images/override.gif"> <Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>constructor</B> TCustomTreeNT.Create(AOwner: TComponent);
+
+<B>begin</B>
+  <B>inherited</B> Create(AOwner);
+  ControlStyle := ControlStyle + [csCaptureMouse] + [csDisplayDragImage {$ifdef DFS_COMPILER_3_UP}, csReflector{$endif} ];
+  Width := 121;
+  Height := 97;
+  TabStop := True;
+  ParentColor := False;
+  FTreeNTNodes := TTreeNTNodes.Create(Self);
+
+  <Font Color="#0000DD">// auto expand collapsed node if it is the drag target for &gt;= 1 seconds</Font>
+  FExpandTimer := TTimer.Create(Self);
+  FExpandTimer.Enabled := False;
+  FExpandTimer.Interval := 1000;
+  FExpandTimer.OnTimer := DoDragExpand;
+
+  FScrollTimer := TTimer.Create(Self);
+  FScrollTimer.Enabled := False;
+  FScrollTimer.OnTimer := DoScroll;
+  FScrollTimer.Interval := 300;
+
+  FChangeTimer := TTimer.Create(Self);
+  FChangeTimer.Enabled := False;
+  FChangeTimer.Interval := 0;
+  FChangeTimer.OnTimer := OnChangeTimer;
+
+  FBorderStyle := bsSingle;
+  FDragImage := TImageList.CreateSize(32, 32);
+  FSaveIndent := -1;
+  FSaveItemHeight := -1;
+  FOptions := DefaultOptions;
+  FCanvas := TControlCanvas.Create;
+  TControlCanvas(FCanvas).Control := Self;
+  
+  FEditInstance := MakeObjectInstance(EditWndProc);
+  FImageChangeLink := TChangeLink.Create;
+  FImageChangeLink.OnChange := ImageListChange;
+  FStateChangeLink := TChangeLink.Create;
+  FStateChangeLink.OnChange := ImageListChange;
+
+  FColorSelected := clHighlight;
+  FColorDropSelected := clBtnFace;
+  FColorUnfocusedSelected := cl3DLight;
+
+  <B>if</B> assigned(AOwner) <B>and</B> (csDesigning <B>in</B> AOwner.ComponentState) <B>then</B>
+    FDesigner := GetParentForm(TControl(AOwner)).Designer
+                 <B>as</B> {$ifdef DFS_COMPILER_4} IFormDesigner {$else} TFormDesigner {$endif};
+<B>End</B>;</pre></td></tr></Table>

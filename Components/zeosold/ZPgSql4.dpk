@@ -1,0 +1,43 @@
+package ZPgSql4;
+
+{$R *.RES}
+{$ALIGN ON}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $00400000}
+{$DESCRIPTION 'Zeos PostgreSQL Components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  Vcl40,
+  Vcldb40,
+  ZCommon4,
+  ZDbware4;
+
+contains
+  ZPgSqlTr in 'dbase\ZPgSqlTr.pas',
+  ZLibPgSQL in 'dbase\ZLibPgSql.pas',
+  ZPgSqlCon in 'dbase\ZPgSqlCon.pas',
+  ZPgSqlProp in 'dbase\ZPgSqlProp.pas',
+  ZPgSqlQuery in 'dbase\ZPgSqlQuery.pas',
+  ZPgSqlReg in 'dbase\ZPgSqlReg.pas',
+  ZDirPgSql in 'dbase\ZDirPgSql.pas';
+
+end.

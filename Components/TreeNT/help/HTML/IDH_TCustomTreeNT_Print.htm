@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>Print Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>Print method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> Print(XPos, YPos, Width: Integer);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.Print(XPos, YPos, Width: Integer);
+
+<Font Color="#0000DD">// prints the entire tree at the given position to the current printer</Font>
+<Font Color="#0000DD">// Note: units are millimeters!</Font>
+<Font Color="#0000DD">//</Font>
+<Font Color="#0000DD">// Since I want to preserve the aspect ratio so there's no need to pass a height</Font>
+<Font Color="#0000DD">// here.</Font>
+
+<B>var</B> PrinterResX, 
+    PrinterResY  : Single;
+    BM           : TBitmap;
+    PrnWidth, 
+    PrnHeight    : Integer;
+
+<B>begin</B>
+  BM := TBitmap.Create;
+  <B>try</B>
+    Printer.Title := Format(<Font Color="#119911">'tree printing of %s'</Font>, [Application.Title]);
+    Printer.BeginDoc;
+    <B>try</B>
+      <Font Color="#0000DD">// capture screen output</Font>
+      {$ifdef DFS_COMPILER_3_UP}
+        BM.PixelFormat := pf24Bit;
+      {$endif}
+      BM.Width := TreeWidth;
+      BM.Height := TreeHeight;
+
+      <Font Color="#0000DD">// draw the tree to our bitmap</Font>
+      DrawTo(BM.Canvas);
+
+      <Font Color="#0000DD">// read printer resolutions and transform them in pixels per mm</Font>
+      PrinterResX := GetDeviceCaps(Printer.Canvas.Handle, LOGPIXELSX)/25.4;
+      PrinterResY := GetDeviceCaps(Printer.Canvas.Handle, LOGPIXELSY)/25.4;
+
+      <Font Color="#0000DD">// calculate actual size (in pixels)</Font>
+      XPos := Round(XPos * PrinterResX);
+      YPos := Round(YPos * PrinterResY);
+      PrnWidth := Round(Width * PrinterresX);
+      PrnHeight := Round(PrinterResY * BM.Height * PrnWidth/BM.Width/PrinterResX);
+
+      <Font Color="#0000DD">// finally blit the bitmap to the printer canvas</Font>
+      StretchBitmap(Printer.Canvas.Handle, XPos, YPos, PrnWidth, PrnHeight, BM);
+
+      Printer.EndDoc;
+    <B>except</B>
+      Printer.Abort;
+      <B>raise</B>;
+    <B>end</B>;
+  <B>finally</B>
+    BM.Free;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

@@ -1,0 +1,85 @@
+.timesLinks  { font-family: Times New Roman; font-size: 12pt; color: #9707CD; text-align: 
+               center; margin-top: 0; margin-bottom: 0 }
+.tFioMexp    { font-family: Courier New; font-size: 9pt; text-align: justify; 
+               list-style-type: square; border-left: 1px solid #FFFFFF; 
+               border-right: 1px solid #FFFFFF; margin: 0; padding-left: 56; 
+               padding-right: 56; padding-top: 7; padding-bottom: 0; 
+               background-color: #FAE8FF }
+.hFioS       { font-family: Tahoma; color: #FFFFFF; font-size: 10pt; font-weight: bold; 
+               text-align: left; height: 14; border: 1px solid #FFFFFF; 
+               margin-left: 0; margin-right: 0; margin-top: 7; margin-bottom: 
+               0; padding-left: 7; padding-right: 7; padding-top: 3; 
+               padding-bottom: 1; background-color: #9707CD; background-image:url('images/fiolines.gif'); background-repeat:repeat-x }
+.tFioEnd     { font-family: Tahoma; font-size: 8pt; color: #734607; font-weight: bold; 
+               text-align: right; border-left: 1px solid #FFFFFF; 
+               border-right: 1px solid #FFFFFF; 
+               border-bottom: 1px solid #FFFFFF; margin: 0; padding-left: 7; 
+               padding-right: 7; padding-top: 3; padding-bottom: 5; 
+               background-color: #FAE8FF }
+.tFioM       { font-family: Arial; font-size: 10pt; text-align: justify; text-indent: 7; 
+               border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF; 
+               margin: 0; padding-left: 7; padding-right: 7; padding-top: 7; 
+               padding-bottom: 0; background-color: #FAE8FF }
+.newsText    { font-family: Arial; font-size: 10pt; text-indent: 7; text-align: justify; 
+               float: right; width: 588; border-right: 1px solid #FFFFFF; 
+               margin: 0; padding-left: 7; padding-right: 7; padding-top: 7; 
+               padding-bottom: 0; background-color: #FFE8E8 }
+.newsDate    { font-family: Tahoma; font-size: 8pt; color: #734607; font-weight: bold; 
+               text-align: center; float: left; width: 140; 
+               border-left: 1px solid #FFFFFF; margin: 0; padding-left: 0; 
+               padding-right: 0; padding-top: 1; padding-bottom: 1; 
+               background-color: #FFE8E8 }
+.140x140Org  { font-family: Arial; font-size: 8pt; text-align: center; width: 140; height: 
+               140; border: 1px solid #FFFFFF; margin: 0; padding: 7; 
+               background-image: url('images/org140x140.jpg'); 
+               background-position: center }
+.tNewsRed    { font-family: Arial; font-size: 10pt; text-align: justify; text-indent: 7; 
+               border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF; 
+               margin: 0; padding-left: 7; padding-right: 7; padding-top: 0; 
+               padding-bottom: 0; background-color: #FFE8E8 }
+.tRedEnd     { font-family: Arial; font-size: 8pt; text-align: right; font-weight: bold; 
+               border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF; 
+               border-bottom: 1px solid #FFFFFF; margin: 0; padding-left: 7; 
+               padding-right: 7; padding-top: 0; padding-bottom: 7; 
+               background-color: #FFE8E8 }
+.hRedS       { font-family: Tahoma; color: #FFFFFF; font-size: 10pt; font-weight: bold; 
+               text-align: left; height: 25; border: 1px solid #FFFFFF; 
+               margin: 0; padding-left: 7; padding-right: 7; padding-top: 7; 
+               padding-bottom: 0; background-color: #CD0722 }
+.hRedB       { font-family: Tahoma; color: #FFFFFF; text-transform: uppercase; font-size: 
+               12pt; text-align: left; height: 35; font-weight: bold; 
+               border: 1px solid #FFFFFF; margin: 0; padding-left: 7; 
+               padding-right: 7; padding-top: 15; padding-bottom: 0; 
+               background-color: #CD0722; background-repeat: repeat-x; background-image:url('images/redlineb.gif') }
+.hOrgB       { text-align: left; font-family: Tahoma; font-size: 12pt; text-transform: 
+               uppercase; color: #FFFFFF; font-weight: bold; text-indent: 0; 
+               height: 35; border: 1px solid #FFFFFF; margin: 0; 
+               padding-left: 7; padding-right: 7; padding-top: 15; 
+               padding-bottom: 1; background-color: #DD8D0D; 
+               background-repeat: repeat-x }
+.qTitleDate  { font-family: Tahoma; font-size: 8pt; text-align: right; color: #FFFFFF; 
+               float: right; font-weight: bold; border-left: 1px solid #FFFFFF; 
+               border-right: 1px solid #FFFFFF; 
+               border-bottom: 1px solid #FFFFFF; margin: 0; padding-left: 7; 
+               padding-right: 7; padding-top: 1; padding-bottom: 1; 
+               background-color: #DD8D0D; background-repeat: repeat-x }
+.quote       { font-family: Arial; font-size: 10pt; text-indent: 7; text-align: justify; 
+               border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF; 
+               border-top: 1px solid #FFFFFF; margin: 0; padding: 7; 
+               background-color: #FFFAD6 }
+.riga2002    { font-family: Tahoma; font-size: 8pt; color: #DCDCDC; text-align: right; 
+               text-transform: uppercase }
+.tOrLm       { font-family: Arial; font-size: 10pt; text-align: justify; text-indent: 7; 
+               border-left: 1px solid #FFFFFF; border-right: 1px solid #FFFFFF; 
+               margin: 0; padding-left: 7; padding-right: 7; padding-top: 7; 
+               padding-bottom: 0; background-color: #FFFAD6 }
+.inTheDay    { font-family: Times New Roman; font-size: 18pt; color: #FFFFFF; 
+               text-align: center; font-weight: 
+               bold; margin-top: 0; margin-bottom: 0; padding-top: 22; 
+               padding-bottom: 1 }
+.hFioB       { font-family: Tahoma; color: #FFFFFF;
+	       text-transform: uppercase; font-size: 12pt; text-align: left; 
+	       height: 35; font-weight: bold; border: 1px solid #FFFFFF; 
+	       margin: 0; padding-left: 7; padding-right: 7; padding-top: 15; 
+	       padding-bottom: 0; background-color: #9707CD; background-repeat: repeat-x; 
+	       background-image:url('images/fiolineb.gif') }

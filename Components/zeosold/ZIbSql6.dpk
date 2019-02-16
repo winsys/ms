@@ -1,0 +1,47 @@
+package ZIbSql6;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'Zeos Interbase Components'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  designide,
+  dbrtl,
+  vcldb,
+  bdertl,
+  ZDbware6,
+  ZCommon6;
+
+contains
+  ZLibIbSql in 'dbase\ZLibIbSql.pas',
+  ZIbSqlCon in 'dbase\ZIbSqlCon.pas',
+  ZIbSqlNotify in 'dbase\ZIbSqlNotify.pas',
+  ZIbSqlProp in 'dbase\ZIbSqlProp.pas',
+  ZIbSqlQuery in 'dbase\ZIbSqlQuery.pas',
+  ZIbSqlReg in 'dbase\ZIbSqlReg.pas',
+  ZIbSqlTr in 'dbase\ZIbSqlTr.pas',
+  ZDirIbSql in 'dbase\ZDirIbSql.pas';
+
+end.

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>GetItemHeight Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>GetItemHeight method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Function</B> GetItemHeight: ShortInt;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>function</B> TCustomTreeNT.GetItemHeight: ShortInt;
+
+<B>var</B> R : TRect;
+
+<B>begin</B>
+  Result := TreeView_GetItemHeight(Handle);
+  <Font Color="#0000DD">// older ComCtl32.DLL versions don't have an exported item height, so calculate it</Font>
+  <Font Color="#0000DD">// from the first item, if there's one</Font>
+  <B>if</B> (Result = 0) <B>and</B> (Items.GetFirstNode &lt;&gt; <B>nil</B>) <B>then</B>
+  <B>begin</B>
+    R := Items.GetFirstNode.DisplayRect(False);
+    Result := R.Bottom - R.Top;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

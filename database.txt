@@ -1,0 +1,37 @@
+create table Titles (
+   ID int(11) NOT NULL auto_increment,
+   PYEAR smallint(6) NOT NULL default "0" ,
+   PMONTH tinyint(4) NOT NULL default "0" ,
+   PDAY tinyint(4) NOT NULL default "0" ,
+   PTIME tinyint(4) ,
+   ISBIBLE tinyint(4) NOT NULL default "0" ,
+   ISSPECIAL tinyint(4) NOT NULL default "0" ,
+   HASBOOKMARK tinyint(4) NOT NULL default "0" ,
+   TITLE varchar(70) binary NOT NULL ,
+   PLACE varchar(70) binary NOT NULL ,
+   ETITLE varchar(70) NOT NULL ,
+   primary key (ID) )
+
+
+create table AddTitles (
+   PYEAR smallint(6) NOT NULL default "0" ,
+   PMONTH tinyint(4) NOT NULL default "0" ,
+   PDAY tinyint(4) NOT NULL default "0" ,
+   TITLE varchar(70) NOT NULL ,
+   AUTHOR varchar(70) NOT NULL ,
+   ETITLE varchar(70) NOT NULL  )
+
+
+create table Data (
+   ID int(11) NOT NULL auto_increment,
+   PYEAR smallint(6) NOT NULL default "0" ,
+   PMONTH tinyint(4) NOT NULL default "0" ,
+   PDAY tinyint(4) NOT NULL default "0" ,
+   PTIME tinyint(4) ,
+   ISBIBLE tinyint(4) NOT NULL default "0" ,
+   ISSPECIAL tinyint(4) NOT NULL default "0" ,
+   HASBOOKMARK tinyint(4) NOT NULL default "0" ,
+   TITLEID smallint(6) NOT NULL default "0" ,
+   CNUM smallint(6) ,
+   CHAPTER text ,
+   primary key (ID) )

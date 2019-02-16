@@ -1,0 +1,51 @@
+REGEDIT4
+
+[HKEY_CURRENT_USER\SOFTWARE\BIGIT Software\MessageSearch]
+"Tree width"=dword:000000b3
+"Window left"=dword:fffffffc
+"Window top"=dword:fffffffc
+"Window width"=dword:00000408
+"Window height"=dword:000002ec
+"Auto shutdown"=dword:00000000
+"Tree visible"=dword:00000001
+"Last reminded"="21/04/2002"
+
+[HKEY_CURRENT_USER\SOFTWARE\BIGIT Software\MessageSearch\Settings]
+"Sermon text: font name"="Arial"
+"Sermon text: font size"=dword:00000008
+"Sermon text: font style"="0000"
+"Sermon text: font color"=dword:80000008
+"Song text: font name"="Arial"
+"Song text: font size"=dword:00000008
+"Song text: font style"="0000"
+"Song text: font color"=dword:80000008
+"Bible text: font name"="Arial"
+"Bible text: font size"=dword:00000008
+"Bible text: font style"="0000"
+"Bible text: font color"=dword:80000008
+"Tree text: font name"="Arial"
+"Tree text: font size"=dword:00000008
+"Tree text: font style"="0000"
+"Tree text: font color"=dword:80000008
+"prnSermon text: font name"="Arial"
+"prnSermon text: font size"=dword:00000008
+"prnSermon text: font style"="0000"
+"prnSermon text: font color"=dword:80000008
+"prnSong text: font name"="Arial"
+"prnSong text: font size"=dword:00000008
+"prnSong text: font style"="0000"
+"prnSong text: font color"=dword:80000008
+"prnBible text: font name"="Arial"
+"prnBible text: font size"=dword:00000008
+"prnBible text: font style"="0000"
+"prnBible text: font color"=dword:80000008
+
+[HKEY_CURRENT_USER\SOFTWARE\BIGIT Software\MessageSearch\Forms]
+
+[HKEY_CURRENT_USER\SOFTWARE\BIGIT Software\MessageSearch\Forms\MainForm]
+"Left"=dword:fffffffc
+"Top"=dword:fffffffc
+"Width"=dword:00000408
+"Height"=dword:000002ec
+"State"=dword:00000002
+

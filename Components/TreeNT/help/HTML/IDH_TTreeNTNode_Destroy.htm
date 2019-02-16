@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>Destroy Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>Destroy method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Destructor</B> Destroy;</Font>
+<br>
+<Img Src="images/override.gif"> <Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>destructor</B> TTreeNTNode.Destroy;
+
+<B>var</B> Node : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+
+<B>begin</B>
+  FDeleting := True;
+  FOwner.FSelection.Remove(Self);
+
+  <B>if</B> Owner.Owner.FLastDropTarget = Self <B>then</B> Owner.Owner.FLastDropTarget := <B>nil</B>;
+  Node := FParent;
+  <B>if</B> assigned(Node) <B>and</B> <B>not</B> Node.Deleting <B>then</B>
+  <B>begin</B>
+    Node.FChildList.Remove(Self);
+    <B>if</B> Node.FChildList.Count = 0 <B>then</B>
+    <B>begin</B>
+      Node.Expanded := False;
+      Node.HasChildren := False;
+    <B>end</B>;
+  <B>end</B>;
+
+  <B>if</B> ItemID &lt;&gt; <B>nil</B> <B>then</B> TreeView_DeleteItem(Handle, ItemID);
+  Data := <B>nil</B>;
+  FFont.Free;
+  FChildList.Free;
+  <B>inherited</B> Destroy;
+<B>End</B>;</pre></td></tr></Table>

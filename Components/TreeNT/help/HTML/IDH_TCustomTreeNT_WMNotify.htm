@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>WMNotify Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>WMNotify method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> WMNotify(<B>var</B> <B>Message</B>: TWMNotify);</Font>
+<br>
+<Img Src="images/message.gif"> WM_NOTIFY<Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.WMNotify(<B>var</B> <B>Message</B>: TWMNotify);
+
+<B>var</B> Node       : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+    MaxTextLen : Integer;
+    Pt         : TPoint;
+    TextCopy   : <B>String</B>;
+
+<B>begin</B>
+  <B>with</B> <B>Message</B> <B>do</B>
+    <B>if</B> (NMHdr^.code = TTN_NEEDTEXTW) <B>and</B> <B>not</B> (toInfoTip <B>in</B> Options) <B>then</B>
+    <B>begin</B>
+      <Font Color="#0000DD">// Work around NT COMCTL32 problem with tool tips &gt;= 80 characters</Font>
+      GetCursorPos(Pt);
+      Pt := ScreenToClient(Pt);
+      Node := GetNodeAt(Pt.X, Pt.Y);
+      <B>if</B> (Node = <B>nil</B>) <B>or</B> (Node.Text = <Font Color="#119911">''</Font>) <B>or</B>
+         (PToolTipTextW(NMHdr)^.uFlags <B>and</B> TTF_IDISHWND = 0) <B>then</B> Exit;
+
+      <B>if</B> {$ifdef DFS_COMPILER_3_UP} (GetComCtlVersion &gt;= ComCtlVersionIE4) <B>and</B> {$endif}
+         (Length(Node.Text) &lt; 80) <B>then</B>
+      <B>begin</B>
+        <B>inherited</B>;   
+        Exit;
+      <B>end</B>;
+
+      TextCopy := Node.Text;
+      MaxTextLen := SizeOf(PToolTipTextW(NMHdr)^.szText) <B>div</B> SizeOf(WideChar);
+      <B>if</B> Length(TextCopy) &gt;= MaxTextLen <B>then</B>
+      <B>begin</B>
+        SetLength(TextCopy, MaxTextLen - 4);
+        TextCopy := TextCopy + <Font Color="#119911">'...'</Font>;
+      <B>end</B>;
+      FillChar(PToolTipTextW(NMHdr)^.szText, MaxTextLen, 0);
+      StringToWideChar(TextCopy, PToolTipTextW(NMHdr)^.szText, Length(TextCopy) * SizeOf(WideChar));
+      PToolTipTextW(NMHdr)^.hInst := 0;
+      SetWindowPos(NMHdr^.hwndFrom, HWND_TOP, 0, 0, 0, 0, SWP_NOACTIVATE <B>or</B> SWP_NOSIZE <B>or</B> SWP_NOMOVE <B>or</B> SWP_NOOWNERZORDER);
+      Result := 1;
+    <B>end</B>
+    <B>else</B> <B>inherited</B>;
+<B>End</B>;</pre></td></tr></Table>

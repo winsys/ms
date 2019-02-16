@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>SetEnabled Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>SetEnabled method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> SetEnabled(Value: Boolean);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNode.SetEnabled(Value: Boolean);
+
+<B>begin</B>
+  <B>if</B> FEnabled &lt;&gt; Value <B>then</B>
+  <B>begin</B>
+    FEnabled := Value;
+    <B>if</B> FParent.FCheckType &lt;&gt; ctNone <B>then</B>
+    <B>begin</B>
+      <B>if</B> Value <B>then</B>
+        <B>case</B> StateIndex <B>of</B>
+          ckCheckDisabled:
+            TreeView.SetCheckImage(Self, ckCheckEmpty);
+          ckCheckGrayed:
+            <B>if</B> FParent.FCheckType = ctCheckBox <B>then</B> TreeView.SetCheckImage(Self, ckCheckChecked);
+          ckRadioDisabled:
+            TreeView.SetCheckImage(Self, ckRadioEmpty);
+          ckRadioGrayed:
+            TreeView.SetCheckImage(Self, ckRadioChecked);
+        <B>end</B>
+               <B>else</B>
+        <B>case</B> StateIndex <B>of</B>
+          ckCheckEmpty:
+            TreeView.SetCheckImage(Self, ckCheckDisabled);
+          ckCheckChecked:
+            TreeView.SetCheckImage(Self, ckCheckGrayed);
+          ckRadioEmpty:
+            TreeView.SetCheckImage(Self, ckRadioDisabled);
+          ckRadioChecked:
+            TreeView.SetCheckImage(Self, ckRadioGrayed);
+        <B>end</B>;
+    <B>end</B>;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>Repaint Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>Repaint method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNodes.htm">TTreeNTNodes</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> Repaint(Node: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNodes.Repaint(Node: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>);
+
+<B>var</B> R : TRect;
+
+<B>begin</B>
+  <B>if</B> FUpdateCount = 0 <B>then</B>
+  <B>begin</B>
+    <B>while</B> assigned(Node) <B>and</B> <B>not</B> Node.IsVisible <B>do</B> Node := Node.FParent;
+    <B>if</B> assigned(Node) <B>then</B>
+    <B>begin</B>
+      R := Node.DisplayRect(False);
+      InvalidateRect(Owner.Handle, @R, True);
+    <B>end</B>;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

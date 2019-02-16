@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>HandleMultiSelection Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>HandleMultiSelection method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> HandleMultiSelection(LastNode: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; OldState: <A HREF="IDH_Type_TSelectType.htm">TSelectType</A>; NewNode: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; NewState: <A HREF="IDH_Type_TSelectType.htm">TSelectType</A>; Shift: TShiftState);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.HandleMultiSelection(LastNode: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; OldState: <A HREF="IDH_Type_TSelectType.htm">TSelectType</A>; NewNode: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; NewState: <A HREF="IDH_Type_TSelectType.htm">TSelectType</A>; Shift: TShiftState);
+
+<Font Color="#0000DD">// handles multi-selection with mouse click</Font>
+
+<B>begin</B>
+  <Font Color="#0000DD">// Ctrl key down</Font>
+  <B>if</B> ssCtrl <B>in</B> Shift <B>then</B>
+  <B>begin</B>
+    <B>if</B> ssShift <B>in</B> Shift <B>then</B> Items.SelectNodes(LastNode, NewNode, True)
+                        <B>else</B>
+    <B>begin</B>
+      <B>if</B> assigned(LastNode) <B>then</B> Items.SelectNode(LastNode, OldState);
+      <B>if</B> assigned(NewNode) <B>then</B> Items.SelectNode(NewNode, NewState);
+    <B>end</B>;
+  <B>end</B>
+  <B>else</B>
+    <Font Color="#0000DD">// Shift key down</Font>
+    <B>if</B> ssShift <B>in</B> Shift <B>then</B>
+    <B>begin</B>
+      <B>if</B> FFirstSelection = <B>nil</B> <B>then</B> FFirstSelection := NewNode;
+      <Font Color="#0000DD">// select node range</Font>
+      <B>if</B> assigned(FFirstSelection) <B>then</B> Items.SelectNodes(FFirstSelection, NewNode, False);
+    <B>end</B>
+    <B>else</B>
+      <Font Color="#0000DD">// any other case</Font>
+      <B>if</B> assigned(NewNode) <B>then</B>
+      <B>begin</B>
+        ClearSelection;
+        Items.SelectNode(NewNode, stSet);
+        <Font Color="#0000DD">// assign new reference item</Font>
+        FFirstSelection := NewNode;
+        Items.FLastSelLevel := NewNode.Level;
+      <B>end</B>;
+  FTreeNTNodes.Repaint(NewNode);
+<B>End</B>;</pre></td></tr></Table>

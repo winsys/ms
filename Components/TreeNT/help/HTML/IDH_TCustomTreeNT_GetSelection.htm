@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>GetSelection Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>GetSelection method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Function</B> GetSelection: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>function</B> TCustomTreeNT.GetSelection: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+
+<B>begin</B>
+  <B>if</B> HandleAllocated <B>then</B>
+  <B>begin</B>
+    <B>if</B> (toRightClickSelect <B>in</B> FOptions) <B>and</B> assigned(FRClickNode)
+      <B>then</B> Result := FRClickNode
+      <B>else</B> Result := Items.GetNode(TreeView_GetSelection(Handle));
+  <B>end</B>
+  <B>else</B> Result := <B>nil</B>;
+<B>End</B>;</pre></td></tr></Table>

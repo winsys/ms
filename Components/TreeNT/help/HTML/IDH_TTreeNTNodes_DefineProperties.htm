@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>DefineProperties Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>DefineProperties method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNodes.htm">TTreeNTNodes</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> DefineProperties(Filer: TFiler);</Font>
+<br>
+<Img Src="images/override.gif"> <Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNodes.DefineProperties(Filer: TFiler);
+
+  <B>function</B> WriteNodes: Boolean;
+
+  <B>var</B> I     : Integer;
+      Nodes : <A HREF="IDH_Class_TTreeNTNodes.htm">TTreeNTNodes</A>;
+
+  <B>begin</B>
+    Result := False;
+    Nodes := TTreeNTNodes(Filer.Ancestor);
+    <B>if</B> (Nodes &lt;&gt; <B>nil</B>) <B>and</B> (Nodes.Count = Count) <B>then</B>
+      <B>for</B> I := 0 <B>to</B> Count - 1 <B>do</B>
+      <B>begin</B>
+        Result := <B>not</B> Item[I].IsEqual(Nodes[I]);
+        <B>if</B> Result <B>then</B> Break;
+      <B>end</B>
+    <B>else</B> Result := Count &gt; 0;
+    Result := Result <B>or</B> (TopLevelCheckType &lt;&gt; ctNone);
+  <B>end</B>;
+
+<B>begin</B>
+  <B>inherited</B> DefineProperties(Filer);
+  Filer.DefineBinaryProperty(<Font Color="#119911">'Data'</Font>, ReadData, WriteData, WriteNodes);
+<B>End</B>;</pre></td></tr></Table>

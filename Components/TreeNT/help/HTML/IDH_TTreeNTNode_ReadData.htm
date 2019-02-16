@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>ReadData Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>ReadData method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> ReadData(Stream: TStream; Info: <A HREF="IDH_Type_PNodeInfo.htm">PNodeInfo</A>);</Font>
+<br>
+<Img Src="images/virtual.gif"> <Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNode.ReadData(Stream: TStream; Info: <A HREF="IDH_Type_PNodeInfo.htm">PNodeInfo</A>);
+
+<B>var</B> I, Size    : Integer;
+    IsExpanded : Boolean;
+
+<B>begin</B>
+  Stream.ReadBuffer(Size, SizeOf(Size));
+  Stream.ReadBuffer(Info^, Size);
+  Text := Info.Text;
+  ImageIndex := Info.ImageIndex;
+  SelectedIndex := Info.SelectedIndex;
+  StateIndex := Info.StateIndex;
+  CheckType := Info.CheckType;
+  CheckState := Info.CheckState;
+  Enabled := Info.Enabled;
+  <B>if</B> Info.Selected <B>then</B> FOwner.SelectNode(Self, stSet);
+  IsExpanded := Info.Expanded;
+  OverlayIndex := Info.OverlayIndex;
+  IntegralHeight := Info.IntegralHeight;
+  Data := Info.Data;
+  FParentColor := Info.ParentColor;
+  <B>if</B> <B>not</B> FParentColor <B>then</B> FColor := Info.Color;
+  FParentFont := Info.ParentFont;
+  <B>if</B> <B>not</B> FParentFont <B>then</B>
+  <B>begin</B>
+    FFont := TFont.Create;
+    FFont.Height := Info.FontData.Height;
+    FFont.<B>Name</B> := Info.FontData.<B>Name</B>;
+    FFont.Pitch := Info.FontData.Pitch;
+    FFont.Style := Info.FontData.Style;
+    FFont.Color := Info.FontColor;
+    FFont.OnChange := FontChanged;
+  <B>end</B>;
+  <B>for</B> I := 0 <B>to</B> Info.Count - 1 <B>do</B> <B>with</B> Owner.AddChild(Self, <Font Color="#119911">''</Font>) <B>do</B> ReadData(Stream, Info);
+  <B>if</B> <B>not</B> (toSingleExpand <B>in</B> TreeView.Options) <B>then</B> Expanded := IsExpanded;
+<B>End</B>;</pre></td></tr></Table>

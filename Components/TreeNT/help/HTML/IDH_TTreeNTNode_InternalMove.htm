@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>InternalMove Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>InternalMove method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> InternalMove(ParentNode, Node: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; HItem: HTreeItem; AddMode: <A HREF="IDH_Type_TAddMode.htm">TAddMode</A>);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNode.InternalMove(ParentNode, Node: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; HItem: HTreeItem; AddMode: <A HREF="IDH_Type_TAddMode.htm">TAddMode</A>);
+
+<B>var</B> I          : Integer;
+    NodeId     : HTreeItem;
+    TreeNTItem : TTVItem;
+    Children, 
+    IsExpanded, 
+    IsSelected : Boolean;
+
+<B>begin</B>
+  <B>if</B> (AddMode = taInsert) <B>and</B> (Node &lt;&gt; <B>nil</B>) <B>then</B> NodeId := Node.ItemId
+                                            <B>else</B> NodeId := <B>nil</B>;
+  Children := HasChildren;
+  IsSelected := Selected;
+  IsExpanded := Expanded;
+  <Font Color="#0000DD">// this node is already removed from its parent's child list</Font>
+  <B>if</B> FParent.Count = 0 <B>then</B>
+  <B>begin</B>
+    FParent.Expanded := False;
+    FParent.HasChildren := False;
+  <B>end</B>;
+
+  <B>with</B> TreeNTItem <B>do</B>
+  <B>begin</B>
+    Mask := TVIF_PARAM;
+    hItem := ItemID;
+    lParam := 0;
+  <B>end</B>;
+
+  TreeView_SetItem(Handle, TreeNTItem);
+
+  <B>with</B> Owner <B>do</B> HItem := AddItem(HItem, NodeId, CreateItem(Self), AddMode);
+
+  <B>if</B> HItem = <B>nil</B> <B>then</B>
+  {$ifdef DFS_COMPILER_3_UP}
+    <B>raise</B> EOutOfResources.Create(sInsertError);
+  {$else}
+    <B>raise</B> EOutOfResources.CreateRes(sInsertError);
+  {$endif}
+  
+  <B>for</B> I := Count - 1 <B>downto</B> 0 <B>do</B> Item[I].InternalMove(Self, <B>nil</B>, HItem, taAddFirst);
+
+  TreeView_DeleteItem(Handle, ItemID);
+
+  FItemId := HItem;
+  FParent := ParentNode;
+  <B>if</B> FParent = <B>nil</B> <B>then</B> FParent := FOwner.FRoot;
+
+  Assign(Self);
+  HasChildren := Children;
+  <B>if</B> IsSelected <B>then</B> FOwner.SelectNode(Self, stSet);
+  Expanded := IsExpanded;
+  FOwner.InvalidateItemCache;
+<B>End</B>;</pre></td></tr></Table>

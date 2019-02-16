@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>MoveTo Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>MoveTo method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> MoveTo(Destination: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; Mode: <A HREF="IDH_Type_TNodeAttachMode.htm">TNodeAttachMode</A>);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNode.MoveTo(Destination: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; Mode: <A HREF="IDH_Type_TNodeAttachMode.htm">TNodeAttachMode</A>);
+
+<B>var</B> AddMode       : <A HREF="IDH_Type_TAddMode.htm">TAddMode</A>;
+    LastFocused, 
+    Node          : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+    HItem         : HTreeItem;
+    OldOnChanging : <A HREF="IDH_Type_TTVChangingEvent.htm">TTVChangingEvent</A>;
+    OldOnChange   : <A HREF="IDH_Type_TTVChangedEvent.htm">TTVChangedEvent</A>;
+
+<B>begin</B>
+  <B>if</B> assigned(Destination) <B>and</B> (Destination.TreeView &lt;&gt; TreeView) <B>then</B> Exit;
+
+  OldOnChanging := TreeView.OnChanging;
+  OldOnChange := TreeView.OnChange;
+  LastFocused := TreeView.Selected;
+  TreeView.OnChanging := <B>nil</B>;
+  TreeView.OnChange := <B>nil</B>;
+  <B>try</B>
+    <B>if</B> (Destination = <B>nil</B>) <B>or</B> <B>not</B> Destination.HasAsParent(Self) <B>then</B>
+    <B>begin</B>
+      AddMode := taAdd;
+      <B>if</B> assigned(Destination) <B>and</B> <B>not</B> (Mode <B>in</B> [naAddChild, naAddChildFirst])
+        <B>then</B>
+        <B>begin</B>
+          Node := Destination.FParent;
+        <B>end</B>
+        <B>else</B> Node := Destination;
+        
+      <B>case</B> Mode <B>of</B>
+        naAdd, 
+        naAddChild:
+          AddMode := taAdd;
+        naAddFirst,
+        naAddChildFirst:
+          AddMode := taAddFirst;
+        naInsert:
+          <B>begin</B>
+            <B>if</B> Destination = <B>nil</B> <B>then</B> AddMode := taAdd
+                                 <B>else</B> AddMode := taInsert;
+          <B>end</B>;
+      <B>end</B>;
+      <B>if</B> assigned(Node) <B>then</B> HItem := Node.ItemId
+                        <B>else</B> HItem := <B>nil</B>;
+
+      <Font Color="#0000DD">// keep child list up to date</Font>
+      FParent.FChildList.Remove(Self);
+      <B>if</B> FParent.Count = 0 <B>then</B> FParent.HasChildren := False;
+
+      InternalMove(Node, Destination, HItem, AddMode);
+
+      <Font Color="#0000DD">// keep child list up to date</Font>
+      <B>with</B> FParent.FChildList <B>do</B>
+        <B>case</B> AddMode <B>of</B>
+          taAddFirst:
+            Insert(0, Self);
+          taAdd:
+            Add(Self);
+          taInsert:
+            Insert(Destination.<B>Index</B> + 1, Self);
+        <B>end</B>;
+
+      <B>case</B> FParent.FCheckType <B>of</B>
+        ctNone:
+          TreeView.SetCheckImage(Self, ckEmpty);
+        ctCheckBoxGrayed,
+        ctCheckBox:
+          TreeView.SetCheckImage(Self, ckCheckEmpty);
+        ctRadioButton:
+          TreeView.SetCheckImage(Self, ckRadioEmpty);
+      <B>end</B>;
+
+      FParent.HasChildren := True;
+      FParent.Expanded := True;
+    <B>end</B>;
+  <B>finally</B>
+    TreeView.Selected := LastFocused;
+    TreeView.OnChanging := OldOnChanging;
+    TreeView.OnChange := OldOnChange;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

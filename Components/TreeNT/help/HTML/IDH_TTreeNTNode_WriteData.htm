@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>WriteData Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>WriteData method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> WriteData(Stream: TStream; Info: <A HREF="IDH_Type_PNodeInfo.htm">PNodeInfo</A>);</Font>
+<br>
+<Img Src="images/virtual.gif"> <Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNode.WriteData(Stream: TStream; Info: <A HREF="IDH_Type_PNodeInfo.htm">PNodeInfo</A>);
+
+<B>var</B> I, Size, L : Integer;
+
+<B>begin</B>
+  L := Length(Text);
+  <B>if</B> L &gt; 255 <B>then</B> L := 255;
+  Size := SizeOf(TNodeInfo) + L - 255;
+  Info.Text := Text;
+  Info.ImageIndex := ImageIndex;
+  Info.SelectedIndex := SelectedIndex;
+  Info.OverlayIndex := OverlayIndex;
+  Info.StateIndex := StateIndex;
+  Info.IntegralHeight := IntegralHeight;
+  Info.CheckType := CheckType;
+  Info.CheckState := CheckState;
+  Info.Enabled := Enabled;
+  Info.Expanded := FExpanded;
+  <B>if</B> csDesigning <B>in</B> (FOwner.FOwner.ComponentState) <B>then</B> Info.Selected := False
+                                                   <B>else</B> Info.Selected := FOwner.FSelection.IndexOf(Self) &gt; -1;
+  Info.Data := Data;
+  Info.Color := FColor;
+  Info.ParentFont := FParentFont;
+  Info.ParentColor := FParentColor;
+  <B>if</B> <B>not</B> FParentFont <B>then</B>
+  <B>begin</B>
+    Info.FontData.Height := FFont.Height;
+    Info.FontData.<B>Name</B> := FFont.<B>Name</B>;
+    Info.FontData.Pitch := FFont.Pitch;
+    Info.FontData.Style := FFont.Style;
+    Info.FontColor := FFont.Color;
+  <B>end</B>;
+  Info.Count := Count;
+  Stream.WriteBuffer(Size, SizeOf(Size));
+  Stream.WriteBuffer(Info^, Size);
+  <B>for</B> I := 0 <B>to</B> Info.Count - 1 <B>do</B> Item[I].WriteData(Stream, Info);
+<B>End</B>;</pre></td></tr></Table>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>CreateParams Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>CreateParams method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> CreateParams(<B>var</B> Params: TCreateParams);</Font>
+<br>
+<Img Src="images/override.gif"> <Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.CreateParams(<B>var</B> Params: TCreateParams);
+
+<B>begin</B>
+  {$ifdef DFS_COMPILER_3_UP}
+    InitCommonControl(ICC_TREEVIEW_CLASSES);
+  {$else}
+    InitCommonControls;
+  {$endif}
+  <B>inherited</B> CreateParams(Params);
+  CreateSubClass(Params, WC_TREEVIEW);
+  <B>with</B> Params <B>do</B>
+  <B>begin</B>
+    <B>if</B> toShowLines <B>in</B> FOptions <B>then</B> Style := Style <B>or</B> TVS_HASLINES;
+    <B>if</B> toShowRoot <B>in</B> FOptions <B>then</B> Style := Style <B>or</B> TVS_LINESATROOT;
+    <B>if</B> toShowButtons <B>in</B> FOptions <B>then</B> Style := Style <B>or</B> TVS_HASBUTTONS;
+    <B>if</B> <B>not</B> (toReadOnly <B>in</B> FOptions) <B>then</B> Style := Style <B>or</B> TVS_EDITLABELS;
+    <B>if</B> <B>not</B> (toHideSelection <B>in</B> FOptions) <B>then</B> Style := Style <B>or</B> TVS_SHOWSELALWAYS;
+    <B>if</B> DragMode = dmManual <B>then</B> Style := Style <B>or</B> TVS_DISABLEDRAGDROP;
+    <B>if</B> toHotTrack <B>in</B> FOptions <B>then</B> Style := Style <B>or</B> TVS_TRACKSELECT;
+    <B>if</B> <B>not</B> (toToolTips <B>in</B> FOptions) <B>then</B> Style := Style <B>or</B> TVS_NOTOOLTIPS;
+    <B>if</B> toSingleExpand <B>in</B> FOptions <B>then</B> Style := Style <B>or</B> TVS_SINGLEEXPAND;
+    <B>if</B> toInfoTip <B>in</B> FOptions <B>then</B> Style := Style <B>or</B> TVS_INFOTIP;
+    <B>if</B> toNoScroll <B>in</B> FOptions <B>then</B> Style := Style <B>or</B> TVS_NOSCROLL;
+    <B>if</B> toFullRowSelect <B>in</B> FOptions <B>then</B> Style := Style <B>or</B> TVS_FULLROWSELECT;
+    <B>if</B> <B>not</B> (toEvenHeight <B>in</B> FOptions) <B>then</B> Style := Style <B>or</B> TVS_NONEVENHEIGHT;
+
+    Style := Style <B>or</B> WS_CLIPCHILDREN;
+    <B>if</B> FBorderStyle = bsSingle <B>then</B> Style := Style <B>or</B> WS_BORDER;
+    <B>if</B> Ctl3D <B>and</B> (FBorderStyle = bsSingle) <B>then</B> ExStyle := Params.ExStyle <B>or</B> WS_EX_CLIENTEDGE;
+
+    WindowClass.Style := WindowClass.Style <B>and</B> <B>not</B> (CS_HREDRAW <B>or</B> CS_VREDRAW);
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>CNNotify Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>CNNotify method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> CNNotify(<B>var</B> <B>Message</B>: TWMNotify);</Font>
+<br>
+<Img Src="images/message.gif"> CN_NOTIFY<Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.CNNotify(<B>var</B> <B>Message</B>: TWMNotify);
+
+<B>var</B> Node       : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+    NodeStates : <A HREF="IDH_Type_TNodeStates.htm">TNodeStates</A>;
+    NewText    : <B>String</B>;
+    OwnerDraw, 
+    Allowed    : Boolean;
+    MousePos   : TPoint;
+
+<B>begin</B>
+  <B>with</B> <B>Message</B>.NMHdr^ <B>do</B>
+  <B>case</B> code <B>of</B>
+    TVN_BEGINRDRAG, 
+    TVN_BEGINDRAG:
+      <B>begin</B>
+        FDragged := True;
+        <B>with</B> PNMTreeView(Pointer(<B>Message</B>.NMHdr))^ <B>do</B> FDragNode := GetNodeFromItem(ItemNew);
+      <B>end</B>;
+    TVN_BEGINLABELEDIT:
+      <B>with</B> PTVDispInfo(Pointer(<B>Message</B>.NMHdr))^ <B>do</B>
+      <B>begin</B>
+        <B>if</B> Dragging <B>or</B> <B>not</B> CanEdit(GetNodeFromItem(Item)) <B>then</B> <B>Message</B>.Result := 1;
+        <B>if</B> <B>Message</B>.Result = 0 <B>then</B>
+        <B>begin</B>
+          FEditHandle := TreeView_GetEditControl(Handle);
+          FDefEditProc := Pointer(GetWindowLong(FEditHandle, GWL_WNDPROC));
+          SetWindowLong(FEditHandle, GWL_WNDPROC, LongInt(FEditInstance));
+          Node := GetNodeFromItem(Item);
+          <B>if</B> <B>not</B> Node.ParentFont <B>and</B> assigned(Node.FFont) <B>then</B>
+            SendMessage(FEditHandle, WM_SETFONT, Node.Font.Handle, MakeLParam(1, 0));
+        <B>end</B>;
+      <B>end</B>;
+    TVN_ENDLABELEDIT:
+      <B>with</B> PTVDispInfo(Pointer(<B>Message</B>.NMHdr))^ <B>do</B> Edit(Item);
+    TVN_ITEMEXPANDING:
+      <B>if</B> <B>not</B> FManualNotify <B>then</B>
+      <B>begin</B>
+        <B>with</B> PNMTreeView(Pointer(<B>Message</B>.NMHdr))^ <B>do</B>
+        <B>begin</B>
+          Node := GetNodeFromItem(ItemNew);
+          <B>if</B> (action = TVE_EXPAND) <B>then</B>
+            <B>if</B> <B>not</B> CanExpand(Node) <B>then</B> <B>Message</B>.Result := 1;
+
+          <B>if</B> (action = TVE_COLLAPSE) <B>then</B>
+            <B>if</B> <B>not</B> CanCollapse(Node) <B>then</B> <B>Message</B>.Result := 1;
+        <B>end</B>;
+      <B>end</B>;
+    TVN_ITEMEXPANDED:
+      <B>if</B> <B>not</B> FManualNotify <B>then</B>
+      <B>begin</B>
+        <B>with</B> PNMTreeView(Pointer(<B>Message</B>.NMHdr))^ <B>do</B>
+        <B>begin</B>
+          Node := GetNodeFromItem(ItemNew);
+          <B>if</B> action = TVE_EXPAND <B>then</B>
+          <B>begin</B>
+            <B>if</B> assigned(Node) <B>then</B> Node.FExpanded := True;
+            Expand(Node);
+          <B>end</B>
+          <B>else</B>
+          <B>if</B> action = TVE_COLLAPSE <B>then</B>
+          <B>begin</B>
+            <B>if</B> assigned(Node) <B>then</B> Node.FExpanded := False;
+            Collapse(Node);
+          <B>end</B>;
+        <B>end</B>;
+      <B>end</B>;
+    TVN_SELCHANGING:
+      <B>with</B> PNMTreeView(Pointer(<B>Message</B>.NMHdr))^ <B>do</B>
+        <B>if</B> <B>not</B> CanChange(GetNodeFromItem(ItemNew)) <B>then</B> <B>Message</B>.Result := 1;
+    TVN_SELCHANGED:
+      <B>with</B> PNMTreeView(Pointer(<B>Message</B>.NMHdr))^ <B>do</B>
+      <B>begin</B>
+        Node := GetNodeFromItem(ItemOld);
+        <B>if</B> assigned(Node) <B>then</B> Items.RemoveFromSelection(Node);
+        Node := GetNodeFromItem(ItemNew);
+        <B>if</B> assigned(Node) <B>then</B>
+        <B>begin</B>
+          Items.AddToSelection(Node);
+          <B>if</B> <B>not</B> Items.FCoreSelecting <B>then</B> Items.FLastSelLevel := Node.Level;
+        <B>end</B>;
+        DoChange(Node);
+      <B>end</B>;
+    TVN_DELETEITEM:
+      <B>begin</B>
+        <B>with</B> PNMTreeView(Pointer(<B>Message</B>.NMHdr))^ <B>do</B> Node := GetNodeFromItem(ItemOld);
+        <B>if</B> Node &lt;&gt; <B>nil</B> <B>then</B>
+        <B>begin</B>
+          Node.FItemId := <B>nil</B>;
+          FChangeTimer.Enabled := False;
+          <B>if</B> FStateChanging <B>then</B> Node.Delete
+                            <B>else</B> Items.Delete(Node);
+          Items.InvalidateItemCache;
+        <B>end</B>;
+      <B>end</B>;
+    TVN_SETDISPINFO:
+      <B>with</B> PTVDispInfo(Pointer(<B>Message</B>.NMHdr))^ <B>do</B>
+      <B>begin</B>
+        Node := GetNodeFromItem(Item);
+        <B>if</B> (Node &lt;&gt; <B>nil</B>) <B>and</B> ((Item.Mask <B>and</B> TVIF_TEXT) &lt;&gt; 0) <B>then</B> Node.Text := Item.pszText;
+      <B>end</B>;
+    TVN_GETDISPINFO:
+      <B>with</B> PTVDispInfo(Pointer(<B>Message</B>.NMHdr))^ <B>do</B>
+      <B>begin</B>
+        Node := GetNodeFromItem(Item);
+        <B>if</B> Node &lt;&gt; <B>nil</B> <B>then</B>
+        <B>begin</B>
+          <B>if</B> (Item.Mask <B>and</B> TVIF_TEXT) &lt;&gt; 0 <B>then</B>
+            StrLCopy(Item.pszText, PChar(Node.Text), Item.cchTextMax);
+          <B>if</B> (Item.Mask <B>and</B> TVIF_IMAGE) &lt;&gt; 0 <B>then</B>
+          <B>begin</B>
+            GetImageIndex(Node);
+            Item.iImage := Node.ImageIndex;
+          <B>end</B>;
+          <B>if</B> (Item.Mask <B>and</B> TVIF_SELECTEDIMAGE) &lt;&gt; 0 <B>then</B>
+          <B>begin</B>
+            GetSelectedIndex(Node);
+            Item.iSelectedImage := Node.SelectedIndex;
+          <B>end</B>;
+        <B>end</B>;
+      <B>end</B>;
+    TVN_SINGLEEXPAND:
+      <B>with</B> PNMTreeView(Pointer(<B>Message</B>.NMHdr))^ <B>do</B>
+      <B>begin</B>
+        Node := GetNodeFromItem(ItemNew);
+        Allowed := True;
+        <B>if</B> assigned(FOnSingleExpanded) <B>then</B> FOnSingleExpanded(Self, Node, Allowed);
+        <B>if</B> <B>not</B> Allowed <B>then</B> <B>Message</B>.Result := 1;
+      <B>end</B>;
+    TVN_GETINFOTIP:
+      <B>if</B> assigned(FOnHint) <B>then</B>
+      <B>with</B> PNMTVGetInfoTip(Pointer(<B>Message</B>.NMHdr))^ <B>do</B>
+      <B>begin</B>
+        Node := TTreeNTNode(lParam);
+        NewText := <Font Color="#119911">''</Font>;
+        FOnHint(Self, Node, NewText);
+        StrPLCopy(pszText, NewText, cchTextMax - 1);
+      <B>end</B>;
+    NM_CUSTOMDRAW:
+      <B>with</B> PNMTVCustomDraw(Pointer(<B>Message</B>.NMHdr))^ <B>do</B>
+      <B>case</B> nmcd.dwDrawStage <B>of</B>
+        CDDS_PREPAINT:
+          <B>begin</B>
+            <B>if</B> Items.FCoreSelecting <B>then</B> <B>Message</B>.Result := CDRF_SKIPDEFAULT
+                                    <B>else</B>
+            <B>begin</B>
+              <B>if</B> assigned(FOnBeforePaint) <B>then</B> FOnBeforePaint(Self);
+              <B>Message</B>.Result := CDRF_NOTIFYITEMDRAW <B>or</B>
+                              CDRF_NOTIFYITEMERASE <B>or</B>
+                              CDRF_NOTIFYPOSTERASE <B>or</B>
+                              CDRF_NOTIFYPOSTPAINT;
+            <B>end</B>;
+          <B>end</B>;
+        CDDS_ITEMPREPAINT:
+          <B>begin</B>
+            <B>Message</B>.Result := CDRF_NOTIFYPOSTPAINT;
+
+            Node := TTreeNTNode(nmcd.lItemlParam);
+
+            <B>if</B> Node = <B>nil</B> <B>then</B>
+            <B>begin</B>
+              <B>Message</B>.Result := CDRF_DODEFAULT;
+              Exit;
+            <B>end</B>;
+
+            NodeStates := MakeNodeState(nmcd.uItemState);
+            <B>if</B> Node.CheckState <B>in</B> [csChecked, csCheckedGrayed] <B>then</B> Include(NodeStates, nsChecked);
+
+            <Font Color="#0000DD">// do custom draw only if not otherwise directed</Font>
+            OwnerDraw := False;
+            <Font Color="#0000DD">// ask user</Font>
+            <B>if</B> assigned(FOnBeforeItemPaint) <B>then</B> FOnBeforeItemPaint(Self, Node, nmcd.rc, NodeStates, OwnerDraw);
+
+            <Font Color="#0000DD">// if nothing says the user will draw the node then let us</Font>
+            <Font Color="#0000DD">// do the usual work</Font>
+            <B>if</B> <B>not</B> OwnerDraw <B>then</B>
+            <B>begin</B>
+              <Font Color="#0000DD">// the background color is determined by various conditions</Font>
+              <B>if</B> nsSelected <B>in</B> NodeStates <B>then</B> <Font Color="#0000DD">// node selected?</Font>
+              <B>begin</B>
+                <Font Color="#0000DD">// do we currently drag?</Font>
+                <B>if</B> Dragging <B>then</B>
+                <B>begin</B>
+                  <Font Color="#0000DD">// yes, we do, so color the drop target in usual selection shade</Font>
+                  <Font Color="#0000DD">// if it is not part of the selection, else color it lighter</Font>
+                  <B>if</B> Node = DropTarget <B>then</B> clrTextBk := ColorToRGB(FColorDropSelected)
+                                       <B>else</B> clrTextBk := ColorToRGB(FColorSelected);
+                  <Font Color="#0000DD">//clrText := ColorToRGB(clWhite);</Font>
+                <B>end</B>
+                <B>else</B>
+                  <Font Color="#0000DD">// no drag'n drop, but has the tree the focus at all?</Font>
+                  <B>if</B> <B>not</B> Focused <B>then</B> clrTextBk := ColorToRGB(FColorUnfocusedSelected)
+                                 <B>else</B>
+                    <B>if</B> Node.ParentColor <B>then</B>
+                      <Font Color="#0000DD">// tree has the focus, so the user is changing the node focus,</Font>
+                      <Font Color="#0000DD">// to avoid a wrong background we have to check for the color</Font>
+                      <Font Color="#0000DD">// the treeview suggests (in this case it always wants to use</Font>
+                      <Font Color="#0000DD">// clWindow, which might be different from the current</Font>
+                      <Font Color="#0000DD">// treeview background)</Font>
+                      <B>if</B> clrTextBk = Cardinal(ColorToRGB(clWindow)) <B>then</B> clrTextBk := ColorToRGB(Color)
+                                                                    <B>else</B> clrTextBk := ColorToRGB(FColorSelected)
+                                        <B>else</B> clrTextBk := ColorToRGB(FColorSelected);
+              <B>end</B>
+              <B>else</B>
+              <B>begin</B>
+                <Font Color="#0000DD">// the node is not selected, but is perhaps the drop target?</Font>
+                <B>if</B> Node = DropTarget <B>then</B>
+                <B>begin</B>
+                  clrTextBk := ColorToRGB(FColorSelected);
+                  <Font Color="#0000DD">//clrText := ColorToRGB(clWhite);</Font>
+                <B>end</B>
+                <B>else</B>
+                  <Font Color="#0000DD">// no, not the drop target and not selected, so draw it</Font>
+                  <Font Color="#0000DD">// either in its own color or the one of the tree</Font>
+                  <B>if</B> Node.ParentColor <B>then</B> clrTextBk := ColorToRGB(Color)
+                                      <B>else</B> clrTextBk := ColorToRGB(Node.Color);
+              <B>end</B>;
+
+              <B>if</B> <B>not</B> Node.ParentFont <B>then</B>
+              <B>begin</B>
+                FLastFont := SelectObject(nmcd.hdc, Node.Font.Handle);
+                <Font Color="#0000DD">// change font color to reflect node font setting (don't change</Font>
+                <Font Color="#0000DD">// the color for a selected node or there will be no text drawn as</Font>
+                <Font Color="#0000DD">// drag image)</Font>
+                <B>if</B> <B>not</B> (nsSelected <B>in</B> NodeStates) <B>then</B> clrText := ColorToRGB(Node.Font.Color);
+                <B>Message</B>.Result := <B>Message</B>.Result <B>or</B> CDRF_NEWFONT;
+              <B>end</B>
+              <B>else</B>
+                <B>if</B> FLastFont &lt;&gt; 0 <B>then</B>
+                <B>begin</B>
+                  SelectObject(nmcd.hdc, FLastFont);
+                  <B>Message</B>.Result := <B>Message</B>.Result <B>or</B> CDRF_NEWFONT;
+                  FLastFont := 0;
+                <B>end</B>;
+
+            <B>end</B>
+            <B>else</B> <B>Message</B>.Result := CDRF_SKIPDEFAULT; <Font Color="#0000DD">// note: no item post paint stage is entered</Font>
+          <B>end</B>;
+        CDDS_ITEMPREERASE:
+          <B>begin</B>
+            <B>Message</B>.Result := CDRF_NOTIFYPOSTERASE; <Font Color="#0000DD">// not yet supported</Font>
+          <B>end</B>;
+        CDDS_ITEMPOSTERASE:
+          <B>Message</B>.Result := CDRF_DODEFAULT; <Font Color="#0000DD">// not yet supported</Font>
+        CDDS_ITEMPOSTPAINT:
+          <B>begin</B>
+            Node := TTreeNTNode(nmcd.lItemlParam);
+            <B>if</B> assigned(FOnAfterItemPaint) <B>then</B>
+            <B>begin</B>
+              NodeStates := MakeNodeState(nmcd.uItemState);
+              FOnAfterItemPaint(Self, Node, nmcd.rc, NodeStates);
+            <B>end</B>;
+            <B>Message</B>.Result := CDRF_DODEFAULT;
+          <B>end</B>;
+        CDDS_POSTPAINT:
+          <B>begin</B>
+            <B>if</B> assigned(FOnAfterPaint) <B>then</B> FOnAfterPaint(Self);
+            <B>if</B> FLastFont &lt;&gt; 0 <B>then</B>
+            <B>begin</B>
+              SelectObject(nmcd.hdc, FLastFont);
+              FLastFont := 0;
+              <B>Message</B>.Result := CDRF_NEWFONT;
+            <B>end</B>;
+            <B>Message</B>.Result := CDRF_DODEFAULT;
+          <B>end</B>;
+        CDDS_PREERASE:
+          <B>Message</B>.Result := CDRF_DODEFAULT; <Font Color="#0000DD">// not yet supported</Font>
+        CDDS_POSTERASE:
+          <B>Message</B>.Result := CDRF_DODEFAULT; <Font Color="#0000DD">// not yet supported</Font>
+      <B>else</B> <B>Message</B>.Result := CDRF_DODEFAULT;
+      <B>end</B>;
+    NM_CLICK:
+      FClicked := True;
+    NM_RCLICK:
+      <B>begin</B>
+        FRClicked := True;
+        <B>if</B> toRightClickSelect <B>in</B> FOptions <B>then</B>
+        <B>begin</B>
+          GetCursorPos(MousePos);
+          <B>with</B> PointToSmallPoint(ScreenToClientEx(MousePos)) <B>do</B>
+          <B>begin</B>
+            FRClickNode := GetNodeAt(X, Y);
+            <B>if</B> assigned(FRClickNode) <B>and</B> <B>not</B> FRClickNode.Selected <B>then</B> ClearSelection;
+            Perform(WM_RBUTTONUP, 0, MakeLong(X, Y));
+          <B>end</B>;
+        <B>end</B>
+        <B>else</B> FRClickNode := Pointer(1);
+      <B>end</B>;
+    NM_RETURN:
+      <B>if</B> toWantReturn <B>in</B> FOptions <B>then</B>
+      <B>begin</B>
+        <B>if</B> assigned(Selected) <B>then</B>
+        <B>begin</B>
+          Node := Selected.GetNext;
+          <B>if</B> Node = <B>nil</B> <B>then</B> Node := Items.GetFirstNode;
+        <B>end</B>
+        <B>else</B> Node := Items.GetFirstNode;
+        <B>if</B> assigned(Node) <B>then</B>
+        <B>begin</B>
+          ClearSelection;
+          Node.Selected := True;
+        <B>end</B>;
+        <B>Message</B>.Result := 1;
+      <B>end</B>;
+    NM_SETFOCUS:
+      <B>begin</B>
+        Invalidate;
+        <B>if</B> FFirstSelection = <B>nil</B> <B>then</B> FFirstSelection := Selected;
+      <B>end</B>;
+    NM_KILLFOCUS:
+      Invalidate;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

@@ -1,0 +1,43 @@
+                CURRENT FIXED AND UNFIXED BUGS
+
+1. (17/11/00) Jose Studen
+  Exception "invalid variant type conversion" in Query.Locate
+when field contain NULL value. Method TZQuery.InternalLocate.
+Status: fixed
+
+2. (16/10/00) Eric Lemes
+  Protection fault in TDirIbSqlTransact.StartTransaction
+Status: unfixed
+
+3. (15/11/00) Fredrick Bartlett
+  MS SQL components can't connect with trusted user, when
+login = '', password = ''
+Status: unfixed
+
+4. (14/11/00) Dirk Murzinger
+  Problems with GetBookmark/GotoBookmark
+Status: unfixed
+
+5. (14/11/00) Constantin Lushnikov
+  For table:
+    CREATE TABLE dbo.prodate (
+      id int IDENTITY (1, 1) NOT NULL ,
+      prodate datetime NULL 
+    )
+  query 
+    SELECT * FROM prodate
+  hungs the program.
+Status: not found
+
+6. (10/10/00) Franz J Fortuny
+  Problems with OnUpdateRecord, OnApplyUpdatesError and OnPostError
+Status: unfixed
+
+7. (20/11/00) Niall R Scott, Sig
+  Problems with auto activation dataset at component load time 
+with Database and Transaction objects in datamodule.
+Status: fixed
+
+8. (21/11/00) Sergio A Kessler
+  Bugs with distortion sql queries in sql parser
+Status: fixed

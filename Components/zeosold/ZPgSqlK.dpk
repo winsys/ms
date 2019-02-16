@@ -1,0 +1,46 @@
+package ZPgSqlK;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'Zeos PostgreSQL Components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  baseclx,
+  visualclx,
+  designide,
+  dataclx,
+  ZCommonK,
+  dbdesign,
+  ZDbwareK;
+
+contains
+  ZDirPgSql in 'dbase/ZDirPgSql.pas',
+  ZLibPgSql in 'dbase/ZLibPgSql.pas',
+  ZPgSqlCon in 'dbase/ZPgSqlCon.pas',
+  ZPgSqlProp in 'dbase/ZPgSqlProp.pas',
+  ZPgSqlQuery in 'dbase/ZPgSqlQuery.pas',
+  ZPgSqlReg in 'dbase/ZPgSqlReg.pas',
+  ZPgSqlTr in 'dbase/ZPgSqlTr.pas';
+
+end.

@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>SetParentFont Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>SetParentFont method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> SetParentFont(AValue: Boolean);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNode.SetParentFont(AValue: Boolean);
+
+<B>begin</B>
+  <B>if</B> FParentFont &lt;&gt; AValue <B>then</B>
+  <B>begin</B>
+    FParentFont := AValue;
+    <B>if</B> FParentFont <B>then</B>
+    <B>begin</B>
+      FFont.Free;
+      FFont := <B>nil</B>;
+    <B>end</B>
+    <B>else</B>
+    <B>begin</B>
+      FFont := TFont.Create;
+      FFont.Assign(TreeView.Font);
+    <B>end</B>;
+    <B>if</B> <B>not</B> IsUpdating <B>then</B> FOwner.Repaint(Self);
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

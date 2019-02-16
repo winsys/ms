@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>Delete Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>Delete method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNodeList.htm">TTreeNodeList</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> Delete(<B>Index</B>: Integer);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNodeList.Delete(<B>Index</B>: Integer);
+
+<B>begin</B>
+  <B>if</B> (<B>Index</B> &lt; 0) <B>or</B> (<B>Index</B> &gt;= FCount) <B>then</B>
+  {$ifdef DFS_COMPILER_3_UP}
+    Error(SListIndexError, <B>Index</B>);
+  {$else}
+    Error(LoadStr(SListIndexError), <B>Index</B>);
+  {$endif}
+  Dec(FCount);
+  <B>if</B> <B>Index</B> &lt; FCount <B>then</B>
+    System.Move(FList[<B>Index</B> + 1], FList[<B>Index</B>], (FCount - <B>Index</B>) * SizeOf(TTreeNTNode));
+<B>End</B>;</pre></td></tr></Table>

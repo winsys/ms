@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>WMRButtonUp Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>WMRButtonUp method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> WMRButtonUp(<B>var</B> <B>Message</B>: TWMRButtonUp);</Font>
+<br>
+<Img Src="images/message.gif"> WM_RBUTTONUP<Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.WMRButtonUp(<B>var</B> <B>Message</B>: TWMRButtonUp);
+
+  <B>procedure</B> DoMouseDown(<B>var</B> <B>Message</B>: TWMMouse; Button: TMouseButton; Shift: TShiftState);
+
+  <B>begin</B>
+    <B>if</B> <B>not</B> (csNoStdEvents <B>in</B> ControlStyle) <B>then</B>
+      <B>with</B> <B>Message</B> <B>do</B> MouseDown(Button, KeysToShiftState(Keys) + Shift, XPos, YPos);
+  <B>end</B>;
+
+<B>var</B> Menu        : TPopupMenu;
+    CurrentNode : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+    AskParent   : Boolean;
+
+<B>begin</B>
+  <Font Color="#0000DD">// support for node dependend popup menus</Font>
+  <B>if</B> assigned(FOnGetPopupMenu) <B>then</B>
+  <B>begin</B>
+    CurrentNode := Selected;
+    <B>if</B> assigned(CurrentNode) <B>then</B>
+    <B>begin</B>
+      Menu := <B>nil</B>;
+      AskParent := True;
+      <B>repeat</B>
+        FOnGetPopupMenu(Self, CurrentNode, AskParent, Menu);
+        CurrentNode := CurrentNode.FParent;
+      <B>until</B> (CurrentNode = Items.FRoot) <B>or</B> assigned(Menu) <B>or</B> <B>not</B> AskParent;
+      <B>if</B> assigned(Menu) <B>then</B>
+      <B>begin</B>
+        Menu.PopupComponent := Self;
+        <B>with</B> ClientToScreen(Point(<B>Message</B>.XPos, <B>Message</B>.YPos)) <B>do</B> Menu.Popup(X, Y);
+        Exit;
+      <B>end</B>;
+    <B>end</B>;  
+  <B>end</B>;
+  <B>if</B> toRightClickSelect <B>in</B> FOptions <B>then</B> DoMouseDown(<B>Message</B>, mbRight, []);
+  <B>inherited</B>;
+<B>End</B>;</pre></td></tr></Table>

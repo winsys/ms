@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>ExpandItem Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>ExpandItem method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> ExpandItem(Expand: Boolean; Recurse: Boolean);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNode.ExpandItem(Expand: Boolean; Recurse: Boolean);
+
+<B>var</B> Flag : Integer;
+    I    : Integer;
+
+<B>begin</B>
+  TreeView.FManualNotify := True;
+  <B>try</B>
+    Flag := 0;
+    <B>if</B> Expand <B>then</B>
+    <B>begin</B>
+      <B>if</B> DoCanExpand(True) <B>then</B>
+      <B>begin</B>
+        Flag := TVE_EXPAND;
+        DoExpand(True);
+        FExpanded := True;
+      <B>end</B>;
+    <B>end</B>
+    <B>else</B>
+    <B>begin</B>
+      <B>if</B> DoCanExpand(False) <B>then</B>
+      <B>begin</B>
+        Flag := TVE_COLLAPSE;
+        DoExpand(False);
+        FExpanded := False;
+      <B>end</B>;
+    <B>end</B>;
+    TreeView_Expand(Handle, ItemId, Flag);
+  <B>finally</B>
+    TreeView.FManualNotify := False;
+  <B>end</B>;
+
+  <B>if</B> Recurse <B>then</B>
+    <B>for</B> I := 0 <B>to</B> FChildList.Count - 1 <B>do</B> FChildList[I].ExpandItem(Expand, True);
+<B>End</B>;</pre></td></tr></Table>

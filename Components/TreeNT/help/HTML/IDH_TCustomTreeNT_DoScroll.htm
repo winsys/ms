@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>DoScroll Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>DoScroll method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> DoScroll(Sender: TObject);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.DoScroll(Sender: TObject);
+
+<B>var</B> LastScrollInfo, 
+    NewScrollInfo  : TScrollInfo;
+    Offset         : Integer;
+    ScrollPages    : Boolean;
+
+<B>begin</B>
+  FScrollTimer.Enabled := False;
+  ScrollPages := False;
+  <B>if</B> FScrollTimer.Interval = 300 <B>then</B> FScrollTimer.Interval := 50;
+  <B>if</B> FScrollTimer.Interval &gt; 1 <B>then</B> FScrollTimer.Interval := 3 * FScrollTimer.Interval <B>div</B> 4
+                               <B>else</B> ScrollPages := True;
+  <B>if</B> Dragging <B>and</B> assigned(FDragObject) <B>then</B> FDragObject.HideDragImage;
+
+  <Font Color="#0000DD">// remove focus rect if we are in selection mode</Font>
+  <B>if</B> IsMouseSelecting <B>then</B> DrawFocusRect(FSelectRec.Rect);
+
+  <B>with</B> NewScrollInfo <B>do</B>
+  <B>begin</B>
+    cbSize := SizeOf(TScrollInfo);
+    fMask := SIF_POS;
+  <B>end</B>;
+  <Font Color="#0000DD">// if we are in selection mode we have to adjust the start and end points of</Font>
+  <Font Color="#0000DD">// our selection rectangle</Font>
+  <B>with</B> LastScrollInfo <B>do</B>
+  <B>begin</B>
+    cbSize := SizeOf(TScrollInfo);
+    fMask := SIF_ALL;
+    GetScrollInfo(Handle, SB_VERT, LastScrollInfo);
+    <B>if</B> sdUp <B>in</B> FScrollDirection <B>then</B>
+    <B>begin</B>
+      <B>if</B> nPos = nMin <B>then</B> Exclude(FScrollDirection, sdUp)
+                     <B>else</B>
+      <B>begin</B>
+        <B>if</B> ScrollPages <B>then</B> Perform(WM_VSCROLL, SB_PAGEUP, 0)
+                       <B>else</B> Perform(WM_VSCROLL, SB_LINEUP, 0);
+
+        <B>if</B> IsMouseSelecting <B>then</B>
+        <B>begin</B>
+          <Font Color="#0000DD">// determine the absolute position of the client window</Font>
+          <Font Color="#0000DD">// relatively to the entire canvas</Font>
+          GetScrollInfo(Handle, SB_VERT, NewScrollInfo);
+          Offset := (nPos - NewScrollInfo.nPos) * ItemHeight;
+          Inc(FSelectRec.StartY, Offset);
+          Inc(FSelectRec.Rect.Bottom, Offset);
+        <B>end</B>;
+      <B>end</B>;
+    <B>end</B>;
+    <B>if</B> sdDown <B>in</B> FScrollDirection <B>then</B>
+    <B>begin</B>
+      <B>if</B> nPos + Integer(nPage) - 1 = nMax <B>then</B> Exclude(FScrollDirection, sdDown)
+                                          <B>else</B>
+      <B>begin</B>
+        <B>if</B> ScrollPages <B>then</B> Perform(WM_VSCROLL, SB_PAGEDOWN, 0)
+                       <B>else</B> Perform(WM_VSCROLL, SB_LINEDOWN, 0);
+        <B>if</B> IsMouseSelecting <B>then</B>
+        <B>begin</B>
+          <Font Color="#0000DD">// determine the absolute position of the client window</Font>
+          <Font Color="#0000DD">// relatively to the entire canvas</Font>
+          GetScrollInfo(Handle, SB_VERT, NewScrollInfo);
+          Offset := (NewScrollInfo.nPos - nPos) * ItemHeight;
+          Dec(FSelectRec.StartY, Offset);
+          Dec(FSelectRec.Rect.Top, Offset);
+        <B>end</B>;
+      <B>end</B>;
+    <B>end</B>;
+  <B>end</B>;
+
+  <B>with</B> LastScrollInfo <B>do</B>
+  <B>begin</B>
+    GetScrollInfo(Handle, SB_HORZ, LastScrollInfo);
+    <B>if</B> sdLeft <B>in</B> FScrollDirection <B>then</B>
+    <B>begin</B>
+      <B>if</B> nPos = nMin <B>then</B> Exclude(FScrollDirection, sdleft)
+                     <B>else</B>
+      <B>begin</B>
+        Perform(WM_HSCROLL, SB_LINELEFT, 0);
+        <B>if</B> IsMouseSelecting <B>then</B>
+        <B>begin</B>
+          <Font Color="#0000DD">// the window is always scrolled 5 pixels horizontally</Font>
+          Inc(FSelectRec.StartX, 5);
+          Inc(FSelectRec.Rect.Right, 5);
+        <B>end</B>;
+      <B>end</B>;
+    <B>end</B>;
+    <B>if</B> sdRight <B>in</B> FScrollDirection <B>then</B>
+    <B>begin</B>
+      <B>if</B> nPos + Integer(nPage) - 1 = nMax <B>then</B> Exclude(FScrollDirection, sdRight)
+                                          <B>else</B>
+      <B>begin</B>
+        Perform(WM_HSCROLL, SB_LINERIGHT, 0);
+        <B>if</B> IsMouseSelecting <B>then</B>
+        <B>begin</B>
+          <Font Color="#0000DD">// the window is always scrolled 5 pixels horizontally</Font>
+          Dec(FSelectRec.StartX, 5);
+          Dec(FSelectRec.Rect.Left, 5);
+        <B>end</B>;
+      <B>end</B>;
+    <B>end</B>;
+  <B>end</B>;
+
+  <Font Color="#0000DD">// redraw focus rect if we are in selection mode</Font>
+  <B>if</B> IsMouseSelecting <B>then</B> DrawFocusRect(FSelectRec.Rect);
+  <B>if</B> Dragging <B>and</B> assigned(FDragObject) <B>then</B> FDragObject.ShowDragImage;
+  <B>if</B> FScrollDirection &lt;&gt; [] <B>then</B> FScrollTimer.Enabled := True;
+<B>End</B>;</pre></td></tr></Table>

@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>CMDrag Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>CMDrag method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> CMDrag(<B>var</B> <B>Message</B>: TCMDrag);</Font>
+<br>
+<Img Src="images/message.gif"> CM_DRAG<Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.CMDrag(<B>var</B> <B>Message</B>: TCMDrag);
+
+<B>begin</B>
+  <B>inherited</B>;
+  <B>with</B> <B>Message</B>, DragRec^ <B>do</B>
+    <B>case</B> DragMessage <B>of</B>
+      dmDragMove:
+        <B>with</B> ScreenToClientEx(Pos) <B>do</B> DoDragOver(Source, X, Y, <B>Message</B>.Result &lt;&gt; 0);
+      dmDragLeave:
+        <B>begin</B>
+          TDragObject(Source).HideDragImage;
+          <B>if</B> assigned(DropTarget) <B>and</B> FDragImage.Dragging <B>then</B> DropTarget.DropTarget := False;
+          DropTarget := <B>nil</B>;
+          TDragObject(Source).ShowDragImage;
+        <B>end</B>;
+      dmDragDrop:
+        <B>begin</B>
+          FDragObject := <B>nil</B>;
+          FDragged := False;
+          FExpandTimer.Enabled := False;
+        <B>end</B>;
+    <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

@@ -1,0 +1,20 @@
+TCompress File and Database Compression for Delphi and C++ Builder
+
+TCompress provides thread-safe native components for the creation
+of  multi-file compressed archives, as well as database, file,
+resource and in-memory compression using streams.
+Three compression methods (RLE, LZH and LZH5) are built in, with
+"hooks" for the easy addition of custom compression formats.
+
+TCompress also includes drop 'n play components for automatic
+database blob, image, rich text and memo compression, based on the
+VCL's TDBMemo, TDBRichText and TDBImage components.
+
+Images compress by up to 99% when using LZH, hence there is a
+massive saving in disk space and disk or network access when
+using these components. Supports Delphi 1.0, 2.0, 3.0, 4.0 and
+C++ Builder 1.0, 3.0. Component source is optionally available
+for registered users.
+
+Latest version and support info: http://www.spis.co.nz/compress.htm
+

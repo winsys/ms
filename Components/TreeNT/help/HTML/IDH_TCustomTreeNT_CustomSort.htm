@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>CustomSort Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>CustomSort method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Function</B> CustomSort(SortProc: TTVCompare; Data: Longint): Boolean;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>function</B> TCustomTreeNT.CustomSort(SortProc: TTVCompare; Data: Longint): Boolean;
+
+<B>var</B> SortCB : TTVSortCB;
+    Node   : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+
+<B>begin</B>
+  Result := False;
+  <B>if</B> HandleAllocated <B>then</B>
+  <B>begin</B>
+    <B>with</B> SortCB <B>do</B>
+    <B>begin</B>
+      <B>if</B> assigned(SortProc) <B>then</B> lpfnCompare := SortProc
+                            <B>else</B> lpfnCompare := @DefaultTreeNTSort;
+      hParent := TVI_ROOT;
+      lParam := Data;
+      Result := TreeView_SortChildrenCB(Handle, SortCB, 0);
+    <B>end</B>;
+
+    <B>if</B> assigned(SortProc) <B>then</B> Items.FRoot.FChildList.Sort(SortProc, Data)
+                          <B>else</B> Items.FRoot.FChildList.Sort(DefaultListSort, Data);
+
+    <B>if</B> Items.Count &gt; 0 <B>then</B>
+    <B>begin</B>
+      Node := Items.GetFirstNode;
+      <B>while</B> Node &lt;&gt; <B>nil</B> <B>do</B>
+      <B>begin</B>
+        <B>if</B> Node.Count &gt; 0 <B>then</B> Node.CustomSort(SortProc, Data);
+        Node := Node.GetNext;
+      <B>end</B>;
+    <B>end</B>;
+  <B>end</B>;
+
+  <Font Color="#0000DD">// the item cache is no longer valid</Font>
+  Items.InvalidateItemCache;
+<B>End</B>;</pre></td></tr></Table>

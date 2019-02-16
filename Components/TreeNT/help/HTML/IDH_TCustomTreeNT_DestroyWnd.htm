@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>DestroyWnd Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>DestroyWnd method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> DestroyWnd;</Font>
+<br>
+<Img Src="images/override.gif"> <Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.DestroyWnd;
+
+<B>var</B> Node : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+
+<B>begin</B>
+  FStateChanging := True;
+  <B>if</B> Items.Count &gt; 0 <B>then</B>
+  <B>begin</B>
+    FMemStream := TMemoryStream.Create;
+    Items.WriteData(FMemStream);
+    FMemStream.Position := 0;
+    Node := GetTopItem;
+    <B>if</B> Node &lt;&gt; <B>nil</B> <B>then</B> FSaveTopIndex := Node.AbsoluteIndex;
+    Node := Selected;
+    <B>if</B> Node &lt;&gt; <B>nil</B> <B>then</B> FSaveIndex := Node.AbsoluteIndex;
+  <B>end</B>;
+  FSaveIndent := Indent;
+  FSaveItemHeight := ItemHeight;
+  <B>inherited</B> DestroyWnd;
+<B>End</B>;</pre></td></tr></Table>

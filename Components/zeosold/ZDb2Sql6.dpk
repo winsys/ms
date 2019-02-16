@@ -1,0 +1,43 @@
+package ZDb2Sql6;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'Zeos DB2 Components'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  designide,
+  ZDbware6,
+  ZCommon6;
+
+contains
+  ZDb2SqlTr in 'dbase\ZDb2SqlTr.pas',
+  ZDb2SqlProp in 'dbase\ZDb2SqlProp.pas',
+  ZDb2SqlQuery in 'dbase\ZDb2SqlQuery.pas',
+  ZDb2SqlReg in 'dbase\ZDb2SqlReg.pas',
+  ZDb2SqlCon in 'dbase\ZDb2SqlCon.pas',
+  ZDirDb2Sql in 'dbase\ZDirDb2Sql.pas',
+  ZLibDb2Sql in 'dbase\ZLibDb2Sql.pas';
+
+end.

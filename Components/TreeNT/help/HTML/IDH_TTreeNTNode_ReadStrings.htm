@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>ReadStrings Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>ReadStrings method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Function</B> ReadStrings(<B>var</B> S: PChar; CurrentLevel: Integer): Integer;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>function</B> TTreeNTNode.ReadStrings(<B>var</B> S: PChar; CurrentLevel: Integer): Integer;
+
+<Font Color="#0000DD">// decomposes the provided string and builds new nodes from it</Font>
+
+<B>var</B> NewLevel   : Integer;
+    NewText    : <B>String</B>;
+    NewChild   : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+    RaiseException: Boolean;
+
+  <B>function</B> GetString(<B>var</B> S: PChar): <B>String</B>;
+
+  <B>var</B> Start : PChar;
+
+  <B>begin</B>
+    Start := S;
+    <B>while</B> <B>not</B> (S^ <B>in</B> [#0, #10, #13]) <B>do</B> Inc(S);
+    SetString(Result, Start, S - Start);
+    <B>while</B> (S^ &lt;&gt; #0) <B>and</B> (S^ <B>in</B> [#13, #10]) <B>do</B> Inc(S);
+  <B>end</B>;
+
+<B>begin</B>
+  NewChild := <B>nil</B>;
+  <B>repeat</B>
+    NewLevel := 0;
+    NewText := GetString(S);
+    Inc(CurrentLine);
+    <B>if</B> Length(NewText) &gt; 0 <B>then</B> NewChild := FOwner.AddChild(Self, NewText)
+                           <B>else</B> Break;
+    <B>while</B> (S^ &lt;&gt; #0) <B>and</B> (S^ <B>in</B> [<Font Color="#119911">' '</Font>, #9]) <B>do</B>
+    <B>begin</B>
+      Inc(S);
+      Inc(NewLevel);
+    <B>end</B>;
+    <B>if</B> NewLevel - CurrentLevel &gt; 1 <B>then</B>
+    <B>begin</B>
+      RaiseException := True;
+      <B>if</B> Assigned(Owner.Owner.FOnLevelError) <B>then</B>
+        Owner.Owner.FOnLevelError(CurrentLine, RaiseException);
+      <B>if</B> RaiseException <B>then</B>
+        TreeNTError(sInvalidLevel);
+    <B>end</B>;
+    <B>if</B> (NewLevel &gt; CurrentLevel) <B>and</B> assigned(NewChild) <B>then</B> NewLevel := NewChild.ReadStrings(S, NewLevel);
+  <B>until</B> NewLevel &lt; CurrentLevel;
+  Result := NewLevel;  
+<B>End</B>;</pre></td></tr></Table>

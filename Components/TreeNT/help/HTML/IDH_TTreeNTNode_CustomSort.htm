@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>CustomSort Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>CustomSort method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Function</B> CustomSort(SortProc: TTVCompare; Data: Longint): Boolean;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>function</B> TTreeNTNode.CustomSort(SortProc: TTVCompare; Data: Longint): Boolean;
+
+<B>var</B> SortCB : TTVSortCB;
+
+<B>begin</B>
+  <B>with</B> SortCB <B>do</B>
+  <B>begin</B>
+    <B>if</B> assigned(SortProc) <B>then</B> lpfnCompare := SortProc
+                          <B>else</B> lpfnCompare := @DefaultTreeNTSort;
+    hParent := ItemId;
+    lParam := Data;
+  <B>end</B>;
+  Result := TreeView_SortChildrenCB(Handle, SortCB, 0);
+
+  <Font Color="#0000DD">// since each node maintains its own child list, it must sort</Font>
+  <Font Color="#0000DD">// it explicitely</Font>
+  <B>if</B> assigned(SortProc) <B>then</B> FChildList.Sort(SortProc, Data)
+                        <B>else</B> FChildList.Sort(DefaultListSort, Data);
+
+  <Font Color="#0000DD">// the item cache is no longer valid</Font>
+  FOwner.InvalidateItemCache;
+<B>End</B>;</pre></td></tr></Table>

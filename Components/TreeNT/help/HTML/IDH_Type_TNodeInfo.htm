@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>TNodeInfo Type</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>TNodeInfo Type</B></Font></TD></TR></Table><P><B>Unit</B><Br><A HREF="IDH_Unit_TreeNT.htm">TreeNT</A><P><B>Declaration</B><Br><PRE>TNodeInfo = <B>packed</B> <B>record</B>
+                ImageIndex     : Integer;
+                SelectedIndex  : Integer;
+                StateIndex     : Integer;
+                OverlayIndex   : Integer;
+                IntegralHeight : Integer;
+                CheckState     : <A HREF="IDH_Type_TCheckState.htm">TCheckState</A>;
+                CheckType      : <A HREF="IDH_Type_TCheckType.htm">TCheckType</A>;
+                Enabled        : Boolean;
+                Expanded       : Boolean;
+                Selected       : Boolean;
+                Data           : Pointer;
+                Count          : Integer;
+                Color          : TColor;
+                ParentColor    : Boolean;
+                ParentFont     : Boolean;
+                FontData       : TFontData;
+                FontColor      : TColor;
+                Text           : <B>String</B>[255];
+              <B>end</B>;</PRE>

@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>GetHitTestInfoAt Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>GetHitTestInfoAt method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Function</B> GetHitTestInfoAt(X, Y: Integer): <A HREF="IDH_Type_THitTests.htm">THitTests</A>;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>function</B> TCustomTreeNT.GetHitTestInfoAt(X, Y: Integer): <A HREF="IDH_Type_THitTests.htm">THitTests</A>;
+
+<B>var</B> HitTest : TTVHitTestInfo;
+
+<B>begin</B>
+  Result := [];
+  <B>with</B> HitTest <B>do</B>
+  <B>begin</B>
+    pt.X := X;
+    pt.Y := Y;
+    TreeView_HitTest(Handle, HitTest);
+    <B>if</B> (flags <B>and</B> TVHT_ABOVE) &lt;&gt; 0 <B>then</B> Include(Result, htAbove);
+    <B>if</B> (flags <B>and</B> TVHT_BELOW) &lt;&gt; 0 <B>then</B> Include(Result, htBelow);
+    <B>if</B> (flags <B>and</B> TVHT_NOWHERE) &lt;&gt; 0 <B>then</B> Include(Result, htNowhere);
+    <B>if</B> (flags <B>and</B> TVHT_ONITEM) &lt;&gt; 0 <B>then</B> Include(Result, htOnItem);
+    <B>if</B> (flags <B>and</B> TVHT_ONITEMBUTTON) &lt;&gt; 0 <B>then</B> Include(Result, htOnButton);
+    <B>if</B> (flags <B>and</B> TVHT_ONITEMICON) &lt;&gt; 0 <B>then</B> Include(Result, htOnIcon);
+    <B>if</B> (flags <B>and</B> TVHT_ONITEMINDENT) &lt;&gt; 0 <B>then</B> Include(Result, htOnIndent);
+    <B>if</B> (flags <B>and</B> TVHT_ONITEMLABEL) &lt;&gt; 0 <B>then</B> Include(Result, htOnLabel);
+    <B>if</B> (flags <B>and</B> TVHT_ONITEMRIGHT) &lt;&gt; 0 <B>then</B> Include(Result, htOnRight);
+    <B>if</B> (flags <B>and</B> TVHT_ONITEMSTATEICON) &lt;&gt; 0 <B>then</B> Include(Result, htOnStateIcon);
+    <B>if</B> (flags <B>and</B> TVHT_TOLEFT) &lt;&gt; 0 <B>then</B> Include(Result, htToLeft);
+    <B>if</B> (flags <B>and</B> TVHT_TORIGHT) &lt;&gt; 0 <B>then</B> Include(Result, htToRight);
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

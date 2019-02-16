@@ -1,0 +1,325 @@
+                                      C H A N G E S
+
+(SS) - Sergey Seroukhov [seroukhov@mail.ru]
+(SH) - Steve Howe [howe@carcass.dhs.org]
+(MD) - Martijn van Dijk [martijn@hardworks.nl]
+(DE) - David Ecker [david@ecker-software.de]
+(FJ) - Faraj Jbira [jfourat@hotmail.com]
+
+5.3.0 beta (08/07/01)
+---build 5
+- (FJ) Fixed bug in TZDataset.ParamsRequery
+- (FJ) Fixed bug in TZDataset.InternalInitFieldDefs
+- (FJ) Added Interbase BDE like components to other directory
+- (FJ) Added TZDatabase.GetFieldNames method
+- (FJ) Fixed Interbase BCD field type support
+- (FJ) Added new LinkFields syntax for compatibility with BDE
+- (SS) Now RecordCount shows correct value but fetches all records
+- (SS) Ported to Kylix components for Interbase
+---build 4
+- (SS) Fixed duplicate resource error under Delphi6 and Kylix (Thanks to Vladimir Krinitsin)
+- (SS) Applied fix for mysql affected rows by Louis Louw 
+- (SS) Fixed bugs in TZDataSet.LoadFromFile and TZDataset.SaveToFile methods
+- (SS) Fixed bug in TZMonitor.Destroy
+- (FJ) Added macroses to TZDataset
+- (FJ) Added checking of correct updates
+- (SS) Fixed bug in TDirIbSqlConnect.CreateDatabase (Thanks to Marcin Wojda)
+- (SS) Fixed bug with DecimalSeparator (Thanks to Jose Carlos Santiago Veiga Junior)
+- (SS) Added Params to TZUpdateSql (Thanks to Jose Carlos Santiago Veiga Junior)
+- (SS) Changed TZDataset.FlushUpdates and fixed post updates behavior (Thanks to Bill McCormick)
+- (SS) Fixed some data conversion bugs in TZUpdateSql
+- (SS) Fixed DateTime fields sorting
+---build 3
+- (SS) Fixed TZDataset.CancelUpdates (Thanks to Cayetano Gomez)
+- (FJ) Fixed date processing for Interbase
+- (FJ) Removed dependences from BDE libraries
+- (SS) Added new icons set by Alexander
+---build 2
+- (SS) Fixed bug with reading external blobs
+- (FJ) Changed TZIbSqlStoredProc
+- (MD) Changed loading scheme of native dlls
+- (SS) Added additional methods (CreateTable, DeleteTable, EmptyTable, etc) 
+       to TZIbSqlTable by Alexander Momot
+---build 1
+- (SS) Added components for DB2
+- (SS) Added SBatchSql component by Sergey Merkuriev to companion tools
+
+5.2.5 beta (20/05/01)
+---build 1
+- (FJ) TZQuery now can add filter expression to SQL where, 
+  when doSqlFilter in Options
+- (FJ) TZQuery now can handle simple's constraints expression using TZparser
+- (FJ) "Starting with" function, added in TZparser
+- (SS) Ported to Kylix components for MySql and PostgreSql
+---build 2
+- (SS) Fixed bug in TDirPgSqlQuery.FieldSize (Thanks to Michal Niklas)
+- (SS) Fixed bugs in TZDataset.SetDatabase and TZDataset.SetTransact (Thanks to Gianfranco Masia)
+- (SS) Added transact isolation level for Interbase
+- (SS) Added cursor fetch row by row for PostgreSql
+--build 3
+- (SS) Fixed monitoring for Interbase
+- (SS) Fixed bug with sql filters (Thanks to John Correa)
+--build 4
+- (SS) Added packages for Delphi 6
+- (SS) Added plain API for DB2 (ZLibDb2Sql.pas)
+- (FJ) Fixed bugs in TFieldTime processing
+- (SS) Fixed posting date values to Oracle database (Thanks Roman Zahorbenski)
+- (SS) Added NO_GUI definition to Zeos.inc to turn on/off GUI specified features
+-- build 5
+- (SS) Fixed bug in TZBatchSql (Thanks to Panu Hiltunen)
+- (SS) Applied patch for MySql memo fields by Paul Cadach
+
+5.2.4 beta (28/03/01)
+- (MD) Added MS SQL StoredProc component
+- (SH) Fixed Lexical scanners (LF processing and CurrPos)
+- (SH) Added pgsql_events TZPgSqlNotify example
+- (SH) Fixed several TZPgSqlNotify problems
+- (SH) Rewrote TZtransact.BatchExecSql to use new lexical scanners
+- (SH) Added TZTransact.BatchStopOnError event property
+- (SH) Added TZTransact OnBeforeConnect,  OnBeforeDisconnect,
+       OnAfterConnect, OnAfterDisconnect properties
+- (SH) Added TZPgSqlTransact.Notice property
+- (SS) Rewrote new lexical scanners (made modular)
+- (SS) Added 'scanner' example for testing new lexical scanners
+- (FJ) Added support for Numeric(x,n), Time and Date field IB 6 dialect 3
+- (FJ) Added TZIbSqlStoredProc
+- (FJ) Added TZIbSqlNotify
+
+5.2.3 beta (01/02/01)
+- (SS) Fixed bug with NULL values in Query.Filter
+- (SS) Fixed =NULL to IS NULL in where clauses in TZUpdateSql
+- (SS) Fixed UpdateSql and OnUpdateRecord implementation
+- (SS) Applied fix for LinkRequery by Gianfranco Masia
+- (MD) Changed TDirMsSqlQuery.Open implementation
+- (DE) Fixed MySql timestamp and numeric handling routines
+- (SS) Added new lexical scanners (ZScanner.pas, ZSqlScanner.pas)
+
+5.2.2 beta (17/01/01)
+- (SS) Fixed exceptions in Interbase DATE convertions 
+  (Thanks Jaroslaw Smyczyñski)
+- (SS) Fixed ISO8859-2 -> CP1250 translation tables 
+  (Thanks Rostislav Opocensky and Branislav Katreniak)
+- (SH) Fixed PostgreSql MONEY field type processing
+- (SS) Added Oid (RowId) support for PostgreSql
+- (SH) Updated LIBPQ.DLL, added some API functions
+- (SS) PostgreSql interval field type was changed to ftString
+  (Thanks to Michal Niklas)
+- (SS) Fixed 4096 blobs limit for MS SQL
+- (SS) Fixed bug in IsMatch function (Thanks Michael Donning)
+- (SS) Added new libmysql.dll and mysql compression support
+  (Thanks Paul Cadach)
+- (SS) Added soStoreResult option for MS SQL components
+
+5.2.1 beta (15/12/00)
+- (SS) Fixed bug in sql parser
+- (SS) Added Interbase dialect 3 Date type support
+- (SH) Added PID property and Reset method to TZPgSqlTransact
+- (SH) Changed TDirPgSqlTransact.Status implementation
+- (SS) Fixed bug in sql records buffer
+- (SH) Added TZPgSqlNotify component
+- (SH) Added TZPgSqlTransact.TransIsolation property
+- (SS) Changed string resources implementation
+- (SS) Fixed some memory leaks (Thanks Johannes Berg)
+
+5.2.0 beta (1/12/00)
+- Added Oracle8 components
+- Changed TZXXXSqlMonitor to TZMonitor
+- Fixed auto activation Dataset with Database and Transaction
+  objects in Datamodule
+- Fixed "Invalid type convertion" exception on Null vields in 
+  Locate (Thanks Joze Studen)
+- Added Cancel flag into OnProgress event
+- Changed SqlParser implementation
+- Changed SqlBuffer implementation. Added LIST_MULTIPLE_BLOCKS
+  and LIST_BLOCK_SIZE constants in Zeos.inc.
+- Added AutoInc fields support for MySql, PostgreSql and MS SQL)
+  (Turn on doEnableAutoInc in Query.Options)
+- Fixed problems with locating on date fields
+- Added MAX_STRING_SIZE constant into Zeos.inc
+- Fixed Oracle TableName property editor (Thanks to Grzegorz Arkit)
+- Fixed bug with filter records
+
+5.1.9 beta (10/11/00)
+- Fixed DateTime values in filters
+- Fixed bug in sorting string fields with international characters
+- Fixed bug in locating fields with partial key
+- Added NULL constant to TZParser
+- Fixed tabs in sql queries (Thanks Ingemar Magnusson)
+- Fixed error messages from MS SQL
+- Changed MS SQL timestamp to TBinaryField
+- Fixed writing memo fields with encoding (Thanks Ivan Babikov)
+- Fixed bug on refresh MS SQL query
+- Fixed bugs in Master-Detail links on closing master query
+- Fixed bugs in Master-Detail cascade updates
+
+5.1.8 beta (18/10/00)
+- Fixed record count on Filtered recordsets
+- Fixed failt in ZDirMySql (Thanks Alari Aho)
+- Avoid warning about unsupported Comp type
+- Fixed bug in query parameters
+- Added Query.BookmarkValid method
+- Fixed mysql_options function definition (Thanks Sig)
+
+5.1.7 beta (15/10/00)
+- Added AutoIncrement fields for Interbase
+- Added NCHAR and NVARCHAR field types for MS SQL
+- Fixed bug with field length in MS SQL components
+- Fixed MYSQL enum fields bug
+- Fixed problems in MS SQL Master-Detail Links 
+- Fixed Interbase DATE(TIMESTAMP) fields
+- Fixed reading blobs in Interbase (Thanks Andrzej Posiadala) 
+
+5.1.6 beta (04/10/00)
+- Fixed problem with 'SELECT OUTFILE' for MySql
+- Changed field names processing
+- Added Memo fields convertion
+- Fixed processing Case Sensitive idents for PostgreSql and MS SQL
+
+5.1.5 beta (22/09/00)
+- Added packages for C++ Builder 5.0
+- Replaced TUpdateRecordTypes to TZUpdateRecordType in ShowRecordType prop
+
+5.1.4 beta (19/09/00)
+- Simplified opening query for read-only selects
+- Fixed time values distortion
+- Fixed clearing spaces inside strings in DELETE_QUERY_SPACES mode
+- Replaced EAbort exception when query is empty
+- Fixed double connections error
+- Fixed disconnect in MS SQL components
+
+5.1.3 beta (14/09/00)
+- Added DEFAULT_STRING_SIZE constant
+- Fixed bug with Interbase NUMERIC fields
+- Fixed bug with inserting NULL fields
+- Fixed problem with '::' in sql parser
+- Fixed bug 'variant is not an array' in Refresh
+- Fixed bug in OnUpdateRecord event processing
+- Added TField.Requered filling
+
+5.1.2 beta (06/09/00)
+- Changed TXXXSqlConnect.Connect behaviour
+- Fixed bug in TMySqlQuery with UseResults
+- Fixed connect via IPAddr to PostgreSql server (Thanks Fredrick Bartlett)
+- Added LargeInt field type 
+- Fixed bug with quotes in sql query parameters
+
+5.1.1 beta (28/08/00)
+- Fixed bug in loading blob data (Thanks Savin Gorup)
+- Fixed bug with boolean fields
+- Fixed bug in master-detail links
+- Added MS SQL blobs support
+
+5.1.0 beta (24/08/00)
+- Added direct lowlevel plain and class API for MS SQL
+- Added Croatian string resources by Davor Stare
+- Added components for direct MS SQL access
+- Added Hungary string resources by Gabor Berenyi
+
+5.0.7 beta (22/08/00)
+- Fixed bug in update NULL fields
+- Added Dutch string resources by Ralf Paredis
+- Added Spanish resources by Jose Juste Jordan
+- Fixed loop forever in FlushBuffer (Thanks Olav Lindkjolen)
+- Fixed commit/rollback showing in TZXXXSqlMonitor.
+
+5.0.6 beta (09/08/00)
+- Fixed TZDatabase.OnAfterConnect event invoking
+- Fixed processing MySql char(xx) binary fields (Thanks Savin Gorup)
+- Added PostgreSql abstime and interval field types
+- Fixed bug in Sql Parser with subselects
+- Fixed sql query params in TZDataset.ExecSql
+- Added TZPgSqlTransact.TransactSafe property to turn on/off
+  PostgreSql transactions
+- Fixed bug in Sql Parser with Sql query params
+- Fixed cancel after update fields
+- Added DELETE_QUERY_SPACES define to turn on/off white spaces
+  deletions from sql queries
+
+5.0.5 beta (08/08/00)
+- Fixed fault on TDatabase deleting in design time
+- Fixed bug in key fields defining
+- Added Koi8-U encoding by Sig.
+- Fixed bug in sql params
+- All controls like TZParser, TZFindDialog, TZFilterDialog, 
+  TZDbGrid, TZDbImage, TZDbHexEdit are moved to separate library
+  "Zeos Controls"
+- Added OnProgress event in Datasets
+- Fixed bug with MySql UseResults
+- Fixed bug with sql calc fields
+
+5.0.4 beta (04/08/00)
+- Fixed packages for C++Builder 4.0
+- Added packages for C++Builder 5.0 by Savin Gorup 
+- Fixed memory leak with FilterBuffer (Thanks Bjarte Vasstrand)
+- Rewritten SQLs plain API units
+- Now trimming right spaces for Char fields
+- Fixed bug with ';' delimiter in Sql parser
+- Fixed IndexDefs and FieldDefs behaviour
+- Added TZDbImage component which supports Bitmap, Jpeg and Gif
+  images
+- Fixed bug in MySql blobs which contains zero bytes.
+
+5.0.3 beta (02/08/00)
+- Fixed bugs with extra spaces in Sql parser
+- Fixed bug with date fields processing
+- Eliminate some memory leaks
+- Fixed rows duplication
+- Fixed behavior on posting updates fail
+
+5.0.2 beta (01/08/00)
+- Fixed bugs in sorting field and Index properties
+- Fixed bug in ZFilterDialog and ZFindDialog
+- Now dataset restores sorting after insert or update
+- Added TZHexEdit and TZDbHexEdit controls
+- Fixed bug with LIMIT, HAVING etc keyword in SqlParser
+- Now Sql parser escape SELECT keywords like: ALL, DISTINCTROW,
+  only for MySql: STRAIGHT_JOIN, SQL_XXX_RESULT, HIGH_PRIORITY.
+- Added processing UNION, INTERSECT, EXCEPT into Sql Parser
+
+5.0.1 alpha (29/07/00)
+- Implemented SaveToStream, LoadFromStream. 
+  LoadFromStream now updates records with coincident unique keys.
+- Very optimized master-detail links. Now using on-client filtering
+  is more preferred.
+- Implemented CascadeUpdates and CascadeDeletes
+
+5.0.0 prealpha (05/07/00)
+- Completely rewrited TZDataset, some code extract into TZSqlParser
+  and TZSqlBuffer classes
+- Added Transactions, TransactionCount, DefaultTransaction, Datasets, 
+  DatasetCount properties into TZDatabase.
+
+4.0.10 (30/06/00)
+- Added into TZDatabase CreateDatabase and DropDatabase methods,
+  BeforeCreate, BeforeDrop, AfterCreate and AfterDrop events
+
+4.0.9 (25/06/00)
+- Fixed bug in sorting fields
+- Added MySql Transactions Support (TransactSafe property)
+- Fixed exception in TDirIbSqlTransaction.StartTransaction
+  (Thanks Ungod)
+- Changed InternalLocate function
+- Removed doCheckNull, instead added doAutoFillDefs
+  if doAutoFillDefs turn on, component automaticaly fills
+  not nulls and default fields, otherwise you should fill
+  not nulls fields manually or receive exception
+- All 0000-00-00 dates component correct to 0001-01-01
+
+4.0.0 - 4.0.8 (30/05/00)
+- Added direct Interbase components
+- Rewrite Lowlevel class API
+- MySqlDataset now demands MySqlTransact
+- Removed Zeos Transact Sql support
+- Added Italian resources (Thanks Enrico Gaggero)
+- Fixed bug in sql parser (extract table names)
+- Fixed bug in TDirQuery.FieldAlias 
+- Fixed bug in TDirQuery.FieldIndex
+- Optimized property editors
+- Added LinkFields property editor
+- Components registration move to separate files
+- Made support Delphi 3
+- Improved find dialog box (Thanks to Tonchi Grgin)
+- Fixed Interbase Decimal field type processing
+- Added MIN_FETCH_ROWS const
+- Added LinkOptions.loAlwaysResync option, and improved
+  Master-Detail dataset synchronization

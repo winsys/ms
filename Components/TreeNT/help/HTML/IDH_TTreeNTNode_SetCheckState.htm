@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>SetCheckState Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>SetCheckState method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> SetCheckState(Value: <A HREF="IDH_Type_TCheckState.htm">TCheckState</A>);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNode.SetCheckState(Value: <A HREF="IDH_Type_TCheckState.htm">TCheckState</A>);
+
+<Font Color="#0000DD">// sets the check state of the node according to the given value and the</Font>
+<Font Color="#0000DD">// parent's check type</Font>
+
+<B>var</B> I : Integer;
+
+<B>begin</B>
+  <Font Color="#0000DD">// nothing happens if the node is either disabled, not allowed to change</Font>
+  <Font Color="#0000DD">// its state or the state type of its parent is ctNone</Font>
+  <B>if</B> FEnabled <B>and</B> TreeView.CanCheck(Self) <B>then</B>
+  <B>begin</B>
+    <B>case</B> FParent.FCheckType <B>of</B>
+      <Font Color="#0000DD">// standard checkbox, simply check or uncheck it</Font>
+      ctCheckBox:
+        <B>begin</B>
+          <B>if</B> Value <B>in</B> [csChecked, csCheckedGrayed] <B>then</B>
+          <B>begin</B>
+            FCheckState := csChecked;
+            TreeView.SetCheckImage(Self, ckCheckChecked);
+          <B>end</B>
+          <B>else</B>
+          <B>begin</B>
+            FCheckState := csUnchecked;
+            TreeView.SetCheckImage(Self, ckCheckEmpty);
+          <B>end</B>;
+          <Font Color="#0000DD">// propagate state up to the parent</Font>
+          <B>if</B> (FParent &lt;&gt; FOwner.FRoot) <B>and</B>
+             (FParent.FParent.FCheckType = ctCheckBoxGrayed) <B>then</B> CheckParentCheckState(FParent);
+        <B>end</B>;
+      <Font Color="#0000DD">// check state change with additional consequences for check states of the children </Font>
+      ctCheckBoxGrayed:
+        <B>begin</B>
+          FCheckState := Value;
+          <B>case</B> Value <B>of</B>
+            csUnchecked:
+              TreeView.SetCheckImage(Self, ckCheckEmpty);
+            csChecked:
+              TreeView.SetCheckImage(Self, ckCheckChecked);
+            csCheckedGrayed:
+              TreeView.SetCheckImage(Self, ckCheckGrayed);
+          <B>end</B>;
+          <Font Color="#0000DD">// propagate state down to the children</Font>
+          <B>if</B> FCheckType <B>in</B> [ctCheckBox, ctCheckBoxGrayed] <B>then</B>
+          <B>case</B> Value <B>of</B>
+            csUnchecked:
+              <B>for</B> I := 0 <B>to</B> Count - 1 <B>do</B> Item[I].CheckState := csUnchecked;
+            csChecked:
+              <B>for</B> I := 0 <B>to</B> Count - 1 <B>do</B> Item[I].CheckState := csChecked;
+          <B>end</B>;
+          <Font Color="#0000DD">// propagate state up to the parent</Font>
+          <B>if</B> (FParent &lt;&gt; FOwner.FRoot) <B>and</B>
+             (FParent.FParent.FCheckType = ctCheckBoxGrayed) <B>then</B> CheckParentCheckState(FParent);
+        <B>end</B>;
+      <Font Color="#0000DD">// radio button check state change</Font>
+      ctRadioButton:
+        <B>if</B> Value <B>in</B> [csChecked, csCheckedGrayed] <B>then</B>
+        <B>begin</B>
+          FCheckState := csChecked;
+          TreeView.SetCheckImage(Self, ckRadioChecked);
+          <B>for</B> I := 0 <B>to</B> FParent.Count - 1 <B>do</B>
+            <B>if</B> FParent.Item[I] &lt;&gt; Self <B>then</B>
+            <B>begin</B>
+              FParent.Item[I].FCheckState := csUnchecked;
+              <B>if</B> FParent.Item[I].Enabled <B>then</B> TreeView.SetCheckImage(FParent.Item[I], ckRadioEmpty)
+                                         <B>else</B> TreeView.SetCheckImage(FParent.Item[I], ckRadioDisabled);
+            <B>end</B>;
+        <B>end</B>;
+    <B>end</B>;
+    TreeView.Check(Self);
+  <B>end</B>;  
+<B>End</B>;</pre></td></tr></Table>

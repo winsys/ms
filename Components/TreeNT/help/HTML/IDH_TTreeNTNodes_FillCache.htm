@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>FillCache Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>FillCache method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNodes.htm">TTreeNTNodes</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> FillCache;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNodes.FillCache;
+
+<Font Color="#0000DD">// fill item cache to speed up retrieving nodes, if not already done</Font>
+
+  <B>procedure</B> AddToCache(Node: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>);
+
+  <B>var</B> I : Integer;
+  
+  <B>begin</B>
+    <B>if</B> assigned(Node) <B>then</B>
+      <B>for</B> I := 0 <B>to</B> Node.FChildList.Count - 1 <B>do</B>
+      <B>begin</B>
+        FItemCache.Add(Node.FChildList[I]);
+        AddToCache(Node.FChildList[I]);
+      <B>end</B>;
+  <B>end</B>;
+
+<B>var</B> I : Integer;
+
+<B>begin</B>
+  <B>if</B> FItemCache = <B>nil</B> <B>then</B>
+  <B>begin</B>
+    FItemCache := TTreeNodeList.Create;
+    FItemCache.Capacity := Count;
+    <B>for</B> I := 0 <B>to</B> FRoot.Count - 1 <B>do</B>
+    <B>begin</B>
+      FItemCache.Add(FRoot[I]);
+      AddToCache(FRoot[I]);
+    <B>end</B>;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>Create Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>Create method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNodes.htm">TTreeNTNodes</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Constructor</B> Create(AOwner: <A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A>);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>constructor</B> TTreeNTNodes.Create(AOwner: <A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A>);
+
+<B>begin</B>
+  <B>inherited</B> Create;
+  FOwner := AOwner;
+  FRoot := TTreeNTNode.Create(Self);
+  FRoot.FExpanded := True; <Font Color="#0000DD">// expanded state is used for visibility tests</Font>
+  FSelection := TTreeNodeList.Create;
+  FLastSelLevel := -1;
+<B>End</B>;</pre></td></tr></Table>

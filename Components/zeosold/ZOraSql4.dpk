@@ -1,0 +1,43 @@
+package ZOraSql4;
+
+{$R *.RES}
+{$ALIGN ON}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $00400000}
+{$DESCRIPTION 'Zeos Oracle8 Components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  Vcl40,
+  Vcldb40,
+  ZCommon4,
+  ZDbware4;
+
+contains
+  ZOraSqlTr in 'dbase\ZOraSqlTr.pas',
+  ZLibOraSql in 'dbase\ZLibOraSql.pas',
+  ZOraSqlCon in 'dbase\ZOraSqlCon.pas',
+  ZOraSqlProp in 'dbase\ZOraSqlProp.pas',
+  ZOraSqlQuery in 'dbase\ZOraSqlQuery.pas',
+  ZOraSqlReg in 'dbase\ZOraSqlReg.pas',
+  ZDirOraSql in 'dbase\ZDirOraSql.pas';
+
+end.

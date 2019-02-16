@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>WMLButtonDown Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>WMLButtonDown method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> WMLButtonDown(<B>var</B> <B>Message</B>: TWMLButtonDown);</Font>
+<br>
+<Img Src="images/message.gif"> WM_LBUTTONDOWN<Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.WMLButtonDown(<B>var</B> <B>Message</B>: TWMLButtonDown);
+
+<Font Color="#0000DD">// handles all mouse button clicks (left button)</Font>
+
+<B>var</B> LastFocused, 
+    Node          : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+    OldSelState, 
+    NewSelState   : <A HREF="IDH_Type_TSelectType.htm">TSelectType</A>;
+    Allowed       : Boolean;
+    ShiftState    : TShiftState;
+    HitInfo       : <A HREF="IDH_Type_THitTests.htm">THitTests</A>;
+
+<B>begin</B>
+  <B>if</B> IsEditing <B>then</B>
+  <B>begin</B>
+    <B>inherited</B>;
+    Exit;
+  <B>end</B>;
+
+  SetFocus;
+  
+  <Font Color="#0000DD">// get more information about the hit</Font>
+  HitInfo := GetHitTestInfoAt(<B>Message</B>.XPos, <B>Message</B>.YPos);
+  <Font Color="#0000DD">// translate keys and filter out shift and ctrl key</Font>
+  ShiftState := KeysToShiftState(<B>Message</B>.Keys) * [ssShift, ssCtrl];
+
+  <Font Color="#0000DD">// a click on an item button is handled here (also special case check boxes)</Font>
+  <B>if</B> (<B>not</B> (htOnItem <B>in</B> HitInfo) <B>and</B> <B>not</B> (toFullRowSelect <B>in</B> FOptions)) <B>or</B>
+     (htOnStateIcon <B>in</B> HitInfo) <B>then</B>
+  <B>begin</B>
+    <Font Color="#0000DD">// user clicked on free space or a part not directly belonging to an item</Font>
+    <B>if</B> ([htNoWhere, htOnRight, htOnIndent] * HitInfo &lt;&gt; []) <B>and</B> (toMultiSelect <B>in</B> FOptions)
+    <B>then</B>
+      <B>with</B> FSelectRec <B>do</B>
+      <B>begin</B>
+        <Font Color="#0000DD">// user starts a selection with a selection rectangle</Font>
+        Pending := True;
+        StartX := <B>Message</B>.XPos;
+        StartY := <B>Message</B>.YPos;
+        Rect.Left := 0;
+        Rect.Top := 0;
+        Rect.Right := 0;
+        Rect.Bottom := 0;
+        FHitList := TTreeNodeList.Create;
+        FHitList.Capacity := Items.Count;
+        <B>if</B> ShiftState = [] <B>then</B> ClearSelection;
+      <B>end</B>
+    <B>else</B>
+      <Font Color="#0000DD">// user clicked a state icon, try to handle this as check event</Font>
+      <B>if</B> htOnStateIcon <B>in</B> HitInfo <B>then</B>
+      <B>begin</B>
+        SetCapture(Handle);
+        FCheckNode := GetNodeAt(<B>Message</B>.XPos, <B>Message</B>.YPos);
+        <B>case</B> FCheckNode.FStateIndex <B>of</B>
+          ckCheckEmpty:
+            SetCheckImage(FCheckNode, ckCheckDisabled);
+          ckCheckChecked:
+            SetCheckImage(FCheckNode, ckCheckGrayed);
+          ckRadioEmpty:
+            SetCheckImage(FCheckNode, ckRadioDisabled);
+          ckRadioChecked:
+            SetCheckImage(FCheckNode, ckRadioGrayed);
+        <B>end</B>;
+        Exit;
+      <B>end</B>;
+    <Font Color="#0000DD">// now do default..</Font>
+    <B>inherited</B>;
+    <Font Color="#0000DD">// ... and get out of here</Font>
+    Exit;
+  <B>end</B>;
+
+  <Font Color="#0000DD">// here starts the handling for all cases with an item involved</Font>
+  FDragged := False;
+  FDragNode := <B>nil</B>;
+  FClicked := False;
+  <Font Color="#0000DD">// get the currently focused node</Font>
+  LastFocused := Selected;
+
+  <Font Color="#0000DD">// determine the node the user clicked on</Font>
+  Node := GetNodeAt(<B>Message</B>.XPos, <B>Message</B>.YPos);
+
+  <Font Color="#0000DD">// save style of newly clicked node</Font>
+  NewSelState := stSet;
+  <B>if</B> assigned(Node) <B>and</B> Node.Selected <B>then</B> NewSelState := stReset;
+
+  <B>if</B> (Node = <B>nil</B>) <B>or</B> (<B>not</B> Node.Selected <B>and</B> (ShiftState = [])) <B>then</B> ClearSelection;
+
+  <Font Color="#0000DD">// save selection state of the last focused node</Font>
+  OldSelState := stReset;
+  <B>if</B> assigned(LastFocused) <B>and</B> LastFocused.Selected <B>then</B> OldSelState := stSet;
+
+  <B>if</B> ShiftState &lt;&gt; [] <B>then</B>
+  <B>begin</B>
+    <Font Color="#0000DD">// avoid node edit while selecting</Font>
+    Selected := <B>nil</B>;
+    <Font Color="#0000DD">// avoid changing last selection level (in CNNotify)</Font>
+    Items.FCoreSelecting := True;
+  <B>end</B>;
+  <B>inherited</B>;
+  <Font Color="#0000DD">// Support for constrained selection. I cannot prevent Windows to select the node</Font>
+  <Font Color="#0000DD">// internally. Hence I have to remove the selection again (which will probably later again be set).</Font>
+  <B>if</B> toLevelSelectConstraint <B>in</B> FOptions <B>then</B> Items.SelectNode(Node, stReset);
+  Items.FCoreSelecting := False;
+
+  <B>if</B> assigned(FDesigner) <B>and</B>
+     assigned(Node) <B>then</B>
+  <B>begin</B>
+    FDesigner.Modified;
+    <B>if</B> FDesignerMode <B>and</B>
+       assigned(Node.Data) <B>and</B>
+       (TObject(Node.Data) <B>is</B> TPersistent) <B>then</B>
+    <B>begin</B>
+      Allowed := True;
+      <B>if</B> assigned(FOnDesignClick) <B>then</B> FOnDesignClick(Self, Node, Allowed);
+      {$ifdef DFS_COMPILER_3_UP}
+        <B>if</B> allowed <B>then</B> FDesigner.SelectComponent(TPersistent(Node.Data));
+      {$else}
+        <B>if</B> allowed <B>then</B> FDesigner.SelectComponent(TComponent(Node.Data));
+      {$endif}
+    <B>end</B>;
+  <B>end</B>;
+
+  <B>if</B> (DragMode = dmAutomatic)
+     {$ifdef DFS_COMPILER_4_UP} <B>and</B> (DragKind = dkDrag) {$endif} <B>then</B>
+  <B>begin</B>
+    <B>if</B> FDragged          <B>and</B>
+       assigned(Node)    <B>then</B>
+    <B>begin</B>
+      <B>if</B> (toMultiSelect <B>in</B> FOptions) <B>then</B> Items.SelectNode(Node, stSet)
+                                     <B>else</B> SetSelection(Node);
+      Node.Focused := True;
+      BeginDrag(False);
+    <B>end</B>
+    <B>else</B>
+    <B>begin</B>
+      Perform(WM_LBUTTONUP, 0, MakeLong(<B>Message</B>.XPos, <B>Message</B>.YPos));
+      <B>if</B> toMultiSelect <B>in</B> FOptions <B>then</B> HandleMultiSelection(LastFocused, OldSelState, Node, NewSelState, ShiftState);
+    <B>end</B>;
+  <B>end</B>
+  <B>else</B>
+    <B>if</B> toMultiSelect <B>in</B> FOptions <B>then</B> HandleMultiSelection(LastFocused, OldSelState, Node, NewSelState, ShiftState);
+<B>End</B>;</pre></td></tr></Table>

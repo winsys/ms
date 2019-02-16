@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>HandleDrawSelection Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>HandleDrawSelection method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> HandleDrawSelection(Shift: TShiftState; Rect: TRect);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.HandleDrawSelection(Shift: TShiftState; Rect: TRect);
+
+<Font Color="#0000DD">// handles multi-selection with a focus rectangle, it is called every time</Font>
+<Font Color="#0000DD">// the mouse is moved during selection mode</Font>
+
+<B>var</B> FirstNode, 
+    LastNode      : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+    Dummy         : TRect;
+    I             : Integer;
+    HasChanged    : Boolean;
+    LastIndex     : Integer;
+
+<B>begin</B>
+  Items.FCoreSelecting := True;
+  HasChanged := False;
+  FirstNode := GetNodeAt(0, Rect.Top);
+  <B>if</B> FirstNode = <B>nil</B> <B>then</B> FirstNode := Items.GetFirstNode;
+  LastNode := GetNodeAt(ClientWidth, Rect.Bottom);
+  FTreeNTNodes.FillCache;
+
+  <Font Color="#0000DD">// the last node is not to be selected</Font>
+  <B>with</B> FTreeNTNodes <B>do</B>
+    <B>if</B> assigned(LastNode) <B>then</B>
+    <B>begin</B>
+      LastIndex := FItemCache.IndexOf(LastNode);
+      <B>if</B> LastIndex &lt; FItemCache.Count - 1 <B>then</B> Inc(LastIndex);
+    <B>end</B>
+    <B>else</B> LastIndex := FItemCache.Count - 1;
+
+  <Font Color="#0000DD">// selection whithout Ctrl key (Shift key is the same as without any key</Font>
+  <Font Color="#0000DD">// except that the previous selection will not be cleared)</Font>
+  <B>if</B> <B>not</B> (ssCtrl <B>in</B> Shift) <B>then</B>
+  <B>begin</B>
+    <Font Color="#0000DD">// deselect nodes which were, but are no longer in the focus rect</Font>
+    <B>for</B> I := FHitList.Count - 1 <B>downto</B> 0 <B>do</B>
+      <B>if</B> <B>not</B> IntersectRect(Dummy, FHitList[I].DisplayRect(True), Rect) <B>then</B>
+      <B>begin</B>
+        Items.SelectNode(FHitList[I], stReset);
+        FHitList[I] := <B>nil</B>;
+        HasChanged := True;
+      <B>end</B>;
+
+    <Font Color="#0000DD">// do some housekeeping with the list</Font>
+    FHitList.Pack;
+
+    <Font Color="#0000DD">// add selection</Font>
+    <B>with</B> FTreeNTNodes <B>do</B>
+      <B>for</B> I := FItemCache.IndexOf(FirstNode) <B>to</B> LastIndex <B>do</B>
+        <B>if</B> FItemCache[I].IsVisible <B>and</B> IntersectRect(Dummy, FItemCache[I].DisplayRect(True), Rect) <B>and</B>
+           (FHitList.IndexOf(FItemCache[I]) = -1) <B>then</B>
+        <B>begin</B>
+          FHitList.Add(FItemCache[I]);
+          Items.SelectNode(FItemCache[I], stSet);
+          HasChanged := True;
+        <B>end</B>;
+  <B>end</B>
+  <B>else</B>
+  <B>begin</B>
+    <Font Color="#0000DD">// toggle selection</Font>
+
+    <B>with</B> FTreeNTNodes <B>do</B>
+      <B>for</B> I := FItemCache.IndexOf(FirstNode) <B>to</B> LastIndex <B>do</B>
+        <B>if</B> (FHitList.IndexOf(FItemCache[I]) = -1) <B>and</B>
+           IntersectRect(Dummy, FItemCache[I].DisplayRect(True), Rect) <B>then</B>
+        <B>begin</B>
+          FHitList.Add(FItemCache[I]);
+          Items.SelectNode(FItemCache[I], stToggle);
+          HasChanged := True;
+        <B>end</B>;
+
+    <Font Color="#0000DD">// now restore nodes which were, but are no longer in the focus rect</Font>
+    <B>for</B> I := 0 <B>to</B> FHitList.Count - 1 <B>do</B>
+      <B>if</B> <B>not</B> IntersectRect(Dummy, FHitList[I].DisplayRect(True), Rect) <B>then</B>
+      <B>begin</B>
+        Items.SelectNode(FHitList[I], stToggle);
+        FHitList[I] := <B>nil</B>;
+        HasChanged := True;
+      <B>end</B>;
+    <Font Color="#0000DD">// do some housekeeping with the list</Font>
+    FHitList.Pack;
+  <B>end</B>;
+
+  Items.FCoreSelecting := False;
+  <B>if</B> HasChanged <B>then</B>
+    <B>with</B> FChangeTimer <B>do</B>
+    <B>if</B> Interval &gt; 0 <B>then</B>
+    <B>begin</B>
+      Enabled := False;
+      Tag := Integer(LastNode);
+      Enabled := True;
+    <B>end</B>
+    <B>else</B> Change(LastNode);
+<B>End</B>;</pre></td></tr></Table>

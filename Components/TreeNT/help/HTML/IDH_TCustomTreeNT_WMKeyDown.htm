@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>WMKeyDown Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>WMKeyDown method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> WMKeyDown(<B>var</B> <B>Message</B>: TWMKeyDown);</Font>
+<br>
+<Img Src="images/message.gif"> WM_KEYDOWN<Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.WMKeyDown(<B>var</B> <B>Message</B>: TWMKeyDown);
+
+<Font Color="#0000DD">// handle all key presses if they concern selection</Font>
+
+<B>var</B> Shift         : TShiftState;
+    WasSelected   : Boolean;
+    CurrentNode, 
+    NextNode      : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+    Context, 
+    LastCount     : Integer;
+    ParentControl : TWinControl;
+
+<B>begin</B>
+  <B>if</B> <B>not</B> (toMultiselect <B>in</B> FOptions) <B>then</B>
+  <B>begin</B>
+    FFirstSelection := Selected;
+    <B>inherited</B>;
+  <B>end</B>
+  <B>else</B>
+  <B>with</B> <B>Message</B> <B>do</B>
+  <B>begin</B>
+    Shift := KeyDataToShiftState(KeyData);
+
+    <Font Color="#0000DD">// Ctrl key has special meaning</Font>
+    <B>if</B> (ssCtrl <B>in</B> Shift) <B>or</B> (Selected = <B>nil</B>) <B>then</B>
+    <B>begin</B>
+      <B>inherited</B>;
+      Exit;
+    <B>end</B>;
+
+    <Font Color="#0000DD">// line up/line down movement?</Font>
+    <B>if</B> CharCode <B>in</B> [VK_UP, VK_DOWN] <B>then</B>
+    <B>begin</B>
+      <Font Color="#0000DD">// determine the node, which will be focused after the function</Font>
+      <Font Color="#0000DD">// returns</Font>
+      CurrentNode := Selected;
+      <B>if</B> CharCode = VK_UP <B>then</B> NextNode := CurrentNode.GetPrevVisible
+                          <B>else</B> NextNode := CurrentNode.GetNextVisible;
+      <Font Color="#0000DD">// shift pressed (for multi-selection)?</Font>
+      <B>if</B> ([ssShift] = Shift) <B>then</B>
+      <B>begin</B>
+        <B>if</B> FFirstSelection = <B>nil</B> <B>then</B>
+        <B>begin</B>
+          <Font Color="#0000DD">// initialize the start point if needed</Font>
+          FFirstSelection := NextNode;
+          ClearSelection;
+        <B>end</B>;
+        <B>if</B> assigned(NextNode) <B>then</B>
+        <B>begin</B>
+          WasSelected := NextNode.Selected;
+          <B>inherited</B>;
+          <B>if</B> <B>not</B> WasSelected <B>then</B> Items.SelectNode(CurrentNode, stSet);
+        <B>end</B>
+        <B>else</B> <B>inherited</B>;
+      <B>end</B>
+      <B>else</B>
+      <B>begin</B>
+        <B>if</B> assigned(NextNode) <B>then</B> ClearSelection;
+        <B>inherited</B>;
+        FFirstSelection := Selected;
+      <B>end</B>;
+    <B>end</B>
+    <B>else</B>
+    <B>begin</B>
+      CurrentNode := Selected;
+      <Font Color="#0000DD">// page up/page down movement?</Font>
+      <B>if</B> CharCode <B>in</B> [VK_PRIOR, VK_NEXT, VK_HOME, VK_END] <B>then</B>
+      <B>begin</B>
+        <Font Color="#0000DD">// shift pressed (for multi-selection)?</Font>
+        <B>if</B> ([ssShift] = Shift) <B>then</B>
+        <B>begin</B>
+          <B>if</B> FFirstSelection = <B>nil</B> <B>then</B>
+          <B>begin</B>
+            <Font Color="#0000DD">// initialize the start point if needed</Font>
+            FFirstSelection := Selected;
+            ClearSelection;
+          <B>end</B>;
+          <B>inherited</B>;
+          NextNode := Selected;
+          LastCount := Items.SelectedCount;
+          Items.ToggleSelectionRange(CurrentNode, NextNode);
+          <Font Color="#0000DD">// take out the effect of automatic selection if necessary</Font>
+          <B>if</B> LastCount &lt; Items.SelectedCount <B>then</B> Items.SelectNode(CurrentNode, stSet);
+        <B>end</B>
+        <B>else</B>
+        <B>begin</B>
+          <B>if</B> Items.SelectedCount &gt; 1 <B>then</B> ClearSelection;
+          <B>inherited</B>;
+          FFirstSelection := Selected;
+        <B>end</B>;
+      <B>end</B>
+      <B>else</B>
+        <B>case</B> CharCode <B>of</B>
+          VK_SPACE:
+            <B>begin</B> <Font Color="#0000DD">// space-key, simulate check click</Font>
+              <B>if</B> assigned(CurrentNode) <B>then</B> CurrentNode.DoCheckClick;
+              <B>Message</B>.Result := 0;
+            <B>end</B>;
+          VK_F1:
+            <B>if</B> assigned(FOnGetHelpContext) <B>then</B>
+            <B>begin</B> <Font Color="#0000DD">// do a bit help support</Font>
+              Context := 0;
+              <Font Color="#0000DD">// traverse the tree structure up to the root</Font>
+              <B>repeat</B>
+                FOnGetHelpContext(Self, CurrentNode, Context);
+                CurrentNode := CurrentNode.FParent;
+              <B>until</B> (CurrentNode = Items.FRoot) <B>or</B> (Context &lt;&gt; 0);
+              <Font Color="#0000DD">// if no help context could be found try the tree's one</Font>
+              <Font Color="#0000DD">// or its parent's contexts</Font>
+              ParentControl := Self;
+              <B>while</B> assigned(ParentControl) <B>and</B> (Context = 0) <B>do</B>
+              <B>begin</B>
+                Context := ParentControl.HelpContext;
+                ParentControl := ParentControl.Parent;
+              <B>end</B>;
+              <B>if</B> Context &lt;&gt; 0 <B>then</B> Application.HelpContext(Context);
+            <B>end</B>;
+        <B>else</B>
+          <Font Color="#0000DD">// default handling (mostly used for incremental search)</Font>
+          <B>if</B> CharCode &gt; Word(<Font Color="#119911">'0'</Font>) <B>then</B>
+          <B>begin</B>
+            ClearSelection;
+            <B>inherited</B>;
+            FFirstSelection := CurrentNode;
+            Exit;
+          <B>end</B>
+          <B>else</B> <B>inherited</B>; <Font Color="#0000DD">// all other keys we don't handle</Font>
+        <B>end</B>;
+    <B>end</B>;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

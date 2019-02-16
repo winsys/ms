@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>DoAutoScroll Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>DoAutoScroll method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> DoAutoScroll(X, Y: Integer);</Font>
+<br>
+<Img Src="images/virtual.gif"> <Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.DoAutoScroll(X, Y: Integer);
+
+<B>var</B> DefOffset  : Integer;
+    VSInfo, 
+    HSInfo     : TScrollInfo;
+                                    
+<B>begin</B>
+  <Font Color="#0000DD">// prepare structures</Font>
+  FillChar(HSInfo, SizeOf(HSInfo), 0);
+  HSInfo.cbSize := SizeOf(TScrollInfo);
+  HSInfo.fMask := SIF_ALL;
+  VSInfo := HSInfo;
+
+  <B>if</B> ItemHeight &gt; 0 <B>then</B> DefOffset := ItemHeight <B>div</B> 2 <Font Color="#0000DD">// v 4.71 + </Font>
+                    <B>else</B> DefOffset := Abs(Font.Size); <Font Color="#0000DD">// v 4.70</Font>
+  FScrollDirection := [];
+
+  GetScrollInfo(Handle, SB_VERT, VSInfo);
+  GetScrollInfo(Handle, SB_HORZ, HSInfo);
+
+  <B>with</B> HSInfo <B>do</B>
+  <B>begin</B>
+    <B>if</B> (X &lt; DefOffset) <B>and</B> (nPos &gt; nMin) <B>then</B> Include(FScrollDirection, sdLeft);
+    <B>if</B> (nPage &gt; 0)                        <B>and</B>
+       (nPos + Integer(nPage) - 1 &lt; nMax) <B>and</B>
+       (X &gt; ClientWidth - DefOffset)      <B>then</B> Include(FScrollDirection, sdRight);
+  <B>end</B>;
+
+  <B>with</B> VSInfo <B>do</B>
+  <B>begin</B>
+    <B>if</B> (Y &lt; DefOffset) <B>and</B> (nPos &gt; nMin) <B>then</B> Include(FScrollDirection, sdUp);
+    <B>if</B> (nPage &gt; 0)                        <B>and</B>
+       (Y &gt; ClientHeight - DefOffset)     <B>and</B>
+       (nPos + Integer(nPage) - 1 &lt; nMax) <B>then</B> Include(FScrollDirection, sdDown);
+  <B>end</B>;
+
+  FScrollTimer.Interval := 300;
+  <B>if</B> FScrollDirection &lt;&gt; [] <B>then</B> FScrollTimer.Enabled := True
+                            <B>else</B> FScrollTimer.Enabled := False;
+<B>End</B>;</pre></td></tr></Table>

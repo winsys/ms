@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>WMLButtonUp Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>WMLButtonUp method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> WMLButtonUp(<B>var</B> <B>Message</B>: TWMLButtonUp);</Font>
+<br>
+<Img Src="images/message.gif"> WM_LBUTTONUP<Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.WMLButtonUp(<B>var</B> <B>Message</B>: TWMLButtonUp);
+
+<B>begin</B>
+  <Font Color="#0000DD">// check if we are in selection mode</Font>
+  <B>if</B> FSelectRec.Pending <B>then</B>
+    <B>with</B> FSelectRec <B>do</B>
+    <B>begin</B>
+      <Font Color="#0000DD">// yes we are, so finish it ...</Font>
+      Pending := False;
+      FHitList.Free;
+      <Font Color="#0000DD">// ... and remove the last focus rectangle if there was one</Font>
+      <B>if</B> <B>not</B> IsRectEmpty(Rect) <B>then</B> DrawFocusRect(Rect);
+    <B>end</B>;
+
+  <Font Color="#0000DD">// an assigned check node shows an check event</Font>
+  <B>if</B> assigned(FCheckNode) <B>then</B>
+  <B>begin</B>
+    FCheckNode.DoCheckClick;
+    FCheckNode := <B>nil</B>;
+    ReleaseCapture;
+  <B>end</B>;                             
+
+  <Font Color="#0000DD">// now do the standard behaviour</Font>
+  <B>inherited</B>;
+<B>End</B>;</pre></td></tr></Table>

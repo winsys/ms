@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>GetState Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>GetState method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Function</B> GetState(NodeState: <A HREF="IDH_Type_TNodeState.htm">TNodeState</A>): Boolean;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>function</B> TTreeNTNode.GetState(NodeState: <A HREF="IDH_Type_TNodeState.htm">TNodeState</A>): Boolean;
+
+<B>var</B> Item: TTVItem;
+
+<B>begin</B>
+  Result := False;
+  <B>if</B> ItemID = <B>nil</B> <B>then</B> Exit; <Font Color="#0000DD">// special case FRoot of TTreeNTNodes</Font>
+
+  <B>with</B> Item <B>do</B>
+  <B>begin</B>
+    Mask := TVIF_STATE;
+    hItem := ItemId;
+    <B>if</B> TreeView_GetItem(Handle, Item) <B>then</B>
+      <B>case</B> NodeState <B>of</B>
+        nsCut:
+          Result := (state <B>and</B> TVIS_CUT) &lt;&gt; 0;
+        nsFocused:
+          Result := (state <B>and</B> TVIS_FOCUSED) &lt;&gt; 0;
+        nsSelected:
+          Result := (state <B>and</B> TVIS_SELECTED) &lt;&gt; 0;
+        nsExpanded:
+          Result := (state <B>and</B> TVIS_EXPANDED) &lt;&gt; 0;
+        nsDropHilited:
+          Result := (state <B>and</B> TVIS_DROPHILITED) &lt;&gt; 0;
+        nsExpandedOnce:
+          Result := (state <B>and</B> TVIS_EXPANDEDONCE) &lt;&gt; 0;
+        nsExpandPartial:
+          Result := (state <B>and</B> TVIS_EXPANDPARTIAL) &lt;&gt; 0;
+      <B>end</B>;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

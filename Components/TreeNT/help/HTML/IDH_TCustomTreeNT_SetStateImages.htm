@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>SetStateImages Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>SetStateImages method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> SetStateImages(Value: TImageList);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.SetStateImages(Value: TImageList);
+
+<Font Color="#0000DD">// sets the given state image list for the tree or (if no image list is</Font>
+<Font Color="#0000DD">// passed) the predefined check image list</Font>
+ 
+<B>begin</B>
+  <B>if</B> FStateImages &lt;&gt; <B>nil</B> <B>then</B> StateImages.UnRegisterChanges(FStateChangeLink);
+  FStateImages := Value;
+  <B>if</B> FStateImages &lt;&gt; <B>nil</B> <B>then</B>
+  <B>begin</B>
+    StateImages.RegisterChanges(FStateChangeLink);
+    SetImageList(StateImages.Handle, TVSIL_STATE)
+  <B>end</B>
+  <B>else</B> SetImageList(CheckImages.Handle, TVSIL_STATE);
+<B>End</B>;</pre></td></tr></Table>

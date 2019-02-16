@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>WMLButtonDblClk Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>WMLButtonDblClk method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> WMLButtonDblClk(<B>var</B> <B>Message</B>: TWMLButtonDblClk);</Font>
+<br>
+<Img Src="images/message.gif"> WM_LBUTTONDBLCLK<Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.WMLButtonDblClk(<B>var</B> <B>Message</B>: TWMLButtonDblClk);
+
+<Font Color="#0000DD">// in FullRowSelect mode a node should also expand and collapse when the user</Font>
+<Font Color="#0000DD">// clicked on another place in the node's row than the text</Font>
+
+<B>var</B> Node : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+
+<B>begin</B>
+  <B>inherited</B>;
+  <B>if</B> (FOptions * [toFullRowSelect, toSingleExpand]) = [toFullRowSelect]  <B>then</B>
+  <B>begin</B>
+    Node := GetNodeAt(<B>Message</B>.XPos, <B>Message</B>.YPos);
+    <B>if</B> htOnRight <B>in</B> GetHitTestInfoAt(<B>Message</B>.XPos, <B>Message</B>.YPos) <B>then</B>
+      <B>if</B> Node.Expanded <B>then</B> Node.Collapse(False)
+                       <B>else</B> Node.Expand(False);
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

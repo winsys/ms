@@ -1,0 +1,36 @@
+                           WINDOWS INSTALL 
+
+1. Unpack the archive with components
+
+2. Copy libmysql.dll and/or libpq.dll into 
+  your Windows/System directory
+
+3. Edit Zeos.inc file. You may set there you language,
+  maximum quantity of supported memo fields, etc.
+
+4. Add to Delphi Library Path pathes to XXX, XXX\common, XXX\dbase, 
+  where XXX - ZeosDBO directory.
+
+5. Compile and install library in Delphi 3.0, 4.0, 5.0 and
+  C++ Builder 4.0 with the same version of dpk file. 
+  Install dpk files in the next sequence: 
+  ZCommonXXX, ZDbwareXXX, { ZMySqlXXX | ZPgSqlXXX | ZIbSqlXXX 
+  | ZMsSqlXXX | ZOraSqlXXX }
+
+                           LINUX INSTALL
+			   
+1. Unpack the archive with components
+
+2. Unpack XXX/kylix/desprop50562.tar.gz into kylix/lib directory
+  (Files dbdesign.dcp and std.dcp should be there)
+
+3. Edit Zeos.inc file. You may set there you language,
+  maximum quantity of supported memo fields, etc.
+
+4. Add to Kylix Library Path pathes to XXX, XXX\common, XXX\dbase, 
+  where XXX - ZeosDBO directory.
+
+5. Check pathes to shared libraries in ZLibXXSql.pas
+
+6. Compile and install dpk files in the next sequence: 
+  ZCommonK, ZDbwareK, { ZMySqlK | ZPgSqlK | ZIbSqlK} 

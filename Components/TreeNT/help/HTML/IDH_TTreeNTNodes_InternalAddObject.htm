@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>InternalAddObject Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>InternalAddObject method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNodes.htm">TTreeNTNodes</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Function</B> InternalAddObject(Node: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; <B>const</B> S: <B>String</B>; Ptr: Pointer; AddMode: <A HREF="IDH_Type_TAddMode.htm">TAddMode</A>): <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>function</B> TTreeNTNodes.InternalAddObject(Node: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; <B>const</B> S: <B>String</B>; Ptr: Pointer; AddMode: <A HREF="IDH_Type_TAddMode.htm">TAddMode</A>): <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+
+<B>var</B> Item       : HTreeItem;
+    ParentNode : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+
+<B>begin</B>
+  Result := Owner.CreateNode;
+  <B>try</B>
+    <B>if</B> assigned(Node) <B>then</B> Item := Node.ItemId
+                      <B>else</B> Item := <B>nil</B>;
+    Result.Data := Ptr;
+    Result.Text := S;
+    Item := AddItem(Item, <B>nil</B>, CreateItem(Result), AddMode);
+
+    <B>if</B> Item = <B>nil</B> <B>then</B>
+    {$ifdef DFS_COMPILER_3_UP}
+      <B>raise</B> EOutOfResources.Create(sInsertError);
+    {$else}
+      <B>raise</B> EOutOfResources.CreateRes(sInsertError);
+    {$endif}
+
+    Result.FItemId := Item;
+    ParentNode := Node;
+    <B>if</B> ParentNode = <B>nil</B> <B>then</B> ParentNode := FRoot;
+    Result.FParent := ParentNode;
+    AddedNode(ParentNode);
+
+    <B>with</B> ParentNode <B>do</B>
+      <B>case</B> AddMode <B>of</B>
+        taAddFirst:
+          FChildList.Insert(0, Result);
+        taAdd:
+          FChildList.Add(Result);
+        taInsert:
+          FChildList.Insert(Node.<B>Index</B> + 1, Result);
+      <B>end</B>;
+    <B>case</B> ParentNode.FCheckType <B>of</B>
+      ctNone:
+        FOwner.SetCheckImage(Result, ckEmpty);
+      ctCheckBoxGrayed,
+      ctCheckBox:
+        FOwner.SetCheckImage(Result, ckCheckEmpty);
+      ctRadioButton:
+        FOwner.SetCheckImage(Result, ckRadioEmpty);
+    <B>end</B>;
+    InvalidateItemCache;
+    FOwner.DoChange(Result);
+  <B>except</B>
+    Result.Free;
+    <B>raise</B>;
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

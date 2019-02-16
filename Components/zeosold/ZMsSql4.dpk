@@ -1,0 +1,44 @@
+package ZMsSql4;
+
+{$R *.RES}
+{$ALIGN ON}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $00400000}
+{$DESCRIPTION 'Zeos MS SQL Components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  Vcl40,
+  Vcldb40,
+  ZCommon4,
+  ZDbware4;
+
+contains
+  ZMsSqlTr in 'dbase\ZMsSqlTr.pas',
+  ZLibMsSql in 'dbase\ZLibMsSql.pas',
+  ZMsSqlCon in 'dbase\ZMsSqlCon.pas',
+  ZMsSqlProp in 'dbase\ZMsSqlProp.pas',
+  ZMsSqlQuery in 'dbase\ZMsSqlQuery.pas',
+  ZMsSqlReg in 'dbase\ZMsSqlReg.pas',
+  ZDirMsSql in 'dbase\ZDirMsSql.pas',
+  ZMsSqlStoredProc in 'dbase\ZMsSqlStoredProc.pas';
+
+end.

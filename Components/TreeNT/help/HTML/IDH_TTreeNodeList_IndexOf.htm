@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>IndexOf Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>IndexOf method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNodeList.htm">TTreeNodeList</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Function</B> IndexOf(Item: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>): Integer;</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>function</B> TTreeNodeList.IndexOf(Item: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>): Integer; <B>assembler</B>;
+
+<Font Color="#0000DD">// finds Item's index in the list</Font>
+<Font Color="#0000DD">// EAX contains the Self reference (address of this instance)</Font>
+<Font Color="#0000DD">// EDX contains Item</Font>
+
+<B>asm</B>
+                   PUSH EBX
+                   PUSH EDI
+                   MOV ECX, EAX.FCount  <Font Color="#0000DD">// number of entries</Font>
+                   JECXZ @NotFound     <Font Color="#0000DD">// no search, if no entries</Font>
+                   MOV EBX, ECX         <Font Color="#0000DD">// keep count for index calc.</Font>
+                   MOV EDI, EAX.FList   <Font Color="#0000DD">// start address</Font>
+                   MOV EAX, EDX         <Font Color="#0000DD">// search value</Font>
+                   REPNE SCASD         <Font Color="#0000DD">// search the value</Font>
+                   JNZ @NotFound       <Font Color="#0000DD">// jump if not found</Font>
+                   MOV EAX, EBX
+                   SUB EAX, ECX         <Font Color="#0000DD">// calculate index</Font>
+                   DEC EAX             <Font Color="#0000DD">// it's zero-based</Font>
+                   JMP @Finish
+
+@NotFound:         MOV EAX, -1
+@Finish:           POP EDI
+                   POP EBX
+<B>End</B>;</pre></td></tr></Table>

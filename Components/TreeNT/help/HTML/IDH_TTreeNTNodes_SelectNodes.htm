@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>SelectNodes Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>SelectNodes method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNodes.htm">TTreeNTNodes</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> SelectNodes(NodeFrom, NodeTo: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; AddOnly: Boolean);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNodes.SelectNodes(NodeFrom, NodeTo: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; AddOnly: Boolean);
+
+<Font Color="#0000DD">// selects a range of (visible) nodes; if AddOnly is True then the last selection</Font>
+<Font Color="#0000DD">// will not be cleared (useful for several ranges)</Font>
+
+<B>var</B> Node        : <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>;
+    TempList, 
+    NewNodes    : <A HREF="IDH_Class_TTreeNodeList.htm">TTreeNodeList</A>;
+    I           : Integer;
+
+<B>begin</B>
+  FCoreSelecting := True;
+  NewNodes := TTreeNodeList.Create;
+  TempList := TTreeNodeList.Create;
+  <B>try</B>
+    <B>if</B> NodeFrom.AbsoluteIndex &gt; NodeTo.AbsoluteIndex <B>then</B>
+    <B>begin</B>
+      Node := NodeFrom;
+      NodeFrom := NodeTo;
+      NodeTo := Node;
+    <B>end</B>;
+
+    <Font Color="#0000DD">// what we need here is a bit set maths; the task is to find the nodes to unselect</Font>
+    <Font Color="#0000DD">// by: unselect := selected - new nodes and the nodes newly to select</Font>
+    <Font Color="#0000DD">// by: new select := new nodes - selected</Font>
+    <Font Color="#0000DD">// first step is to build the list of new nodes:</Font>
+    Node := NodeFrom;
+    <B>if</B> assigned(Node) <B>then</B>
+      <B>repeat</B>
+        NewNodes.Add(Node);
+        <B>if</B> Node = NodeTo <B>then</B> Break;
+        Node := Node.GetNextVisible;
+      <B>until</B> Node = <B>nil</B>;
+
+    <B>if</B> NewNodes.Count &gt; 0 <B>then</B>
+    <B>begin</B>
+      <Font Color="#0000DD">// next: find selected nodes not in new nodes and unselected nodes in new nodes</Font>
+      <B>if</B> <B>not</B> AddOnly <B>then</B>
+        <B>for</B> I := 0 <B>to</B> FSelection.Count - 1 <B>do</B>
+          <B>if</B> NewNodes.IndexOf(FSelection[I]) = -1 <B>then</B> TempList.Add(FSelection[I]);
+
+      <B>for</B> I := 0 <B>to</B> NewNodes.Count - 1 <B>do</B>
+        <B>if</B> FSelection.IndexOf(NewNodes[I]) &gt; -1 <B>then</B> NewNodes[I] := <B>nil</B>;
+      NewNodes.Pack;
+
+      <Font Color="#0000DD">// finally do selection</Font>
+      <B>if</B> <B>not</B> AddOnly <B>then</B>
+        <B>for</B> I := 0 <B>to</B> TempList.Count - 1 <B>do</B> SelectNode(TempList[I], stReset);
+      <B>for</B> I := 0 <B>to</B> NewNodes.Count - 1 <B>do</B> SelectNode(NewNodes[I], stSet);
+    <B>end</B>;
+  <B>finally</B>
+    TempList.Free;
+    NewNodes.Free;
+    FCoreSelecting := False;
+    
+    <B>with</B> FOwner.FChangeTimer <B>do</B>
+      <B>if</B> Interval &gt; 0 <B>then</B>
+      <B>begin</B>
+        Enabled := False;
+        Tag := Integer(NodeTo);
+        Enabled := True;
+      <B>end</B>
+      <B>else</B> FOwner.DoChange(NodeTo);
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>SetOptions Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>SetOptions method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> SetOptions(Values: <A HREF="IDH_Type_TTreeOptions.htm">TTreeOptions</A>);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.SetOptions(Values: <A HREF="IDH_Type_TTreeOptions.htm">TTreeOptions</A>);
+
+<Font Color="#0000DD">// sets one or more tree options</Font>
+
+<B>const</B> NoRecreationStyles = [toAutoExpand, toAutoScroll, toCheckSupport, toLevelSelectConstraint, toNoEraseBkgnd, toEvenHeight, toMultiSelect,
+                            toShowLines, toShowRoot, toShowButtons, toHideSelection, toInfoTip, toWantReturn, toRightClickSelect];
+                            
+<B>var</B> ToBeSet, 
+    ToBeCleared : <A HREF="IDH_Type_TTreeOptions.htm">TTreeOptions</A>;
+
+<B>begin</B>
+  <Font Color="#0000DD">// handle special cases:</Font>
+  <Font Color="#0000DD">// - full row select can't be used together with ShowLines, the former</Font>
+  <Font Color="#0000DD">//   gets higher priority here</Font>
+  <B>if</B> toFullRowSelect <B>in</B> Values <B>then</B> Exclude(Values, toShowLines);
+
+  <Font Color="#0000DD">// determine actually changed options</Font>
+  ToBeSet := Values - FOptions;
+  ToBeCleared := FOptions - Values;
+
+  <Font Color="#0000DD">// now set the options, which can be applied without recreation of the control</Font>
+  <B>if</B> toEvenHeight <B>in</B> ToBeSet <B>then</B> SetStyle(TVS_NONEVENHEIGHT, False);
+  <B>if</B> toHideSelection <B>in</B> ToBeSet <B>then</B> SetStyle(TVS_SHOWSELALWAYS, False);
+  <B>if</B> toInfoTip <B>in</B> ToBeSet <B>then</B> SetStyle(TVS_INFOTIP, True);
+  <B>if</B> toShowLines <B>in</B> ToBeSet <B>then</B> SetStyle(TVS_HASLINES, True);
+  <B>if</B> toShowRoot <B>in</B> ToBeSet <B>then</B> SetStyle(TVS_LINESATROOT, True);
+  <B>if</B> toShowButtons <B>in</B> ToBeSet <B>then</B> SetStyle(TVS_HASBUTTONS, True);
+  <B>if</B> toSingleExpand <B>in</B> ToBeSet <B>then</B> SetStyle(TVS_SINGLEEXPAND, True);
+
+  <Font Color="#0000DD">// leave only styles in the indicator, which require a window recreation</Font>
+  ToBeSet := ToBeSet - NoRecreationStyles;
+
+  <Font Color="#0000DD">// reset the options, which can be applied without recreation of the control</Font>
+  <B>if</B> toEvenHeight <B>in</B> ToBeCleared <B>then</B> SetStyle(TVS_NONEVENHEIGHT, True);
+  <B>if</B> toHideSelection <B>in</B> ToBeCleared <B>then</B> SetStyle(TVS_SHOWSELALWAYS, True);
+  <B>if</B> toInfoTip <B>in</B> ToBeSet <B>then</B> SetStyle(TVS_INFOTIP, False);
+  <B>if</B> toShowLines <B>in</B> ToBeCleared <B>then</B> SetStyle(TVS_HASLINES, False);
+  <B>if</B> toShowRoot <B>in</B> ToBeCleared <B>then</B> SetStyle(TVS_LINESATROOT, False);
+  <B>if</B> toShowButtons <B>in</B> ToBeCleared <B>then</B> SetStyle(TVS_HASBUTTONS, False);
+  <B>if</B> toSingleExpand <B>in</B> ToBeCleared <B>then</B> SetStyle(TVS_SINGLEEXPAND, False);
+
+  <Font Color="#0000DD">// multi-selection special</Font>
+  <B>if</B> toMultiSelect <B>in</B> ToBeCleared <B>then</B> ClearSelection;
+
+  <Font Color="#0000DD">// leave only styles in the indicator, which require a window recreation</Font>
+  ToBeCleared := ToBeCleared - NoRecreationStyles;
+
+  FOptions := Values;
+
+  <Font Color="#0000DD">// if one of the styles which require a window recreation has changed</Font>
+  <Font Color="#0000DD">// initiate recreation now</Font>
+  <B>if</B> (ToBeSet + ToBeCleared) &lt;&gt; [] <B>then</B> RecreateWnd;
+<B>End</B>;</pre></td></tr></Table>

@@ -1,0 +1,53 @@
+package ZDbware4;
+
+{$R *.RES}
+{$ALIGN ON}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $00400000}
+{$DESCRIPTION 'Zeos Dbware Components'}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl40,
+  ZCommon4,
+  Vcldb40;
+
+contains
+  ZDirSql in 'dbase\ZDirSql.pas',
+  ZProperty in 'dbase\ZProperty.pas',
+  ZUpdateSql in 'dbase\ZUpdateSql.pas',
+  ZConnect in 'dbase\ZConnect.pas',
+  ZQuery in 'dbase\ZQuery.pas',
+  ZTransact in 'dbase\ZTransact.pas',
+  ZBlobStream in 'dbase\ZBlobStream.pas',
+  ZLinkProp in 'dbase\ZLinkProp.pas',
+  ZSqlExtra in 'dbase\ZSqlExtra.pas',
+  ZSqlBuffer in 'dbase\ZSqlBuffer.pas',
+  ZSqlParser in 'dbase\ZSqlParser.pas',
+  ZSqlItems in 'dbase\ZSqlItems.pas',
+  ZSqlScript in 'dbase\ZSqlScript.pas',
+  ZSqlTypes in 'dbase\ZSqlTypes.pas',
+  ZDBaseConst in 'dbase\ZDBaseConst.pas',
+  ZDBaseReg in 'dbase\ZDBaseReg.pas',
+  ZSqlScanner in 'dbase\ZSqlScanner.pas',
+  ZStoredProc in 'dbase\ZStoredProc.pas';
+
+end.

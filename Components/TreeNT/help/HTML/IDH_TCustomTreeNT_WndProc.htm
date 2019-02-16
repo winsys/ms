@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>WndProc Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>WndProc method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> WndProc(<B>var</B> <B>Message</B>: TMessage);</Font>
+<br>
+<Img Src="images/override.gif"> <Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.WndProc(<B>var</B> <B>Message</B>: TMessage);
+
+<Font Color="#0000DD">// design time and dragging need special handling</Font>
+<Font Color="#0000DD">// we must overcome the immediate drag start (happens by default in</Font>
+<Font Color="#0000DD">// TControl.WndProc, this is the special case) and we need the drag messages</Font>
+<Font Color="#0000DD">// also at design time</Font>
+
+<B>var</B> SpecialCase, 
+    IsDesigning  : Boolean;
+
+<B>begin</B>
+  <Font Color="#0000DD">// one specific case is important</Font>
+  SpecialCase := ((<B>Message</B>.Msg = WM_LBUTTONDOWN) <B>or</B>
+                  (<B>Message</B>.Msg = WM_LBUTTONDBLCLK)) <B>and</B>
+                   <B>not</B> Dragging <B>and</B> (DragMode = dmAutomatic);
+
+  <Font Color="#0000DD">// determine if we can access the designer</Font>
+  IsDesigning := (csDesigning <B>in</B> ComponentState) <B>and</B> assigned(FDesigner);
+
+  <Font Color="#0000DD">// do we actually have the special case?</Font>
+  <B>if</B> SpecialCase <B>then</B>
+  <B>begin</B>
+    <Font Color="#0000DD">// are we at run time or did the user hit an area (at design time)</Font>
+    <Font Color="#0000DD">// which shouldn't be handled by the default WndProc?</Font>
+    <B>if</B> <B>not</B> IsDesigning <B>or</B> (IsDesigning <B>and</B> <B>not</B> FDesigner.IsDesignMsg(Self, <B>Message</B>)) <B>then</B>
+      <B>if</B> <B>not</B> IsControlMouseMsg(TWMMouse(<B>Message</B>)) <B>then</B>
+      <B>begin</B>
+        ControlState := ControlState + [csLButtonDown];
+        Dispatch(<B>Message</B>);
+      <B>end</B>;
+  <B>end</B>
+  <B>else</B>
+  <B>begin</B>
+    <Font Color="#0000DD">// this is the branch mostly taken</Font>
+    <Font Color="#0000DD">// avoid that the ancestors swallow the drag messages</Font>
+    <Font Color="#0000DD">// (we just do what the ancestors would do at run time, but also at design time)</Font>
+    <B>if</B> <B>Message</B>.Msg = CM_DRAG <B>then</B> Dispatch(<B>Message</B>)
+                             <B>else</B> <B>inherited</B> WndProc(<B>Message</B>);
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>

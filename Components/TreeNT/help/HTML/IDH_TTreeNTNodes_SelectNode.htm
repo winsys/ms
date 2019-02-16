@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>SelectNode Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>SelectNode method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TTreeNTNodes.htm">TTreeNTNodes</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> SelectNode(Node: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; Value: <A HREF="IDH_Type_TSelectType.htm">TSelectType</A>);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TTreeNTNodes.SelectNode(Node: <A HREF="IDH_Class_TTreeNTNode.htm">TTreeNTNode</A>; Value: <A HREF="IDH_Type_TSelectType.htm">TSelectType</A>);
+
+<Font Color="#0000DD">// another procedure to select or deselect an item, but it doesn't change</Font>
+<Font Color="#0000DD">// the selection state of any other node (used for multi-selection)</Font>
+
+<Font Color="#0000DD">// Since this method is the fast brother of 'TreeView_SelectItem', we don't get</Font>
+<Font Color="#0000DD">// a TVN_SELCHANGING or TVN_SELCHANGED message, so we have to simulate these</Font>
+<Font Color="#0000DD">// messages from here.</Font>
+
+<B>var</B> Item     : TTVItem;
+    Template : Integer;
+
+<B>begin</B>
+  <B>if</B> <B>not</B> Owner.CanChange(Node) <B>then</B> Exit;
+  <B>case</B> Value <B>of</B>
+    stSet:
+      Template := -1;
+    stReset:
+      Template := 0;
+  <B>else</B>
+    <Font Color="#0000DD">// stToggle</Font>
+    <B>if</B> Node.Selected <B>then</B> Template := 0
+                     <B>else</B> Template := -1;
+  <B>end</B>;
+
+  <B>if</B> Template = -1 <B>then</B>
+  <B>begin</B>
+    <B>if</B> (toLevelSelectConstraint <B>in</B> Owner.FOptions) <B>and</B> (Node.Level &lt;&gt; FLastSelLevel) <B>then</B> Exit;
+    AddToSelection(Node);
+  <B>end</B>
+  <B>else</B> RemoveFromSelection(Node);
+
+  <B>with</B> Item <B>do</B>
+  <B>begin</B>
+    Mask := TVIF_STATE;
+    hItem := Node.ItemId;
+    stateMask := TVIS_SELECTED;
+    state := stateMask <B>and</B> Template;
+  <B>end</B>;
+  TreeView_SetItem(Handle, Item);
+
+  <B>if</B> <B>not</B> FCoreSelecting <B>then</B>
+    <B>with</B> FOwner.FChangeTimer <B>do</B>
+    <B>if</B> Interval &gt; 0 <B>then</B>
+    <B>begin</B>
+      Enabled := False;
+      Tag := Integer(Node);
+      Enabled := True;
+    <B>end</B>
+    <B>else</B> FOwner.DoChange(Node);
+<B>End</B>;</pre></td></tr></Table>

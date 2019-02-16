@@ -1,0 +1,15 @@
+MessageSearch 1.0
+-----------------
+
+
+Delphi 5.0 Components:
+
+TreeNT
+Compress
+ZMySQL (Zeos DBO)
+RxCalc
+RichEdit98
+RichPrinter
+FolderBrowse
+HTTPGet
+

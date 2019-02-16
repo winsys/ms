@@ -1,0 +1,119 @@
+                            README
+
+Zeos Database Objects is a Delphi's components set for direct
+access to OpenSource databases: MySql, PostgreSql and Interbase.
+Also we propose components for direct access to commerce
+databases: MS SQL and Oracle.
+
+Package contains following components:
+
+Dbware crossdatabase components
+
+  TZUpdateSql - component for manual managing of postings.
+  TZBatchSql - component for executing sql scripts
+  TZMonitor - viewing outgoing queries
+
+Direct access to MySql
+
+  TZMySqlDatabase - connect to sql-server
+  TZMySqlTransact - postings and transactions manager
+  TZMySqlQuery - execution and opening sql-queries
+  TZMySqlTable - opening tables
+
+Direct access to PostgreSql
+
+  TZPgSqlDatabase - connect to sql-server
+  TZPgSqlTransact - postings and transactions manager
+  TZPgSqlQuery - execution and opening sql-queries
+  TZPgSqlTable - opening tables
+
+Direct access to Interbase
+
+  TZIbSqlDatabase - connect to sql-server
+  TZIbSqlTransact - postings and transactions manager
+  TZIbSqlQuery - execution and opening sql-queries
+  TZIbSqlTable - opening tables
+
+Notes: To implement Interbase autoincrement fields create generator
+with name "<TableName>_<FieldName>_gen" and turn on 
+Query.ExtraOptions[ioAutoIncKey]. Field should be a primary key.
+For example: 
+  CREATE TABLE Customers (
+    CustomerNo INTEGER NOT NULL,
+    ...
+    PRIMARY KEY (CustomerNo)
+  );
+  CREATE GENERATOR Customers_CustomerNo_Gen;
+
+Direct access to MS SQL
+
+  TZMsSqlDatabase - connect to sql-server
+  TZMsSqlTransact - postings and transactions manager
+  TZMsSqlQuery - execution and opening sql-queries
+  TZMsSqlTable - opening tables
+  TZMsSqlStoredProc - stored procedures with various parameter types
+
+Direct access to Oracle8
+
+  TZOraSqlDatabase - connect to sql-server
+  TZOraSqlTransact - postings and transactions manager
+  TZOraSqlQuery - execution and opening sql-queries
+  TZOraSqlTable - opening tables
+
+Notes: To implement Interbase autoincrement fields create sequence
+with name "<TableName>_<FieldName>_seq" and turn on 
+Query.ExtraOptions[ooAutoIncKey]. Field should be a primary key.
+For example: 
+  CREATE TABLE Customers (
+    CustomerNo INTEGER NOT NULL,
+    ...
+    PRIMARY KEY (CustomerNo)
+  );
+  CREATE SEQUENCE Customers_CustomerNo_Seq;
+
+All TDataset descendants have next features:
+
+  - Different datatypes supported (Integer, String, Float, Boolean)
+  - Edit simple and complex queries (in complex queries is updated 
+    only first table)
+  - Cached updates support
+  - Blobs support
+  - Locate and Lookups
+  - Master-Detail support
+  - Master-Detail cascade deletes and updates support
+  - Onclient and onserver filtering
+  - UpdateSql object for control update postings
+
+                       LICENCING
+    
+Zeos Database Objects is distributed as freeware product 
+with GPL licence.
+
+                       DOWNLOADS
+
+The latest version can be found on: http://www.zeoslib.org
+ 
+                         OTHER
+
+In Other directory you may found:
+
+1. TwwMySQLQuery component by Chris Cleveland for use TZMySQLDataset
+  with InfoPower Library.
+2. TMySQLInfo component by Fredrick Bartlett for use with Korzh
+  Simple Query pack
+3. SBatchSql component by Sergey Merkuriev. Ported BatchSql from
+  RxLib with parameters
+
+                        KNOWN BUGS
+
+1. In Delphi3 version isn't work property editor for Params yet.
+2. Components for direct access for PostgreSQL supports 
+   only PostgreSql 6.4 or higher
+3. When MySqlQuery opens exception occure. Update new libmysql.dll
+
+If you found some bugs in the library or have ideas for
+any improvements mail me to seroukhov@mail.ru
+
+
+Yours, 
+  Sergey Seroukhov, Leader of Capella Development Group. 

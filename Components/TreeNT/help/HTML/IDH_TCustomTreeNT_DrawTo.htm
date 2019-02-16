@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Time2HELP 1.0; Standard Template">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<TITLE>DrawTo Method</TITLE>
+<Style>Body, TD {font-family: "Verdana"; font-size: 10pt};
+PRE {font-size: 10pt; margin-top: 0; margin-bottom: 0}</Style>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<BASEFONT NAME="verdana" Size="2">
+<TABLE BGCOLOR="#FFFF00" BORDER="0" WIDTH="100%">
+<TR>
+<TD><Font Color="#000000F"><B>DrawTo method</B></Font></TD></TR></Table><P><B>Applies to</B><Br><A HREF="IDH_Class_TCustomTreeNT.htm">TCustomTreeNT</A><P><B>Declaration</B><Br><Font Face="Courier New"><B>Procedure</B> DrawTo(ACanvas: TCanvas);</Font><Font Color=#FF0000>
+<H3>Implementation</H3></Font><table border="0" bgcolor="#FFFED9"> <tr> <td><pre><B>procedure</B> TCustomTreeNT.DrawTo(ACanvas: TCanvas);
+
+<Font Color="#0000DD">// Draws the entire tree to the given canvas. This can be the canvas of the</Font>
+<Font Color="#0000DD">// current printer as well as any bitmap canvas, to store the image onto the harddisk.</Font>
+<Font Color="#0000DD">// Make sure the target canvas is large enough to draw to.</Font>
+<Font Color="#0000DD">// Call TreeWidth and TreeHeight to get the entire tree extent.</Font>
+
+<B>var</B> AbsWidth, 
+    AbsHeight, 
+    NodeHeight, 
+    X, Y, 
+    LastX, 
+    LastY      : Integer;
+    ScrollInfo : TScrollInfo;
+    I, J       : Integer;
+    Rect       : TRect;
+
+  <Font Color="#0000DD">//---------- local function ----------</Font>
+
+  <B>function</B> Ceiling(X: Extended): Integer;
+
+  <B>begin</B>
+    Result := Trunc(X);
+    <B>if</B> Frac(X) &gt; 0 <B>then</B> Inc(Result);
+  <B>end</B>;
+
+  <Font Color="#0000DD">//------------------------------------</Font>
+
+<B>begin</B>
+  <B>if</B> Items.Count &gt; 0 <B>then</B>
+  <B>begin</B>
+    <Font Color="#0000DD">// determine height of a node</Font>
+    <Font Color="#0000DD">// can't rely on property ItemHeight, since it might not be available</Font>
+    <Font Color="#0000DD">// with pre-4.70-versions of ComCtrl32.dll</Font>
+    NodeHeight := ItemHeight;
+    <B>if</B> NodeHeight = 0 <B>then</B>
+    <B>begin</B>
+      Rect := Items.GetFirstNode.DisplayRect(False);
+      NodeHeight := Rect.Bottom - Rect.Top;
+    <B>end</B>
+    <B>else</B>
+      <B>if</B> Items.GetFirstNode.IntegralHeight &gt; 0 <B>then</B> NodeHeight := NodeHeight <B>div</B> Items.GetFirstNode.IntegralHeight;
+
+    <Font Color="#0000DD">// determine last scroll position and absolute size</Font>
+    <B>with</B> ScrollInfo <B>do</B>
+    <B>begin</B>
+      <Font Color="#0000DD">// init the scroll info structure</Font>
+      FillChar(ScrollInfo, SizeOf(ScrollInfo), 0);
+      cbSize := SizeOf(TScrollInfo);
+      fMask := SIF_ALL;
+    <B>end</B>;
+
+    GetScrollInfo(Handle, SB_HORZ, ScrollInfo);
+    LastX := ScrollInfo.nPos;
+    <Font Color="#0000DD">// horizontal dimension is given in pixels</Font>
+    <B>if</B> ScrollInfo.nPage = 0 <B>then</B> AbsWidth := ClientWidth
+                            <B>else</B> AbsWidth := ScrollInfo.nMax;
+
+    GetScrollInfo(Handle, SB_VERT, ScrollInfo);
+    LastY := ScrollInfo.nPos;
+    <Font Color="#0000DD">// vertical dimension is given in number of items</Font>
+    <B>if</B> ScrollInfo.nPage = 0 <B>then</B> AbsHeight := ClientHeight
+                            <B>else</B> AbsHeight := (ScrollInfo.nMax + 1) * NodeHeight;
+
+    <Font Color="#0000DD">// scroll through the entire tree and capture the output;</Font>
+    <Font Color="#0000DD">// start at top of the window</Font>
+    Perform(WM_VSCROLL, SB_TOP, 0);
+    <B>for</B> J := 0 <B>to</B> Ceiling(AbsHeight/ClientHeight) <B>do</B>
+    <B>begin</B>
+      GetScrollInfo(Handle, SB_VERT, ScrollInfo);
+      <B>if</B> ScrollInfo.nPage &gt; 0 <B>then</B> Y := ScrollInfo.nPos * NodeHeight
+                              <B>else</B> Y := 0;
+
+      <Font Color="#0000DD">// scroll to left border</Font>
+      Perform(WM_HSCROLL, SB_TOP, 0);
+      <B>for</B> I := 0 <B>to</B> Ceiling(AbsWidth / ClientWidth) <B>do</B>
+      <B>begin</B>
+        GetScrollInfo(Handle, SB_HORZ, ScrollInfo);
+        X := ScrollInfo.nPos;
+        <Font Color="#0000DD">// capture current content...</Font>
+        BitBlt(ACanvas.Handle, X, Y, ClientWidth, ClientHeight, Canvas.Handle, 0, 0, SRCCOPY);
+        <Font Color="#0000DD">// .. and scroll one page to the right</Font>
+        Perform(WM_HSCROLL, SB_PAGERIGHT, 0);
+      <B>end</B>;
+      <Font Color="#0000DD">// scroll one page down</Font>
+      Perform(WM_VSCROLL, SB_PAGEDOWN, 0);
+    <B>end</B>;
+
+    <Font Color="#0000DD">// finally scroll to the last position</Font>
+    Perform(WM_HSCROLL, MakeWParam(SB_THUMBPOSITION, LastX), 0);
+    Perform(WM_VSCROLL, MakeWParam(SB_THUMBPOSITION, LastY), 0);
+  <B>end</B>;
+<B>End</B>;</pre></td></tr></Table>
