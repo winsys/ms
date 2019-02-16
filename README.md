@@ -10,3 +10,8 @@ Delphi 5.0
 MySQL 4.0.20-27 (libmysql in root directory)
 
 Components source included
+
+
+# Full archive
+
+http://www.winsys.lv/src/ms.zip
